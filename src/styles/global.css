@@ -115,7 +115,7 @@ p {
 }
 
 .section {
-  padding-block: clamp(56px, 9vw, 120px);
+  padding-block: clamp(40px, 6vw, 80px);
 }
 .section.paper {
   background: var(--paper);

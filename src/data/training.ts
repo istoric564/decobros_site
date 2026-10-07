@@ -1,9 +1,10 @@
 import type { Loc, Text } from '../i18n';
+import { trainingDetails, trainingStandards } from './training-details';
 
 export type Agency = 'SDI' | 'TDI';
 export type CourseCategory = 'recreational' | 'specialty' | 'professional' | 'technical';
 
-/** Club-specific values. Unknown values stay as REQUEST / ASK — never guess. */
+/** Agency program requirements and club-specific booking information. */
 export interface CourseDetails {
   minimumAge: Text;
   prerequisites: Text;
@@ -33,32 +34,12 @@ export interface Course {
   featured: boolean;
   available: boolean;
   details: CourseDetails;
+  standardsUrl: string;
   /** Large display headline for featured blocks. */
   headline?: Loc;
   /** Primary CTA label. */
   cta?: Loc;
 }
-
-const REQUEST: Loc = { ru: 'По запросу', en: 'On request', zh: '按需咨询' };
-const ASK: Loc = {
-  ru: 'Уточняется у инструктора',
-  en: 'Ask your instructor',
-  zh: '请向教练咨询',
-};
-
-const tbd = (): CourseDetails => ({
-  minimumAge: ASK,
-  prerequisites: ASK,
-  loggedDives: ASK,
-  duration: ASK,
-  theory: ASK,
-  confinedWater: ASK,
-  openWater: ASK,
-  maxDepth: ASK,
-  price: REQUEST,
-  includes: REQUEST,
-  location: REQUEST,
-});
 
 const none: Loc<string[]> = { ru: [], en: [], zh: [] };
 const noSubtitle: Loc = { ru: '', en: '', zh: '' };
@@ -77,7 +58,7 @@ export const detailLabels: Record<keyof CourseDetails, Loc> = {
   openWater: { ru: 'Открытая вода', en: 'Open water', zh: '开放水域' },
   maxDepth: { ru: 'Максимальная глубина', en: 'Maximum depth', zh: '最大深度' },
   price: { ru: 'Стоимость', en: 'Price', zh: '费用' },
-  includes: { ru: 'Что входит', en: 'Includes', zh: '费用包含' },
+  includes: { ru: 'Программа и результат', en: 'Program and outcome', zh: '课程与成果' },
   location: { ru: 'Место проведения', en: 'Location', zh: '地点' },
 };
 
@@ -113,7 +94,8 @@ const allCourses: Course[] = [
     focus: none,
     featured: false,
     available: true,
-    details: tbd(),
+    details: trainingDetails['scuba-discovery'],
+    standardsUrl: trainingStandards['scuba-discovery'],
   },
   {
     slug: 'open-water-scuba-diver',
@@ -170,7 +152,8 @@ const allCourses: Course[] = [
     featured: true,
     available: true,
     cta: { ru: 'Подробнее о программе', en: 'Program details', zh: '课程详情' },
-    details: tbd(),
+    details: trainingDetails['open-water-scuba-diver'],
+    standardsUrl: trainingStandards['open-water-scuba-diver'],
   },
   {
     slug: 'advanced-adventure-diver',
@@ -199,13 +182,20 @@ const allCourses: Course[] = [
       ],
     },
     focus: {
-      ru: ['Глубина', 'Навигация', 'Новые условия', 'Самостоятельность', 'Дальнейший путь обучения'],
+      ru: [
+        'Глубина',
+        'Навигация',
+        'Новые условия',
+        'Самостоятельность',
+        'Дальнейший путь обучения',
+      ],
       en: ['Depth', 'Navigation', 'New conditions', 'Independence', 'Next training steps'],
       zh: ['深度', '导航', '新环境', '独立性', '后续培训路径'],
     },
     featured: false,
     available: true,
-    details: tbd(),
+    details: trainingDetails['advanced-adventure-diver'],
+    standardsUrl: trainingStandards['advanced-adventure-diver'],
   },
   {
     slug: 'deep-diver',
@@ -227,7 +217,8 @@ const allCourses: Course[] = [
     focus: none,
     featured: false,
     available: true,
-    details: tbd(),
+    details: trainingDetails['deep-diver'],
+    standardsUrl: trainingStandards['deep-diver'],
   },
   {
     slug: 'underwater-navigation-diver',
@@ -249,7 +240,8 @@ const allCourses: Course[] = [
     focus: none,
     featured: false,
     available: true,
-    details: tbd(),
+    details: trainingDetails['underwater-navigation-diver'],
+    standardsUrl: trainingStandards['underwater-navigation-diver'],
   },
   {
     slug: 'night-limited-visibility-diver',
@@ -271,7 +263,8 @@ const allCourses: Course[] = [
     focus: none,
     featured: false,
     available: true,
-    details: tbd(),
+    details: trainingDetails['night-limited-visibility-diver'],
+    standardsUrl: trainingStandards['night-limited-visibility-diver'],
   },
   {
     slug: 'rescue-diver',
@@ -311,12 +304,19 @@ const allCourses: Course[] = [
         'Аварийные сценарии',
         'Командная работа',
       ],
-      en: ['Self-rescue', 'Stress recognition', 'Diver assistance', 'Emergency scenarios', 'Teamwork'],
+      en: [
+        'Self-rescue',
+        'Stress recognition',
+        'Diver assistance',
+        'Emergency scenarios',
+        'Teamwork',
+      ],
       zh: ['自救', '识别压力', '协助潜水员', '紧急情况演练', '团队协作'],
     },
     featured: true,
     available: true,
-    details: tbd(),
+    details: trainingDetails['rescue-diver'],
+    standardsUrl: trainingStandards['rescue-diver'],
   },
   {
     slug: 'dry-suit-diver',
@@ -338,7 +338,8 @@ const allCourses: Course[] = [
     focus: none,
     featured: false,
     available: true,
-    details: tbd(),
+    details: trainingDetails['dry-suit-diver'],
+    standardsUrl: trainingStandards['dry-suit-diver'],
   },
   {
     slug: 'refresher',
@@ -387,7 +388,8 @@ const allCourses: Course[] = [
     },
     featured: false,
     available: true,
-    details: tbd(),
+    details: trainingDetails['refresher'],
+    standardsUrl: trainingStandards['refresher'],
   },
   {
     slug: 'divemaster',
@@ -452,7 +454,8 @@ const allCourses: Course[] = [
     featured: true,
     available: true,
     cta: { ru: 'Стать Divemaster', en: 'Become a Divemaster', zh: '成为潜水长' },
-    details: tbd(),
+    details: trainingDetails['divemaster'],
+    standardsUrl: trainingStandards['divemaster'],
   },
   {
     slug: 'intro-to-tech',
@@ -525,7 +528,8 @@ const allCourses: Course[] = [
       en: 'Start technical training',
       zh: '开始技术潜水培训',
     },
-    details: tbd(),
+    details: trainingDetails['intro-to-tech'],
+    standardsUrl: trainingStandards['intro-to-tech'],
   },
   {
     slug: 'nitrox',
@@ -562,12 +566,20 @@ const allCourses: Course[] = [
         'Маркировка баллонов',
         'Планирование',
       ],
-      en: ['Nitrox theory', 'Oxygen exposure', 'MOD', 'Gas analysis', 'Cylinder marking', 'Planning'],
+      en: [
+        'Nitrox theory',
+        'Oxygen exposure',
+        'MOD',
+        'Gas analysis',
+        'Cylinder marking',
+        'Planning',
+      ],
       zh: ['高氧理论', '氧暴露', '最大作业深度', '气体分析', '气瓶标识', '潜水计划'],
     },
     featured: false,
     available: true,
-    details: tbd(),
+    details: trainingDetails['nitrox'],
+    standardsUrl: trainingStandards['nitrox'],
   },
   {
     slug: 'advanced-nitrox',
@@ -614,20 +626,13 @@ const allCourses: Course[] = [
         'Shutdown procedures',
         'Team awareness',
       ],
-      zh: [
-        '高级气体计划',
-        '技术配置',
-        '水平姿态',
-        '浮力',
-        '气体分享',
-        '关阀程序',
-        '团队意识',
-      ],
+      zh: ['高级气体计划', '技术配置', '水平姿态', '浮力', '气体分享', '关阀程序', '团队意识'],
     },
     featured: false,
     available: true,
     cta: { ru: 'Обсудить программу', en: 'Discuss the program', zh: '咨询课程' },
-    details: tbd(),
+    details: trainingDetails['advanced-nitrox'],
+    standardsUrl: trainingStandards['advanced-nitrox'],
   },
 ];
 
@@ -641,7 +646,7 @@ export const courseBySlug = (slug: string): Course => {
 };
 
 export const trainingDisclaimer: Loc = {
-  ru: 'Точный состав, продолжительность, требования и стоимость программы уточняются у инструктора и зависят от условий проведения и действующих стандартов SDI / TDI.',
-  en: 'The exact content, duration, requirements and price of a program are confirmed by the instructor and depend on the conditions and the current SDI / TDI standards.',
-  zh: '课程的具体内容、时长、要求和费用请向教练确认，并取决于实施条件和现行的 SDI / TDI 标准。',
+  ru: 'Приведены требования программ SDI / TDI. Рекомендованные часы — ориентир; длительность зависит от освоения навыков. Даты, площадки, материалы, аренда снаряжения и условия оформления сертификата согласуются с клубом до записи.',
+  en: 'These are SDI / TDI program requirements. Recommended hours are guidance; duration depends on skill mastery. Dates, venues, materials, equipment hire and certification arrangements are agreed with the club before booking.',
+  zh: '此处列出 SDI / TDI 课程要求。建议时数仅供参考，实际时长取决于技能掌握情况。日期、地点、教材、装备租赁及认证安排须在报名之前与俱乐部确认。',
 };
