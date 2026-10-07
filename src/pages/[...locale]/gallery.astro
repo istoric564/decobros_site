@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import EditorialImage from '../../components/EditorialImage.astro';
+import { galleryCategories, galleryCategoryLabels, galleryItems } from '../../data/gallery';
+import { localeFromUrl, localeStaticPaths, t } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+
+const T = {
+  ru: {
+    title: 'Галерея',
+    description: 'Галерея DECOBROSCREW. Люди, места и погружения. История нашей команды.',
+    hero: ['Под', 'поверхностью.'],
+    heroCopy: ['Люди.', 'Места.', 'Погружения.', 'История нашей команды.'],
+    h2: 'Фотогалерея',
+    empty: '[НУЖНЫ ФОТО: владелец предоставляет все фото галереи. См. ASSET_REQUIREMENTS.md]',
+    filter: 'Фильтр фотографий',
+    open: 'Открыть фото',
+    viewer: 'Просмотр фото',
+    close: 'Закрыть просмотр',
+    prev: 'Предыдущее фото',
+    next: 'Следующее фото',
+  },
+  en: {
+    title: 'Gallery',
+    description: 'DECOBROSCREW gallery. People, places and dives. The story of our crew.',
+    hero: ['Below the', 'surface.'],
+    heroCopy: ['People.', 'Places.', 'Dives.', 'The story of our crew.'],
+    h2: 'Photo gallery',
+    empty: '[ASSET REQUIRED: owner supplies all gallery photos. See ASSET_REQUIREMENTS.md]',
+    filter: 'Filter photos',
+    open: 'Open photo',
+    viewer: 'Photo viewer',
+    close: 'Close viewer',
+    prev: 'Previous photo',
+    next: 'Next photo',
+  },
+  zh: {
+    title: '图库',
+    description: 'DECOBROSCREW 图库。人物、地点与潜水——我们团队的故事。',
+    hero: ['水面', '之下。'],
+    heroCopy: ['人物。', '地点。', '潜水。', '我们团队的故事。'],
+    h2: '照片图库',
+    empty: '[需要图片：所有图库照片由所有者提供。参见 ASSET_REQUIREMENTS.md]',
+    filter: '筛选照片',
+    open: '打开照片',
+    viewer: '照片查看器',
+    close: '关闭查看器',
+    prev: '上一张',
+    next: '下一张',
+  },
+}[locale];
+---
+
+<BaseLayout title={T.title} description={T.description}>
+  <Hero imageId="G01" lines={T.hero} copy={T.heroCopy} />
+
+  <section class="section" aria-labelledby="g-h">
+    <div class="container">
+      <h2 id="g-h" class="sr-only">
+        {T.h2}
+      </h2>
+      {galleryItems.length === 0 ? (
+        <p class="notice">{T.empty}</p>
+      ) : (
+        <>
+          <div class="filters" role="group" aria-label={T.filter}>
+            {galleryCategories.map((c, i) => (
+              <button
+                type="button"
+                class="chip"
+                data-filter={c}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+              >
+                {t(galleryCategoryLabels[c], locale)}
+              </button>
+            ))}
+          </div>
+          <ul class="grid" id="grid">
+            {galleryItems.map((g) => {
+              const alt = t(g.alt, locale);
+              return (
+                <li data-category={g.category}>
+                  <button
+                    type="button"
+                    class="open"
+                    aria-label={`${T.open}: ${alt || t(galleryCategoryLabels[g.category], locale)}`}
+                  >
+                    <EditorialImage
+                      name={`gallery/${g.file}`}
+                      ratio="4 / 3"
+                      alt={alt}
+                      sizes="(min-width: 960px) 33vw, 50vw"
+                    />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <dialog id="viewer" aria-label={T.viewer}>
+            <button type="button" class="close" aria-label={T.close}>
+              ×
+            </button>
+            <button type="button" class="nav prev" aria-label={T.prev}>
+              ‹
+            </button>
+            <div class="stage"></div>
+            <button type="button" class="nav next" aria-label={T.next}>
+              ›
+            </button>
+          </dialog>
+        </>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../../scripts/gallery';
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .chip {
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    font: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+  }
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .grid li[hidden] {
+    display: none;
+  }
+  .open {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+  }
+  dialog {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(6 16 26 / 0.97);
+    color: var(--white);
+  }
+  dialog::backdrop {
+    background: #000;
+  }
+  .stage {
+    position: absolute;
+    inset: 64px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stage :global(img) {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .close,
+  .nav {
+    position: absolute;
+    z-index: 2;
+    width: 48px;
+    height: 48px;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.12);
+    color: var(--white);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .close {
+    top: 8px;
+    right: 8px;
+  }
+  .nav {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .prev {
+    left: 4px;
+  }
+  .next {
+    right: 4px;
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .grid li:nth-child(5n + 1) {
+      grid-column: span 2;
+    }
+  }
+</style>

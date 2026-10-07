@@ -1,0 +1,107 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { slotById } from '../data/images';
+import { localeFromUrl, t, type Text } from '../i18n';
+import { ui } from '../i18n/ui';
+
+interface Props {
+  /** Image slot id from data/images.ts. Gives file name, ratio and alt. */
+  imageId?: string;
+  /** File base name in src/assets/photos/ (use when no slot, for example gallery or portraits). */
+  name?: string;
+  ratio?: string;
+  alt?: Text;
+  /** Use true only for the LCP image. */
+  priority?: boolean;
+  sizes?: string;
+  class?: string;
+  position?: string;
+  /** Fill the parent box (parent must be positioned). Ignores the ratio. */
+  fill?: boolean;
+}
+
+const {
+  imageId,
+  name,
+  ratio: ratioProp,
+  alt: altProp,
+  priority = false,
+  sizes = '100vw',
+  class: className,
+  position = 'center',
+  fill = false,
+} = Astro.props;
+
+const def = imageId ? slotById(imageId) : undefined;
+const key = name ?? def?.id ?? '';
+const ratio = ratioProp ?? def?.ratio ?? '3 / 2';
+const locale = localeFromUrl(Astro.url);
+const alt = t(altProp ?? def?.alt ?? '', locale);
+
+const files = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/photos/**/*.{jpg,jpeg,png,webp,avif}',
+);
+const found = Object.keys(files).find((p) => /\/photos\/(.+)\.[a-z]+$/.exec(p)?.[1] === key);
+const img = found ? (await files[found]()).default : undefined;
+---
+
+<div
+  class:list={['ei', className]}
+  style={fill ? 'position:absolute;inset:0;height:100%' : `aspect-ratio:${ratio}`}
+>
+  {img ? (
+    <Picture
+      src={img}
+      alt={alt}
+      formats={['avif', 'webp']}
+      widths={[480, 768, 1200, 1600, 2400]}
+      sizes={sizes}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding={priority ? 'sync' : 'async'}
+      style={`object-position:${position}`}
+    />
+  ) : (
+    <div class="ph" role="img" aria-label={t(ui.imageRequired, locale)}>
+      <strong>{t(ui.imageRequired, locale)}</strong>
+      <span>
+        {key} · {def ? `${def.page} / ${def.section}` : 'see ASSET_REQUIREMENTS.md'}
+      </span>
+    </div>
+  )}
+</div>
+
+<style is:global>
+  .ei {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: var(--navy);
+  }
+  .ei picture,
+  .ei img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ei .ph {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: repeating-linear-gradient(135deg, #1b2a38 0 14px, #223445 14px 28px);
+    color: #c9d6e0;
+    text-align: center;
+    font-size: 0.75rem;
+    padding: 12px;
+  }
+  .ei .ph strong {
+    font-size: 0.875rem;
+    letter-spacing: 0.18em;
+  }
+</style>

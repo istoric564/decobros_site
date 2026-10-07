@@ -1,0 +1,204 @@
+---
+import BrandLockup from './BrandLockup.astro';
+import LangSwitch from './LangSwitch.astro';
+import { nav } from '../data/site';
+import { localeFromUrl, localePath, stripLocale, t } from '../i18n';
+import { ui } from '../i18n/ui';
+
+const locale = localeFromUrl(Astro.url);
+const path = stripLocale(Astro.url.pathname).replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const items = nav.map((i) => ({ label: t(i.label, locale), href: i.href }));
+const contactHref = localePath(locale, '/contact');
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a href={localePath(locale, '/')} class="brand" aria-label={t(ui.homeAria, locale)}>
+      <BrandLockup />
+    </a>
+
+    <nav class="desktop" aria-label={t(ui.navMain, locale)}>
+      <ul>
+        {items.map((i) => (
+          <li>
+            <a
+              href={localePath(locale, i.href)}
+              aria-current={isActive(i.href) ? 'page' : undefined}
+            >
+              {i.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="end">
+      <LangSwitch class="lang-desktop" />
+      <a href={contactHref} class="btn cta">
+        {t(ui.getInTouch, locale)}
+      </a>
+    </div>
+
+    <button
+      type="button"
+      class="burger"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label={t(ui.openMenu, locale)}
+      data-label-open={t(ui.openMenu, locale)}
+      data-label-close={t(ui.closeMenu, locale)}
+    >
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="mobile" hidden>
+    <nav aria-label={t(ui.navMobile, locale)}>
+      <ul>
+        {items.map((i) => (
+          <li>
+            <a
+              href={localePath(locale, i.href)}
+              aria-current={isActive(i.href) ? 'page' : undefined}
+            >
+              {i.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a href={contactHref}>{t(ui.getInTouch, locale)}</a>
+        </li>
+      </ul>
+    </nav>
+    <LangSwitch class="lang-mobile" />
+  </div>
+</header>
+<script>
+  import '../scripts/menu';
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgb(255 255 255 / 0.96);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+    gap: 24px;
+  }
+  .brand {
+    text-decoration: none;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+  .desktop,
+  .cta,
+  .end :global(.lang-desktop) {
+    display: none;
+  }
+  .end {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .mobile :global(.lang-mobile) {
+    margin-top: 24px;
+  }
+  .desktop ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .desktop a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.8125rem;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .desktop a:hover,
+  .desktop a[aria-current='page'] {
+    border-bottom-color: var(--ink);
+  }
+  .burger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+    width: 44px;
+    height: 44px;
+    padding: 0 10px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .burger span {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.25s;
+  }
+  .burger[aria-expanded='true'] span:first-child {
+    transform: translateY(4.25px) rotate(45deg);
+  }
+  .burger[aria-expanded='true'] span:last-child {
+    transform: translateY(-4.25px) rotate(-45deg);
+  }
+  .mobile {
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    background: var(--white);
+    padding: 24px var(--gutter);
+    overflow-y: auto;
+  }
+  .mobile[hidden] {
+    display: none;
+  }
+  .mobile ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .mobile a {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    font-size: 1.75rem;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 960px) {
+    .desktop,
+    .end :global(.lang-desktop) {
+      display: block;
+    }
+    .cta {
+      display: inline-flex;
+      min-height: 44px;
+      padding: 0 24px;
+    }
+    .burger,
+    .mobile {
+      display: none !important;
+    }
+  }
+  @media (min-width: 1200px) {
+    .desktop ul {
+      gap: 36px;
+    }
+  }
+</style>

@@ -1,0 +1,103 @@
+---
+import {
+  legalEntity,
+  privacyInfrastructure as infra,
+  analytics,
+  analyticsEnabled,
+} from '../../data/site';
+import { t } from '../../i18n';
+const l = 'en' as const;
+---
+
+<h1>Privacy policy</h1>
+<p class="todo">
+  Test environment version. A legal review is required before publication. The Russian version of
+  this policy is the governing one.
+</p>
+
+<p>DECOBROSCREW aims to keep the processing of personal data on its public site to the minimum.</p>
+<p>
+  The site has no user registration, no personal accounts, no newsletter subscription and no
+  built-in forms for sending requests.
+</p>
+<p>
+  To get in touch, a visitor can go to an external service such as Telegram or WhatsApp on their
+  own, or open their email client.
+</p>
+<p>
+  After moving to an external service, information is processed according to the rules of that
+  service.
+</p>
+
+<h2>Technical data</h2>
+<p>
+  When you visit the site, the hosting infrastructure may automatically process technical
+  information needed to deliver the page and keep it secure.
+</p>
+<p>This information may include:</p>
+<ul>
+  <li>IP address;</li>
+  <li>date and time of the request;</li>
+  <li>address of the requested resource;</li>
+  <li>HTTP response status;</li>
+  <li>browser type or User-Agent;</li>
+  <li>technical details of the connection.</li>
+</ul>
+<p>The exact log fields and retention period will be stated after the production host is chosen.</p>
+<p>DECOBROSCREW does not use technical logs to build marketing profiles of visitors.</p>
+<p class="todo">
+  Hosting: {t(infra.hostingProvider, l)}. Log fields: {t(infra.logFields, l)} Retention:{' '}
+  {t(infra.logRetention, l)}
+</p>
+
+<h2>Cookies</h2>
+{analyticsEnabled ? (
+  <p>
+    The site sets analytics cookies only after you accept them in the banner. Your choice is stored
+    in the browser (localStorage); clear the site data in your browser to change it.
+  </p>
+) : (
+  <p>In its current version the site should not use non-essential cookies.</p>
+)}
+<p>
+  If the technical architecture changes, this section must be updated before the change goes live.
+</p>
+
+<h2>Analytics and advertising systems</h2>
+{analyticsEnabled ? (
+  <p>
+    With your consent the site uses
+    {analytics.yandexMetrikaId && ' Yandex Metrica (Yandex LLC, Russia)'}
+    {analytics.yandexMetrikaId && analytics.ga4Id && ' and'}
+    {analytics.ga4Id && ' Google Analytics 4 (Google LLC, USA)'}. They collect pseudonymous data:
+    pages viewed, referrer, device and browser type, approximate location. Session recording
+    (Webvisor) is off. Meta Pixel, Hotjar and Microsoft Clarity are not used.
+  </p>
+) : (
+  <p>
+    The current version of the site does not use Google Analytics, Yandex Metrica, Meta Pixel,
+    Hotjar, Microsoft Clarity or session replay systems.
+  </p>
+)}
+
+<h2>External services</h2>
+<p>
+  When you follow links to Telegram, WhatsApp, email or other external resources, you leave the
+  DECOBROSCREW site.
+</p>
+<p>After that, data processing rules are set by the respective service.</p>
+<p>
+  The Contact page can show a Yandex Maps map (Yandex LLC, Russia). It is not loaded automatically —
+  only after you press “Show map”. Your browser then connects to Yandex servers, which receive your
+  IP address and browser data and may set their own cookies under the Yandex privacy policy.
+</p>
+
+<h2>Personal data requests</h2>
+<p>
+  Operator contact: {legalEntity.privacyEmail} <span class="todo">[PRIVACY CONTACT REQUIRED]</span>
+</p>
+<p>
+  Operator details: <span class="todo">[LEGAL OPERATOR DATA REQUIRED]</span>
+</p>
+
+<p class="todo">This text is a test version and requires a legal review before publication.</p>

@@ -1,0 +1,25 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import PrivacyRu from '../../components/legal/PrivacyRu.astro';
+import PrivacyEn from '../../components/legal/PrivacyEn.astro';
+import PrivacyZh from '../../components/legal/PrivacyZh.astro';
+import { localeFromUrl, localeStaticPaths } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const T = {
+  ru: {
+    title: 'Конфиденциальность',
+    description: 'Политика конфиденциальности сайта DECOBROSCREW.',
+    Body: PrivacyRu,
+  },
+  en: { title: 'Privacy', description: 'Privacy policy of the DECOBROSCREW site.', Body: PrivacyEn },
+  zh: { title: '隐私政策', description: 'DECOBROSCREW 网站隐私政策。', Body: PrivacyZh },
+}[locale];
+const { Body } = T;
+---
+
+<LegalLayout title={T.title} description={T.description}>
+  <Body />
+</LegalLayout>

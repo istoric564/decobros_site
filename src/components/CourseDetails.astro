@@ -1,0 +1,99 @@
+---
+import { detailLabels, type Course, type CourseDetails } from '../data/training';
+import { localeFromUrl, t } from '../i18n';
+
+interface Props {
+  course: Course;
+  /** Render expanded without a toggle. */
+  open?: boolean;
+}
+
+const { course, open = false } = Astro.props;
+const locale = localeFromUrl(Astro.url);
+const summary = { ru: 'Детали программы', en: 'Program details', zh: '课程详情' };
+const rows = (Object.keys(detailLabels) as (keyof CourseDetails)[]).map((k) => ({
+  label: t(detailLabels[k], locale),
+  value: t(course.details[k], locale),
+}));
+---
+
+<details class="cd" id={`${course.slug}-details`} open={open}>
+  <summary>{t(summary, locale)}</summary>
+  <dl>
+    {rows.map((r) => (
+      <div>
+        <dt>{r.label}</dt>
+        <dd>{r.value}</dd>
+      </div>
+    ))}
+  </dl>
+</details>
+
+<style>
+  .cd {
+    margin-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  :global(.dark) .cd,
+  :global(.navy) .cd {
+    border-color: var(--line-dark);
+  }
+  summary {
+    cursor: pointer;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 1.25rem;
+    font-weight: 300;
+  }
+  .cd[open] summary::after {
+    content: '−';
+  }
+  dl {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin: 0 0 8px;
+    font-size: 0.875rem;
+  }
+  dl > div {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 16px;
+    padding-block: 10px;
+    border-top: 1px solid var(--line);
+  }
+  :global(.dark) dl > div,
+  :global(.navy) dl > div {
+    border-color: var(--line-dark);
+  }
+  dt {
+    opacity: 0.65;
+  }
+  dd {
+    margin: 0;
+  }
+  @media (min-width: 960px) {
+    dl {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 48px;
+    }
+  }
+  @media (max-width: 479px) {
+    dl > div {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+  }
+</style>

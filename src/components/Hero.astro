@@ -1,0 +1,58 @@
+---
+import Band from './Band.astro';
+interface Props {
+  imageId: string;
+  /** Headline lines. Each line is a separate row. */
+  lines: string[];
+  eyebrow?: string;
+  copy?: string[];
+  cta?: { label: string; href: string };
+}
+const { imageId, lines, eyebrow, copy = [], cta } = Astro.props;
+---
+
+<Band
+  imageId={imageId}
+  priority
+  imageFirst
+  position="70% center"
+  height="clamp(520px, 40vw, 760px)"
+  mobileRatio="4 / 3"
+>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h1>
+    {lines.map((l) => (
+      <span>{l}</span>
+    ))}
+  </h1>
+  {copy.length > 0 && (
+    <p class="copy">
+      {copy.map((c) => (
+        <span>{c}</span>
+      ))}
+    </p>
+  )}
+  {cta && (
+    <a class="btn" href={cta.href}>
+      {cta.label} <span aria-hidden="true">→</span>
+    </a>
+  )}
+</Band>
+
+<style>
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: var(--fs-display);
+    letter-spacing: -0.045em;
+    display: flex;
+    flex-direction: column;
+  }
+  .copy {
+    display: flex;
+    flex-direction: column;
+    margin-block: 24px 28px;
+    font-size: 1.0625rem;
+  }
+</style>

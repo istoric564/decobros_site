@@ -1,0 +1,192 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import EditorialImage from '../../components/EditorialImage.astro';
+import DemoBadge from '../../components/DemoBadge.astro';
+import { people, values } from '../../data/crew';
+import { localeFromUrl, localeStaticPaths, t } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+
+const T = {
+  ru: {
+    title: 'Команда',
+    description:
+      'Инструкторы и дайверы DECOBROSCREW. Реальные люди, реальные квалификации, одна команда.',
+    hero: ['Важно,', 'с кем', 'ты ныряешь.'],
+    h2: 'Команда',
+    empty: '[НУЖЕН КОНТЕНТ: реальные участники команды и портреты от владельца]',
+    portrait: 'Портрет',
+    qualifications: 'Квалификация',
+    specialties: 'Специализация',
+    languages: 'Языки',
+    experience: 'Опыт',
+    city: 'Город',
+    values: 'Наши ценности',
+    sep: ', ',
+  },
+  en: {
+    title: 'The Crew',
+    description:
+      'Meet the DECOBROSCREW instructors and divers. Real people, real qualifications, one team.',
+    hero: ['The people', 'you dive with', 'matter.'],
+    h2: 'The Crew',
+    empty: '[CONTENT REQUIRED: real crew members and owner-supplied portraits]',
+    portrait: 'Portrait',
+    qualifications: 'Qualifications',
+    specialties: 'Specialties',
+    languages: 'Languages',
+    experience: 'Experience',
+    city: 'City',
+    values: 'Our values',
+    sep: ', ',
+  },
+  zh: {
+    title: '团队',
+    description: '认识 DECOBROSCREW 的教练和潜水员。真实的人，真实的资质，一个团队。',
+    hero: ['与谁同潜，', '至关重要。'],
+    h2: '团队',
+    empty: '[需要内容：真实的团队成员及由所有者提供的肖像照]',
+    portrait: '肖像',
+    qualifications: '资质',
+    specialties: '专长',
+    languages: '语言',
+    experience: '经验',
+    city: '城市',
+    values: '我们的价值观',
+    sep: '、',
+  },
+}[locale];
+---
+
+<BaseLayout title={T.title} description={T.description}>
+  <Hero imageId="C01" lines={T.hero} />
+
+  <section class="section" aria-labelledby="people-h">
+    <div class="container">
+      <DemoBadge />
+      <h2 id="people-h">{T.h2}</h2>
+      <span class="rule"></span>
+      {people.length === 0 ? (
+        <p class="notice">{T.empty}</p>
+      ) : (
+        <ul class="people">
+          {people.map((p) => {
+            const name = t(p.name, locale);
+            const role = t(p.role, locale);
+            return (
+              <li id={p.slug}>
+                {p.portrait && (
+                  <EditorialImage
+                    name={p.portrait}
+                    ratio="4 / 5"
+                    alt={`${T.portrait}: ${name}, ${role}`}
+                    sizes="(min-width: 960px) 25vw, 50vw"
+                  />
+                )}
+                <h3>{name}</h3>
+                <p class="eyebrow">{role}</p>
+                <dl>
+                  <dt>{T.qualifications}</dt>
+                  <dd>{t(p.qualifications, locale).join('; ')}</dd>
+                  <dt>{T.specialties}</dt>
+                  <dd>{t(p.specialties, locale).join(T.sep)}</dd>
+                  <dt>{T.languages}</dt>
+                  <dd>{t(p.languages, locale).join(T.sep)}</dd>
+                  <dt>{T.experience}</dt>
+                  <dd>{t(p.experience, locale)}</dd>
+                  {p.city && (
+                    <>
+                      <dt>{T.city}</dt>
+                      <dd>{t(p.city, locale)}</dd>
+                    </>
+                  )}
+                </dl>
+                {p.bio && <p>{t(p.bio, locale)}</p>}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  </section>
+
+  <section class="section paper" aria-labelledby="values-h">
+    <div class="container">
+      <h2 id="values-h">{T.values}</h2>
+      <span class="rule"></span>
+      <ul class="values">
+        {values.map((v) => (
+          <li>{t(v, locale)}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  h2 {
+    font-size: var(--fs-h2);
+  }
+  .people,
+  .values {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .people {
+    display: grid;
+    gap: 48px;
+  }
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 16px;
+  }
+  .eyebrow {
+    margin-top: 4px;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-block: 14px;
+    font-size: 0.875rem;
+  }
+  dt {
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 8px;
+  }
+  dd {
+    margin: 0;
+  }
+  .people p {
+    font-size: 0.9375rem;
+  }
+  .values li {
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    font-size: clamp(1.5rem, 3vw + 0.5rem, 2.5rem);
+    letter-spacing: -0.03em;
+  }
+  @media (min-width: 768px) {
+    .people {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 56px 32px;
+    }
+  }
+  @media (min-width: 1100px) {
+    .people {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .values {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+    }
+    .values li {
+      font-size: 1.5rem;
+    }
+  }
+</style>

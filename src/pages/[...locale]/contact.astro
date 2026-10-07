@@ -1,0 +1,197 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactStrip from '../../components/ContactStrip.astro';
+import Faq from '../../components/Faq.astro';
+import DemoBadge from '../../components/DemoBadge.astro';
+import { location, address, hours } from '../../data/site';
+import { localeFromUrl, localeStaticPaths, t } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+
+const T = {
+  ru: {
+    title: 'Контакты',
+    description: 'Свяжитесь с DECOBROSCREW: телефон, Telegram, ВКонтакте или почта. Новосибирск, Комсомольский пр., 1.',
+    addressH: 'Адрес',
+    hoursH: 'Часы работы',
+    mapTitle: 'Карта: DECOBROSCREW на Яндекс.Картах',
+    mapShow: 'Показать карту',
+    mapNote: 'Карта загружается с Яндекса — он может установить свои cookie.',
+    eyebrow: 'Контакты',
+    h1: ['Погрузимся', 'глубже вместе.'],
+    lead: 'Позвоните, напишите в Telegram, ВКонтакте или на почту.',
+  },
+  en: {
+    title: 'Contact',
+    description: 'Contact DECOBROSCREW by phone, Telegram, VK or email. 1 Komsomolsky Ave, Novosibirsk.',
+    addressH: 'Address',
+    hoursH: 'Opening hours',
+    mapTitle: 'Map: DECOBROSCREW on Yandex Maps',
+    mapShow: 'Show map',
+    mapNote: 'The map loads from Yandex, which may set its own cookies.',
+    eyebrow: 'Contact',
+    h1: ["Let's dive", 'deeper together.'],
+    lead: 'Call us or write via Telegram, VK or email.',
+  },
+  zh: {
+    title: '联系我们',
+    description: '通过电话、Telegram、VK 或电子邮件联系 DECOBROSCREW。新西伯利亚共青团大街 1 号。',
+    addressH: '地址',
+    hoursH: '营业时间',
+    mapTitle: '地图：DECOBROSCREW 位置',
+    mapShow: '显示地图',
+    mapNote: '地图由 Yandex 加载，Yandex 可能会设置自己的 cookie。',
+    eyebrow: '联系',
+    h1: ['让我们一起', '潜得更深。'],
+    lead: '欢迎致电，或通过 Telegram、VK、电子邮件联系我们。',
+  },
+}[locale];
+---
+
+<BaseLayout title={T.title} description={T.description}>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">{T.eyebrow}</p>
+      <h1>
+        {T.h1[0]}
+        <br />
+        {T.h1[1]}
+      </h1>
+      <span class="rule"></span>
+      <p class="lead">{T.lead}</p>
+      <div class="strip">
+        <ContactStrip />
+      </div>
+      <div class="info">
+        <div>
+          <h2 class="h">{T.addressH}</h2>
+          <a href={address.mapUrl} target="_blank" rel="noopener noreferrer">
+            {t(address.text, locale)}
+          </a>
+          <p class="loc">{t(location, locale)}</p>
+        </div>
+        <div>
+          <h2 class="h">{T.hoursH}</h2>
+          <dl>
+            {hours.map((h) => (
+              <div class="row">
+                <dt>{t(h.days, locale)}</dt>
+                <dd>{t(h.time, locale)}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+      <div class="map" data-src={address.embedUrl} data-title={T.mapTitle}>
+        <div class="map-facade">
+          <button type="button" class="map-btn">{T.mapShow}</button>
+          <p class="map-note">{T.mapNote}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="faq">
+    <div class="container">
+      <DemoBadge />
+      <Faq />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".map[data-src]").forEach((map) => {
+    map.querySelector("button")?.addEventListener("click", () => {
+      const frame = document.createElement("iframe");
+      frame.src = map.dataset.src!;
+      frame.title = map.dataset.title ?? "";
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      map.replaceChildren(frame);
+      frame.focus();
+    });
+  });
+</script>
+
+<style>
+  h1 {
+    font-size: var(--fs-h1);
+    margin-top: 16px;
+  }
+  .strip {
+    margin-top: 48px;
+  }
+  .info {
+    display: grid;
+    gap: 32px;
+    margin-top: 48px;
+  }
+  .h {
+    font-size: 1.125rem;
+    margin-bottom: 8px;
+  }
+  .info a:hover {
+    text-underline-offset: 4px;
+  }
+  .loc {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+  .map {
+    margin-top: 48px;
+    height: clamp(320px, 50vw, 480px);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--muted);
+  }
+  .map-facade {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 12px;
+    height: 100%;
+    padding: 16px;
+    text-align: center;
+  }
+  .map-btn {
+    font: inherit;
+    padding: 12px 24px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  .map-note {
+    max-width: 32em;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .map :global(iframe) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  dl {
+    margin: 0;
+  }
+  .row {
+    display: flex;
+    gap: 16px;
+  }
+  dt {
+    min-width: 7em;
+    color: var(--muted);
+  }
+  dd {
+    margin: 0;
+  }
+  @media (min-width: 768px) {
+    .info {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Band from '../../components/Band.astro';
+import DirectionCard from '../../components/DirectionCard.astro';
+import { localeFromUrl, localePath, localeStaticPaths } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const p = (path: string) => localePath(locale, path);
+
+const T = {
+  ru: {
+    description:
+      'DECOBROSCREW (Decompression Brothers CREW) — дайвинг-клуб SDI-TDI. Технический дайвинг, экспедиции и обучение.',
+    hero: ['Ныряй', 'иначе.'],
+    heroCopy: ['Технический дайвинг.', 'Экспедиции.', 'Премиальное обучение.'],
+    discover: 'Узнать больше',
+    philosophyH: ['Чем глубже погружение,', 'тем важнее подготовка.'],
+    philosophy:
+      'Мы — DECOBROSCREW. Мы учимся, планируем и ныряем как команда. Наши направления — технический дайвинг, настоящие экспедиции и сильная клубная культура.',
+    philosophyLink: 'Наша философия',
+    cardsAria: 'Направления обучения',
+    sdi: 'От рекреационного до продвинутого и технического обучения. Настоящие навыки.',
+    tdi: 'Продвинутая подготовка для тех, кто хочет идти дальше. Глубже знания.',
+    crewH: 'Знакомьтесь с командой',
+    crew: 'Дайверы. Инструкторы. Исследователи. Команда, объединённая общей целью.',
+    crewCta: 'Наша команда',
+  },
+  en: {
+    description:
+      'DECOBROSCREW (Decompression Brothers CREW) is an SDI-TDI diving club. Technical diving, expeditions and training.',
+    hero: ['Dive', 'different.'],
+    heroCopy: ['Technical diving.', 'Expeditions.', 'Premium training.'],
+    discover: 'Discover',
+    philosophyH: ['The deeper you go,', 'the more preparation matters.'],
+    philosophy:
+      'We are DECOBROSCREW. We train, plan and dive as a team. We work on technical diving, real expeditions and a strong club culture.',
+    philosophyLink: 'Our Philosophy',
+    cardsAria: 'Training directions',
+    sdi: 'From recreational to advanced and technical training. Build real skills.',
+    tdi: 'Advanced training for divers who want to go further. Deeper knowledge.',
+    crewH: 'Meet the Crew',
+    crew: 'Divers. Instructors. Explorers. A team united by a deeper purpose.',
+    crewCta: 'Meet the Crew',
+  },
+  zh: {
+    description:
+      'DECOBROSCREW（Decompression Brothers CREW）是一家 SDI-TDI 潜水俱乐部，提供技术潜水、探险和培训。',
+    hero: ['潜得', '与众不同。'],
+    heroCopy: ['技术潜水。', '探险。', '高端培训。'],
+    discover: '探索',
+    philosophyH: ['潜得越深，', '准备就越重要。'],
+    philosophy:
+      '我们是 DECOBROSCREW。我们以团队的方式训练、计划和潜水，专注于技术潜水、真正的探险和深厚的俱乐部文化。',
+    philosophyLink: '我们的理念',
+    cardsAria: '培训方向',
+    sdi: '从休闲潜水到进阶和技术培训，打造真正的技能。',
+    tdi: '为想要走得更远的潜水员提供进阶培训，获取更深的知识。',
+    crewH: '认识我们的团队',
+    crew: '潜水员、教练、探险者——一支因共同目标而团结的团队。',
+    crewCta: '认识团队',
+  },
+}[locale];
+---
+
+<BaseLayout title="DECOBROSCREW" description={T.description}>
+  <Hero
+    imageId="H01"
+    lines={T.hero}
+    copy={T.heroCopy}
+    cta={{ label: T.discover, href: '#philosophy' }}
+  />
+
+  <Band id="philosophy" imageId="H02" position="center 22%" height="540px" mobileRatio="2 / 1">
+    <h2>
+      {T.philosophyH[0]}
+      <br />
+      {T.philosophyH[1]}
+    </h2>
+    <span class="rule"></span>
+    <p class="lead">{T.philosophy}</p>
+    <a class="link-arrow" href={p('/crew')}>
+      {T.philosophyLink} <span aria-hidden="true">→</span>
+    </a>
+  </Band>
+
+  <section class="cards" aria-label={T.cardsAria}>
+    <DirectionCard
+      title="SDI"
+      agency="Scuba Diving International"
+      copy={T.sdi}
+      href={p('/training#recreational')}
+      imageId="H03"
+    />
+    <DirectionCard
+      title="TDI"
+      agency="Technical Diving International"
+      copy={T.tdi}
+      href={p('/training#technical')}
+      imageId="H04"
+    />
+  </section>
+
+  <Band imageId="H05" position="center 45%" height="480px" mobileRatio="5 / 2">
+    <h2>{T.crewH}</h2>
+    <span class="rule"></span>
+    <p class="lead">{T.crew}</p>
+    <a class="btn" href={p('/crew')}>
+      {T.crewCta} <span aria-hidden="true">→</span>
+    </a>
+  </Band>
+</BaseLayout>
+
+<style>
+  h2 {
+    font-size: var(--fs-h2);
+  }
+  .lead {
+    margin-bottom: 20px;
+  }
+  .cards {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+    background: var(--white);
+  }
+  @media (min-width: 960px) {
+    .cards {
+      grid-template-columns: 1fr 1fr;
+      padding: 12px;
+      gap: 12px;
+    }
+  }
+</style>

@@ -1,0 +1,245 @@
+:root {
+  --ink: #06101a;
+  --navy: #0b1f33;
+  --blue: #2c7aa6;
+  --blue-soft: #9fc6dc;
+  --paper: #f5f6f7;
+  --white: #fff;
+  --muted: #55606b;
+  --line: #d8dde1;
+  --line-dark: #25384b;
+  --font: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --gutter: 20px;
+  --max: 1440px;
+  --header-h: 64px;
+  --fs-display: clamp(2.9rem, 9vw + 0.5rem, 6.75rem);
+  --fs-h1: clamp(2.5rem, 7vw + 0.5rem, 5.5rem);
+  --fs-h2: clamp(1.75rem, 3.2vw + 0.7rem, 3rem);
+  --fs-h3: clamp(1.5rem, 2vw + 0.8rem, 2.25rem);
+}
+
+/* Inter has no CJK glyphs: use the system Chinese fonts. */
+:lang(zh) {
+  --font:
+    'Inter Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC',
+    'Source Han Sans SC', system-ui, sans-serif;
+}
+:lang(zh) body {
+  line-height: 1.75;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.dark :focus-visible {
+  outline-color: var(--blue-soft);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: var(--white);
+}
+.skip-link:focus {
+  top: 8px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(56px, 9vw, 120px);
+}
+.section.paper {
+  background: var(--paper);
+}
+.section.dark {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.dark .eyebrow {
+  color: var(--blue-soft);
+}
+
+.rule {
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+  margin-block: 20px;
+}
+
+.lead {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 1.0625rem;
+}
+.dark .lead {
+  color: #b8c4cf;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 28px;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--white);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.btn:hover {
+  background: var(--navy);
+}
+.btn.light {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--ink);
+}
+.btn.light:hover {
+  background: var(--paper);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.link-arrow:hover {
+  border-bottom-color: currentColor;
+}
+
+.notice {
+  padding: 16px 20px;
+  border: 1px dashed var(--blue);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.dark .notice {
+  color: var(--blue-soft);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+    --header-h: 76px;
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --gutter: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

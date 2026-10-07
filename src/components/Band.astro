@@ -1,0 +1,97 @@
+---
+import EditorialImage from './EditorialImage.astro';
+interface Props {
+  imageId: string;
+  id?: string;
+  /** Use true only for the LCP image. */
+  priority?: boolean;
+  position?: string;
+  /** Mobile: show the image above the text. */
+  imageFirst?: boolean;
+  /** Desktop min height (CSS value). */
+  height?: string;
+  /** Mobile image ratio (CSS value). */
+  mobileRatio?: string;
+}
+const {
+  imageId,
+  id,
+  priority = false,
+  position = 'center',
+  imageFirst = false,
+  height = '380px',
+  mobileRatio = '16 / 9',
+} = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['band', { first: imageFirst }]}
+  style={`--h:${height};--mr:${mobileRatio}`}
+>
+  <div class="bg">
+    <EditorialImage fill imageId={imageId} priority={priority} position={position} sizes="100vw" />
+  </div>
+  <div class="container inner">
+    <div class="text">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .band {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    overflow: hidden;
+  }
+  .bg {
+    position: relative;
+    order: 2;
+    aspect-ratio: var(--mr);
+  }
+  .first .bg {
+    order: 0;
+  }
+  .inner {
+    order: 1;
+  }
+  .text {
+    padding-block: 36px 32px;
+  }
+  @media (min-width: 960px) {
+    .band {
+      min-height: var(--h);
+      justify-content: center;
+    }
+    .bg {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+    }
+    .bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        #fff 0%,
+        #fff 30%,
+        rgb(255 255 255 / 0.7) 42%,
+        rgb(255 255 255 / 0) 68%
+      );
+      pointer-events: none;
+    }
+    .inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+    .text {
+      max-width: 560px;
+      padding-block: 64px;
+    }
+  }
+</style>

@@ -1,0 +1,21 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import LegalRu from '../../components/legal/LegalRu.astro';
+import LegalEn from '../../components/legal/LegalEn.astro';
+import LegalZh from '../../components/legal/LegalZh.astro';
+import { localeFromUrl, localeStaticPaths } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const T = {
+  ru: { title: 'Правовая информация', description: 'Правовая информация сайта DECOBROSCREW.', Body: LegalRu },
+  en: { title: 'Legal', description: 'Legal information of the DECOBROSCREW site.', Body: LegalEn },
+  zh: { title: '法律信息', description: 'DECOBROSCREW 网站法律信息。', Body: LegalZh },
+}[locale];
+const { Body } = T;
+---
+
+<LegalLayout title={T.title} description={T.description}>
+  <Body />
+</LegalLayout>

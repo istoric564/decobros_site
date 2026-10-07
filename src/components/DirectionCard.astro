@@ -1,0 +1,84 @@
+---
+import EditorialImage from './EditorialImage.astro';
+import { localeFromUrl, t } from '../i18n';
+import { ui } from '../i18n/ui';
+interface Props {
+  title: string;
+  agency: string;
+  copy: string;
+  href: string;
+  imageId: string;
+}
+const { title, agency, copy, href, imageId } = Astro.props;
+const locale = localeFromUrl(Astro.url);
+---
+
+<article class="card">
+  <div class="media">
+    <EditorialImage
+      fill
+      imageId={imageId}
+      position="70% center"
+      sizes="(min-width: 960px) 50vw, 100vw"
+    />
+  </div>
+  <div class="body">
+    <h3>{title}</h3>
+    <p class="eyebrow">{agency}</p>
+    <p class="copy">{copy}</p>
+    <a class="link-arrow" href={href}>
+      {t(ui.learnMore, locale)} <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    min-height: 230px;
+    background: var(--white);
+    border: 1px solid var(--ink);
+    overflow: hidden;
+  }
+  .media {
+    position: absolute;
+    inset: 0;
+  }
+  .media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #fff 0%, #fff 38%, rgb(255 255 255 / 0) 78%);
+  }
+  .body {
+    position: relative;
+    z-index: 1;
+    max-width: 62%;
+    padding: 24px 20px;
+  }
+  h3 {
+    font-size: clamp(2rem, 3vw + 1rem, 3rem);
+    letter-spacing: -0.04em;
+  }
+  .eyebrow {
+    margin: 4px 0 14px;
+    font-size: 0.5625rem;
+  }
+  .copy {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+  }
+  @media (min-width: 960px) {
+    .card {
+      min-height: 280px;
+    }
+    .body {
+      max-width: 50%;
+      padding: 40px 36px;
+    }
+    .media::after {
+      background: linear-gradient(90deg, #fff 0%, #fff 40%, rgb(255 255 255 / 0) 80%);
+    }
+  }
+</style>

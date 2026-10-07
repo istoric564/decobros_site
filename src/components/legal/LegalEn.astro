@@ -1,0 +1,81 @@
+---
+import { legalEntity } from '../../data/site';
+import { t } from '../../i18n';
+const l = 'en' as const;
+---
+
+<h1>Legal information</h1>
+<p class="todo">
+  This page contains test data and must not be published without a legal review. The Russian version
+  of this page is the governing one.
+</p>
+
+<h2>Site operator</h2>
+<p>Name: {t(legalEntity.operatorName, l)}</p>
+<p>
+  Status: {t(legalEntity.operatorType, l)}{' '}
+  <span class="todo">[LLC / SOLE PROPRIETOR / INDIVIDUAL — REQUIRED]</span>
+</p>
+<p>
+  Address: {t(legalEntity.address, l)} <span class="todo">[REQUIRED]</span>
+</p>
+<p>
+  Registration details: {t(legalEntity.registrationData, l)} <span class="todo">[REQUIRED]</span>
+</p>
+<p>
+  Contact: <span class="todo">[REQUIRED]</span>
+</p>
+
+<h2>Use of the site</h2>
+<p>
+  The materials on this site inform about the activities of DECOBROSCREW, its training, expeditions
+  and club events.
+</p>
+<p>
+  Information on the site is not in itself a contract, a public offer or a guarantee that a specific
+  program, expedition place or service is available, unless expressly stated otherwise.
+</p>
+
+<h2>Training</h2>
+<p>
+  Participant requirements, program content, duration, conditions and the possibility of
+  certification depend on the specific course, the participant’s qualifications, the instructor, the
+  dive conditions and the applicable standards of the training agency.
+</p>
+<p>
+  Information on the site does not replace an individual assessment of a participant’s readiness.
+</p>
+
+<h2>Expeditions</h2>
+<p>
+  Routes, dive programs and schedules may change because of weather, sea conditions, logistics,
+  requirements of the host and safety decisions.
+</p>
+
+<h2>Safety</h2>
+<p>Diving involves inherent risks.</p>
+<p>
+  Participants must follow the requirements of the specific program, the instructions of the staff,
+  medical restrictions and the applicable safety rules.
+</p>
+
+<h2>Intellectual property</h2>
+<p>
+  Texts, brand graphics, logos, photos and other materials belong to their respective rights
+  holders.
+</p>
+<p>
+  Use of the materials without permission is not allowed, except where expressly permitted by law or
+  by an agreement with the rights holder.
+</p>
+
+<h2>External services</h2>
+<p>
+  The site contains links to Telegram, WhatsApp and email. The club does not control these services.
+</p>
+
+<h2>Liability</h2>
+<p>
+  The final liability terms must be prepared and reviewed by a lawyer before the site is published.
+</p>
+<p class="todo">[LEGAL REVIEW REQUIRED]</p>

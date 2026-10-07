@@ -1,0 +1,80 @@
+---
+import {
+  legalEntity,
+  privacyInfrastructure as infra,
+  analytics,
+  analyticsEnabled,
+} from '../../data/site';
+import { t } from '../../i18n';
+const l = 'zh' as const;
+---
+
+<h1>隐私政策</h1>
+<p class="todo">测试环境版本。发布前须经法律审核。本政策以俄文版本为准。</p>
+
+<p>DECOBROSCREW 力求将公开网站上的个人数据处理降至必要的最低限度。</p>
+<p>本网站不提供用户注册、个人账户、邮件订阅，也不通过内置表单提交申请。</p>
+<p>访客如需联系我们，可自行前往 Telegram、WhatsApp 等外部服务，或打开自己的电子邮件客户端。</p>
+<p>转到外部服务后，信息将按照该服务的规则进行处理。</p>
+
+<h2>技术数据</h2>
+<p>访问本网站时，托管基础设施可能会自动处理为传送页面和保障安全所需的技术信息。</p>
+<p>此类信息可能包括：</p>
+<ul>
+  <li>IP 地址；</li>
+  <li>请求的日期和时间；</li>
+  <li>所请求资源的地址；</li>
+  <li>HTTP 响应状态；</li>
+  <li>浏览器类型或 User-Agent；</li>
+  <li>连接的技术信息。</li>
+</ul>
+<p>日志的具体内容和保存期限将在选定生产环境托管后注明。</p>
+<p>DECOBROSCREW 不会利用技术日志建立访客的营销画像。</p>
+<p class="todo">
+  托管：{t(infra.hostingProvider, l)}。日志内容：{t(infra.logFields, l)} 保存期限：
+  {t(infra.logRetention, l)}
+</p>
+
+<h2>Cookies</h2>
+{analyticsEnabled ? (
+  <p>
+    仅在您通过横幅同意后，网站才会设置分析
+    Cookies。您的选择保存在浏览器（localStorage）中；如需更改，请清除浏览器中的网站数据。
+  </p>
+) : (
+  <p>当前版本的网站不应使用非必要的 Cookies。</p>
+)}
+<p>如技术架构发生变化，须在变更上线前更新本节内容。</p>
+
+<h2>分析与广告系统</h2>
+{analyticsEnabled ? (
+  <p>
+    经您同意，网站使用{analytics.yandexMetrikaId && ' Yandex Metrica（Yandex LLC，俄罗斯）'}
+    {analytics.yandexMetrikaId && analytics.ga4Id && '和'}
+    {analytics.ga4Id && ' Google Analytics 4（Google LLC，美国）'}
+    。收集的是假名化数据：浏览的页面、来源、设备和浏览器类型、大致位置。不使用会话录制（Webvisor），也不使用
+    Meta Pixel、Hotjar 和 Microsoft Clarity。
+  </p>
+) : (
+  <p>
+    当前版本的网站未使用 Google Analytics、Yandex Metrica、Meta Pixel、Hotjar、Microsoft Clarity
+    以及会话回放系统。
+  </p>
+)}
+
+<h2>外部服务</h2>
+<p>当您点击 Telegram、WhatsApp、电子邮件或其他外部资源的链接时，即离开 DECOBROSCREW 网站。</p>
+<p>此后的数据处理规则由相应服务决定。</p>
+<p>
+  “联系我们”页面可显示 Yandex 地图（Yandex LLC，俄罗斯）。地图不会自动加载，仅在您点击“显示地图”后加载。此后您的浏览器将连接 Yandex 服务器，Yandex 会获取您的 IP 地址和浏览器数据，并可能依据其隐私政策设置自己的 cookie。
+</p>
+
+<h2>个人数据相关问询</h2>
+<p>
+  运营方联系方式：{legalEntity.privacyEmail} <span class="todo">[需要隐私联系方式]</span>
+</p>
+<p>
+  运营方信息：<span class="todo">[需要运营方法律信息]</span>
+</p>
+
+<p class="todo">本文为测试版本，发布前须经法律审核。</p>
