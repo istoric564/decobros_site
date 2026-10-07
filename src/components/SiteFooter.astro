@@ -91,28 +91,28 @@ const icons = {
         ))}
       </ul>
     </nav>
-    {
-      analyticsEnabled && (
-        <button type="button" class="cookie-btn" data-cookie-settings>
-          {t(ui.cookieSettings, locale)}
-        </button>
-      )
-    }
+    {analyticsEnabled && (
+      <button type="button" class="cookie-btn" data-cookie-settings>
+        {t(ui.cookieSettings, locale)}
+      </button>
+    )}
   </div>
   <div class="container legal">
     <p>
-      {t(ui.operator, locale)}: {t(legalEntity.operatorName, locale)} · {
-        t(legalEntity.operatorType, locale)
-      } · {t(legalEntity.registrationData, locale)} · {t(legalEntity.address, locale)} ·{' '}
+      {t(ui.operator, locale)}: {t(legalEntity.operatorName, locale)} ·{' '}
+      {t(legalEntity.operatorType, locale)} · {t(legalEntity.registrationData, locale)} ·{' '}
+      {t(legalEntity.address, locale)} ·{' '}
       <a href={`mailto:${legalEntity.privacyEmail}`}>{legalEntity.privacyEmail}</a>
     </p>
     <p>{t(ui.notOffer, locale)}</p>
     <p>{t(ui.trademarks, locale)}</p>
     <p class="copy">
-      <span>© {year} {brand.full}. {t(ui.rights, locale)}</span>
-      <span class="age" role="img" aria-label={t(ui.ageMark, locale)} title={t(ui.ageMark, locale)}
-        >18+</span
-      >
+      <span>
+        © {year} {brand.full}. {t(ui.rights, locale)}
+      </span>
+      <span class="age" role="img" aria-label={t(ui.ageMark, locale)} title={t(ui.ageMark, locale)}>
+        18+
+      </span>
     </p>
   </div>
 </footer>
@@ -122,6 +122,7 @@ const icons = {
     background: var(--ink);
     color: var(--white);
     padding-block: 32px 20px;
+    border-radius: 0 0 var(--radius-frame) var(--radius-frame);
   }
   ul {
     list-style: none;
@@ -234,6 +235,11 @@ const icons = {
     border: 1px solid currentColor;
     border-radius: 4px;
     font-weight: 600;
+  }
+  @media (max-width: 767px) {
+    .footer {
+      border-radius: 0;
+    }
   }
   @media (min-width: 960px) {
     .footer {

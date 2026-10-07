@@ -47,7 +47,7 @@ const img = found ? (await files[found]()).default : undefined;
 ---
 
 <div
-  class:list={['ei', className]}
+  class:list={['ei', className, { 'ei-fill': fill }]}
   style={fill ? 'position:absolute;inset:0;height:100%' : `aspect-ratio:${ratio}`}
 >
   {img ? (
@@ -78,6 +78,9 @@ const img = found ? (await files[found]()).default : undefined;
     width: 100%;
     overflow: hidden;
     background: var(--navy);
+  }
+  .ei:not(.ei-fill) {
+    border-radius: var(--radius-card);
   }
   .ei picture,
   .ei img {

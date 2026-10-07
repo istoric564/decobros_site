@@ -51,8 +51,10 @@ const { imageId, lines, eyebrow, copy = [], cta } = Astro.props;
   }
   .copy {
     display: flex;
-    flex-direction: column;
-    margin-block: 24px 28px;
+    flex-wrap: wrap;
+    gap: 0 0.3em;
+    max-width: 28rem;
+    margin-block: 20px 24px;
     font-size: 1.0625rem;
   }
 </style>

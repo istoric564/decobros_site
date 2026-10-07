@@ -23,8 +23,10 @@ const locale = localeFromUrl(Astro.url);
     />
   </div>
   <div class="body">
-    <h3>{title}</h3>
-    <p class="eyebrow">{agency}</p>
+    <div class="heading">
+      <h3>{title}</h3>
+      <p class="eyebrow">{agency}</p>
+    </div>
     <p class="copy">{copy}</p>
     <a class="link-arrow" href={href}>
       {t(ui.learnMore, locale)} <span aria-hidden="true">→</span>
@@ -37,8 +39,10 @@ const locale = localeFromUrl(Astro.url);
     position: relative;
     min-height: 230px;
     background: var(--white);
-    border: 1px solid var(--ink);
+    border: 1px solid rgb(6 16 26 / 10%);
+    border-radius: var(--radius-card);
     overflow: hidden;
+    box-shadow: 0 3px 12px rgb(6 16 26 / 4%);
   }
   .media {
     position: absolute;
@@ -60,8 +64,15 @@ const locale = localeFromUrl(Astro.url);
     font-size: clamp(2rem, 3vw + 1rem, 3rem);
     letter-spacing: -0.04em;
   }
+  .heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin-bottom: 16px;
+  }
   .eyebrow {
-    margin: 4px 0 14px;
+    max-width: 110px;
     font-size: 0.5625rem;
   }
   .copy {
@@ -71,11 +82,11 @@ const locale = localeFromUrl(Astro.url);
   }
   @media (min-width: 960px) {
     .card {
-      min-height: 280px;
+      min-height: 230px;
     }
     .body {
-      max-width: 50%;
-      padding: 40px 36px;
+      max-width: 58%;
+      padding: 28px 32px;
     }
     .media::after {
       background: linear-gradient(90deg, #fff 0%, #fff 40%, rgb(255 255 255 / 0) 80%);

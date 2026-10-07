@@ -73,7 +73,7 @@ const T = {
     cta={{ label: T.discover, href: '#philosophy' }}
   />
 
-  <Band id="philosophy" imageId="H02" position="center 22%" height="540px" mobileRatio="2 / 1">
+  <Band id="philosophy" imageId="H02" position="center 22%" height="380px" mobileRatio="2 / 1">
     <h2>
       {T.philosophyH[0]}
       <br />
@@ -103,7 +103,7 @@ const T = {
     />
   </section>
 
-  <Band imageId="H05" position="center 45%" height="480px" mobileRatio="5 / 2">
+  <Band imageId="H05" position="center 45%" height="300px" mobileRatio="5 / 2">
     <h2>{T.crewH}</h2>
     <span class="rule"></span>
     <p class="lead">{T.crew}</p>
@@ -122,8 +122,8 @@ const T = {
   }
   .cards {
     display: grid;
-    gap: 8px;
-    padding: 8px;
+    gap: 12px;
+    padding: 12px var(--gutter);
     background: var(--white);
   }
   @media (min-width: 960px) {
