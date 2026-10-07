@@ -11,6 +11,7 @@ interface Props {
 const { course, open = false } = Astro.props;
 const locale = localeFromUrl(Astro.url);
 const summary = { ru: 'Детали программы', en: 'Program details', zh: '课程详情' };
+const source = { ru: 'Официальные стандарты', en: 'Official standards', zh: '官方标准' };
 const rows = (Object.keys(detailLabels) as (keyof CourseDetails)[]).map((k) => ({
   label: t(detailLabels[k], locale),
   value: t(course.details[k], locale),
@@ -27,16 +28,29 @@ const rows = (Object.keys(detailLabels) as (keyof CourseDetails)[]).map((k) => (
       </div>
     ))}
   </dl>
+  <a class="source" href={course.standardsUrl} target="_blank" rel="noopener noreferrer">
+    {t(source, locale)} {course.agency} ↗
+  </a>
 </details>
 
 <style>
   .cd {
-    margin-top: 28px;
+    container-type: inline-size;
+    min-width: 0;
+    margin-top: 20px;
     border-top: 1px solid var(--line);
   }
   :global(.dark) .cd,
   :global(.navy) .cd {
     border-color: var(--line-dark);
+  }
+  .source {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-bottom: 8px;
+    font-size: 0.8125rem;
+    text-underline-offset: 3px;
   }
   summary {
     cursor: pointer;
@@ -69,7 +83,7 @@ const rows = (Object.keys(detailLabels) as (keyof CourseDetails)[]).map((k) => (
   }
   dl > div {
     display: grid;
-    grid-template-columns: 11rem 1fr;
+    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
     gap: 16px;
     padding-block: 10px;
     border-top: 1px solid var(--line);
@@ -82,12 +96,13 @@ const rows = (Object.keys(detailLabels) as (keyof CourseDetails)[]).map((k) => (
     opacity: 0.65;
   }
   dd {
+    overflow-wrap: anywhere;
     margin: 0;
   }
-  @media (min-width: 960px) {
+  @container (min-width: 800px) {
     dl {
       grid-template-columns: 1fr 1fr;
-      column-gap: 48px;
+      column-gap: 32px;
     }
   }
   @media (max-width: 479px) {
