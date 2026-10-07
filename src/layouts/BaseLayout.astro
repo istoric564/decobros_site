@@ -6,7 +6,6 @@ import type { ImageMetadata } from 'astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import Analytics from '../components/Analytics.astro';
-import HomeRail from '../components/HomeRail.astro';
 import {
   locales,
   defaultLocale,
@@ -91,15 +90,12 @@ const fullTitle =
     <a href="#main" class="skip-link">
       {t(ui.skip, locale)}
     </a>
-    <div class:list={['site-stage', { 'home-stage': home }]}>
-      {home && <HomeRail />}
-      <div class:list={['site-shell', { 'home-page': home }]}>
-        <SiteHeader />
-        <main id="main">
-          <slot />
-        </main>
-        <SiteFooter />
-      </div>
+    <div class:list={['site-shell', { 'home-page': home }]}>
+      <SiteHeader />
+      <main id="main">
+        <slot />
+      </main>
+      <SiteFooter />
     </div>
     <Analytics />
     <script>

@@ -18,7 +18,7 @@ const { imageId, lines, eyebrow, copy = [], cta, compact = false } = Astro.props
   priority
   imageFirst
   position="70% center"
-  height="clamp(520px, 40vw, 760px)"
+  height="clamp(480px, 30cqw, 640px)"
   mobileRatio="4 / 3"
 >
   {eyebrow && <p class="eyebrow">{eyebrow}</p>}
@@ -73,12 +73,17 @@ const { imageId, lines, eyebrow, copy = [], cta, compact = false } = Astro.props
     display: flex;
     flex-direction: column;
   }
+  .btn {
+    min-height: 44px;
+    padding-inline: 24px;
+    font-size: 14px;
+  }
   .copy {
     display: flex;
     flex-wrap: wrap;
     gap: 0 0.3em;
-    max-width: 28rem;
-    margin-block: 20px 24px;
-    font-size: 1.0625rem;
+    max-width: 40rem;
+    margin-block: 18px 20px;
+    font-size: clamp(14px, 1.2cqw, 18px);
   }
 </style>

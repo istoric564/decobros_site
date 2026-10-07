@@ -1,40 +1,4 @@
 /* Home proportions follow the reference's page width, not the browser width. */
-.home-stage {
-  width: 100%;
-}
-.home-rail {
-  display: none;
-}
-.home-page {
-  --radius-frame: 12px;
-  --radius-card: 8px;
-  container-type: inline-size;
-}
-.home-page main .home-hero {
-  min-height: 0;
-  height: auto;
-  aspect-ratio: 1.16;
-}
-.home-page main .home-hero .text {
-  padding-block: 40px;
-  max-width: 90%;
-}
-.home-page main .home-hero h1 {
-  font-size: clamp(40px, 12cqw, 76px);
-  line-height: 0.94;
-  letter-spacing: -0.055em;
-}
-.home-page main .home-hero .copy {
-  font-size: 14px;
-  line-height: 1.45;
-  max-width: 260px;
-  margin-block: 18px 20px;
-}
-.home-page main .home-hero .btn {
-  min-height: 44px;
-  padding-inline: 22px;
-  font-size: 12px;
-}
 .home-page .hero-caption,
 .home-page .hero-agencies {
   display: none;
@@ -115,74 +79,7 @@
 .home-page main .home-crew .rule {
   margin-block: 12px;
 }
-.home-page .footer {
-  padding-top: 20px;
-}
-.home-page .footer .top {
-  gap: 18px;
-  padding-bottom: 20px;
-}
-.home-page .footer .label {
-  font-size: 12px;
-}
-.home-page .footer .note {
-  font-size: 10px;
-}
-.home-page .footer .legal {
-  font-size: 10px;
-}
-@media (min-width: 768px) {
-  .home-stage {
-    width: calc(100% - 48px);
-    max-width: 1100px;
-    margin: 24px auto;
-  }
-  .home-stage .site-shell {
-    width: 100%;
-    margin: 0;
-  }
-}
 @media (min-width: 960px) {
-  .home-page {
-    --header-h: 64px;
-    --gutter: 5.5cqw;
-  }
-  .home-page .bar {
-    gap: 16px;
-  }
-  .home-page .bar .short {
-    font-size: 20px;
-  }
-  .home-page .bar .full {
-    font-size: 9px;
-  }
-  .home-page .bar .desc {
-    font-size: 7px;
-  }
-  .home-page .desktop ul {
-    gap: 20px;
-  }
-  .home-page .desktop a {
-    font-size: 11px;
-  }
-  .home-page .end {
-    gap: 10px;
-  }
-  .home-page .lang a {
-    min-width: 30px;
-    padding-inline: 4px;
-    font-size: 10px;
-  }
-  .home-page .bar .cta {
-    min-height: 36px;
-    padding-inline: 22px;
-    font-size: 11px;
-  }
-  .home-page main .home-hero {
-    min-height: 0;
-    height: 38.5cqw;
-    aspect-ratio: auto;
-  }
   .home-page main .home-hero .bg {
     left: 27%;
   }
@@ -195,30 +92,13 @@
       transparent 48%
     );
   }
-  .home-page main .home-hero .text {
-    max-width: 62%;
-    padding-block: 4cqw;
-  }
-  .home-page main .home-hero h1 {
-    font-size: 8cqw;
-  }
-  .home-page main .home-hero .copy {
-    max-width: none;
-    font-size: 1.42cqw;
-    margin-block: 1.7cqw 2cqw;
-  }
-  .home-page main .home-hero .btn {
-    min-height: 40px;
-    font-size: 12px;
-    padding-inline: 24px;
-  }
   .home-page .hero-caption {
     display: flex;
     flex-direction: column;
     gap: 24px;
     position: absolute;
     z-index: 2;
-    right: 3cqw;
+    right: clamp(30px, 2.5cqw, 44px);
     top: 9cqw;
     color: #c1cbd0;
     font-size: 7px;
@@ -254,7 +134,7 @@
     letter-spacing: 0.15em;
   }
   .home-page main .home-philosophy {
-    min-height: 28cqw;
+    min-height: clamp(280px, 22cqw, 420px);
   }
   .home-page main .home-philosophy .bg {
     left: 28%;
@@ -269,20 +149,20 @@
     );
   }
   .home-page main .home-philosophy .text {
-    max-width: 46%;
-    padding-block: 3.5cqw;
+    max-width: min(46%, 660px);
+    padding-block: clamp(28px, 3cqw, 48px);
   }
   .home-page main h2 {
-    font-size: 2.8cqw;
+    font-size: var(--fs-h2);
   }
   .home-page main .home-philosophy h2 {
     max-width: 34cqw;
   }
   .home-page main .rule {
-    margin-block: 1.8cqw;
+    margin-block: clamp(16px, 1.8cqw, 24px);
   }
   .home-page main .lead {
-    font-size: 1.25cqw;
+    font-size: clamp(14px, 1cqw, 17px);
     margin-bottom: 0;
   }
   .home-page main .link-arrow {
@@ -294,26 +174,26 @@
     gap: 8px;
   }
   .home-page main .card {
-    min-height: 16cqw;
+    min-height: clamp(176px, 13cqw, 240px);
   }
   .home-page main .card .body {
     max-width: 58%;
-    padding: 2.2cqw 2.5cqw 1cqw;
+    padding: clamp(24px, 2cqw, 32px) clamp(24px, 2.5cqw, 40px) 12px;
   }
   .home-page main .card h3 {
-    font-size: 3cqw;
+    font-size: clamp(30px, 2.5cqw, 44px);
   }
   .home-page main .card .eyebrow {
     font-size: 7px;
   }
   .home-page main .card .copy {
-    font-size: 1.17cqw;
+    font-size: clamp(14px, 1cqw, 16px);
   }
   .home-page main .card .media {
     left: 12%;
   }
   .home-page main .home-crew {
-    min-height: 17cqw;
+    min-height: clamp(180px, 16cqw, 260px);
   }
   .home-page main .home-crew .bg {
     display: block;
@@ -327,103 +207,14 @@
     min-height: 0;
   }
   .home-page main .home-crew .text {
-    max-width: 48%;
-    padding-block: 2.5cqw;
+    max-width: min(48%, 760px);
+    padding-block: clamp(24px, 2.5cqw, 40px);
   }
   .home-page main .home-crew h2 {
-    font-size: 2.8cqw;
+    font-size: var(--fs-h2);
   }
   .home-page main .home-crew .rule {
-    margin-block: 1.5cqw;
-  }
-  .home-page .footer {
-    padding-block: 22px 16px;
-  }
-  .home-page .footer .top {
-    grid-template-columns: 1fr auto;
-    gap: 20px;
-  }
-  .home-page .footer .short {
-    font-size: 18px;
-  }
-  .home-page .footer .full {
-    font-size: 9px;
-  }
-  .home-page .footer .contacts {
-    gap: 20px;
-  }
-  .home-page .footer .contact {
-    gap: 8px;
-  }
-  .home-page .footer .contact svg {
-    width: 22px;
-    height: 22px;
-  }
-  .home-page .footer .label {
-    font-size: 11px;
-  }
-  .home-page .footer .note {
-    font-size: 9px;
-  }
-  .home-page .footer .bottom a {
-    font-size: 10px;
-    min-height: 32px;
-  }
-}
-@media (min-width: 1200px) {
-  .home-stage {
-    display: grid;
-    grid-template-columns: 120px minmax(0, 1100px);
-    gap: 28px;
-    max-width: 1248px;
-  }
-  .home-rail {
-    display: flex;
-    flex-direction: column;
-    padding-block: 36px 120px;
-    color: var(--muted);
-  }
-  .rail-brand {
-    font-size: 12px;
-    font-weight: 600;
-    text-decoration: none;
-    color: var(--ink);
-  }
-  .rail-lines {
-    display: flex;
-    flex-direction: column;
-    font-size: 8px;
-    line-height: 1.9;
-    letter-spacing: 0.16em;
-    margin-top: 24px;
-  }
-  .rail-rule {
-    display: block;
-    width: 20px;
-    height: 1px;
-    background: var(--muted);
-    margin-block: 28px;
-  }
-  .rail-intro {
-    max-width: 108px;
-    font-size: 8px;
-    line-height: 1.9;
-    letter-spacing: 0.16em;
-  }
-  .rail-photos {
-    display: grid;
-    gap: 8px;
-    margin-top: 52px;
-  }
-  .rail-photos a {
-    display: block;
-    border-radius: 4px;
-  }
-  .rail-photos .ei {
-    border-radius: 4px;
-  }
-  .rail-end {
-    margin-top: auto;
+    margin-block: clamp(12px, 1.5cqw, 20px);
   }
 }
 
@@ -460,26 +251,5 @@
   }
   .home-page main .home-crew h2 {
     font-size: 21px;
-  }
-}
-
-@media (max-width: 959px) {
-  .home-page .footer .top > .brand {
-    display: none;
-  }
-  .home-page .footer .contacts [data-contact='telegram'] {
-    order: 1;
-  }
-  .home-page .footer .contacts [data-contact='whatsapp'] {
-    order: 2;
-  }
-  .home-page .footer .contacts [data-contact='email'] {
-    order: 3;
-  }
-  .home-page .footer .contacts [data-contact='phone'] {
-    order: 4;
-  }
-  .home-page .footer .contacts [data-contact='vk'] {
-    order: 5;
   }
 }

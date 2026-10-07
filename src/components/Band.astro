@@ -61,7 +61,7 @@ const {
     aspect-ratio: auto;
   }
   .first {
-    min-height: clamp(440px, 115vw, 600px);
+    min-height: clamp(380px, 95cqw, 560px);
     justify-content: center;
     background: var(--ink);
     color: var(--white);
@@ -81,7 +81,7 @@ const {
   }
   .first .text {
     max-width: 34rem;
-    padding-block: 48px;
+    padding-block: 32px;
   }
   .first .text :global(.btn) {
     background: var(--white);
@@ -136,6 +136,13 @@ const {
     .first .text {
       max-width: 510px;
       padding-block: 48px;
+    }
+    .first {
+      height: var(--h);
+    }
+    .first .text {
+      max-width: min(56%, 760px);
+      padding-block: 32px;
     }
     .first .text :global(.btn) {
       background: var(--ink);
