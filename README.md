@@ -6,7 +6,7 @@
 
 ## Быстрый старт
 
-Нужен Node.js 22.12+.
+Нужен Node.js 24+.
 
 ```sh
 npm install
