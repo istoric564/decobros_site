@@ -1,7 +1,16 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const paths = ['/', '/training', '/expeditions', '/crew', '/gallery', '/contact', '/privacy', '/legal'];
+const paths = [
+  '/',
+  '/training',
+  '/expeditions',
+  '/crew',
+  '/gallery',
+  '/contact',
+  '/privacy',
+  '/legal',
+];
 const prefixes = ['', '/en', '/zh'];
 const routes = prefixes.flatMap((pre) => paths.map((p) => `${pre}${p}`));
 
@@ -15,7 +24,7 @@ for (const r of routes) {
     await page.goto(r);
     await expect(page.locator('h1')).toHaveCount(1);
     expect(errors).toEqual([]);
-    for (const w of [320, 390, 768, 1280, 1920]) {
+    for (const w of [320, 390, 768, 960, 1100, 1280, 1920, 2560]) {
       await page.setViewportSize({ width: w, height: 900 });
       const over = await page.evaluate(
         () => document.documentElement.scrollWidth > window.innerWidth,
@@ -120,5 +129,38 @@ test('no forms on the site', async ({ page }) => {
   for (const r of routes) {
     await page.goto(r);
     await expect(page.locator('form, input, textarea')).toHaveCount(0);
+  }
+});
+
+test('page navigation preserves frame, header and hero sizes on wide screens', async ({ page }) => {
+  for (const width of [390, 960, 1280, 2560]) {
+    await page.setViewportSize({ width, height: 900 });
+    let reference: number[] | undefined;
+    let heroHeight: number | undefined;
+    for (const route of routes) {
+      await page.goto(route);
+      await expect(page.locator('.home-rail')).toHaveCount(0);
+      const frame = await page.locator('.site-shell').boundingBox();
+      const header = await page.locator('.site-header').boundingBox();
+      expect(frame).not.toBeNull();
+      expect(header).not.toBeNull();
+      const dimensions = [frame!.x, frame!.y, frame!.width, header!.height];
+      reference ??= dimensions;
+      for (let i = 0; i < dimensions.length; i++) {
+        expect(Math.abs(dimensions[i] - reference[i]), route + ' at ' + width + 'px').toBeLessThan(
+          1,
+        );
+      }
+      if (width === 2560) expect(frame!.width / width).toBeGreaterThan(0.82);
+      const hero = page.locator('.band.first');
+      if (width >= 960 && (await hero.count())) {
+        const box = await hero.boundingBox();
+        heroHeight ??= box!.height;
+        expect(Math.abs(box!.height - heroHeight), route + ' hero height').toBeLessThan(1);
+        const title = await hero.locator('h1').boundingBox();
+        expect(title!.y).toBeGreaterThanOrEqual(box!.y);
+        expect(title!.y + title!.height).toBeLessThanOrEqual(box!.y + box!.height);
+      }
+    }
   }
 });

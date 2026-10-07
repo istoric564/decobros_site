@@ -39,7 +39,7 @@ const icons = {
         const Tag = href ? 'a' : 'span';
         const external = href && c.key !== 'email' && c.key !== 'phone';
         return (
-          <li>
+          <li data-contact={c.key}>
             <Tag
               href={href ?? undefined}
               target={external ? '_blank' : undefined}
@@ -241,7 +241,7 @@ const icons = {
       border-radius: 0;
     }
   }
-  @media (min-width: 960px) {
+  @media (min-width: 1200px) {
     .footer {
       padding-block: 40px 16px;
     }

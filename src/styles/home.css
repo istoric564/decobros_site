@@ -1,0 +1,255 @@
+/* Home proportions follow the reference's page width, not the browser width. */
+.home-page .hero-caption,
+.home-page .hero-agencies {
+  display: none;
+}
+.home-page main .home-philosophy .text,
+.home-page main .home-crew .text {
+  padding-block: 28px 18px;
+}
+.home-page main h2 {
+  font-size: clamp(24px, 7cqw, 32px);
+  line-height: 1.06;
+  font-weight: 500;
+}
+.home-page main .rule {
+  width: 24px;
+  margin-block: 16px;
+}
+.home-page main .lead {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.home-page main .link-arrow {
+  min-height: 36px;
+  font-size: 12px;
+  text-decoration: underline;
+  text-decoration-color: rgb(6 16 26 / 25%);
+  text-underline-offset: 6px;
+}
+.home-page main .cards {
+  position: relative;
+  z-index: 1;
+  gap: 8px;
+  padding: 8px 20px;
+  background: transparent;
+}
+.home-page main .card {
+  min-height: 148px;
+  box-shadow: none;
+  border-color: rgb(6 16 26 / 15%);
+}
+.home-page main .card .body {
+  max-width: 65%;
+  padding: 18px 16px 10px;
+}
+.home-page main .card .heading {
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: nowrap;
+}
+.home-page main .card h3 {
+  font-size: 30px;
+  font-weight: 600;
+}
+.home-page main .card .eyebrow {
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+}
+.home-page main .card .copy {
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+.home-page main .home-crew .bg {
+  display: none;
+}
+.home-page main .home-crew .inner {
+  min-height: 156px;
+}
+.home-page main .home-crew .text {
+  max-width: 78%;
+  padding-bottom: 20px;
+}
+.home-page main .home-crew h2 {
+  font-size: 23px;
+}
+.home-page main .home-crew .rule {
+  margin-block: 12px;
+}
+@media (min-width: 960px) {
+  .home-page main .home-hero .bg {
+    left: 27%;
+  }
+  .home-page main .home-hero .bg::after {
+    background: linear-gradient(
+      90deg,
+      white,
+      rgb(255 255 255 / 88%) 10%,
+      rgb(255 255 255 / 28%) 29%,
+      transparent 48%
+    );
+  }
+  .home-page .hero-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: absolute;
+    z-index: 2;
+    right: clamp(30px, 2.5cqw, 44px);
+    top: 9cqw;
+    color: #c1cbd0;
+    font-size: 7px;
+    line-height: 2;
+    letter-spacing: 0.18em;
+  }
+  .home-page .caption-rule {
+    height: 1px;
+    width: 30px;
+    background: #c1cbd0;
+  }
+  .home-page .hero-agencies {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    position: absolute;
+    z-index: 2;
+    right: 5cqw;
+    bottom: 4cqw;
+    color: white;
+  }
+  .home-page .hero-agencies strong {
+    font-size: 17px;
+    letter-spacing: -0.04em;
+  }
+  .home-page .hero-agencies strong span {
+    padding-inline: 8px;
+    font-weight: 400;
+  }
+  .home-page .hero-agencies > span {
+    font-size: 7px;
+    letter-spacing: 0.15em;
+  }
+  .home-page main .home-philosophy {
+    min-height: clamp(280px, 22cqw, 420px);
+  }
+  .home-page main .home-philosophy .bg {
+    left: 28%;
+  }
+  .home-page main .home-philosophy .bg::after {
+    background: linear-gradient(
+      90deg,
+      white,
+      rgb(255 255 255 / 88%) 16%,
+      rgb(255 255 255 / 30%) 36%,
+      transparent 58%
+    );
+  }
+  .home-page main .home-philosophy .text {
+    max-width: min(46%, 660px);
+    padding-block: clamp(28px, 3cqw, 48px);
+  }
+  .home-page main h2 {
+    font-size: var(--fs-h2);
+  }
+  .home-page main .home-philosophy h2 {
+    max-width: 34cqw;
+  }
+  .home-page main .rule {
+    margin-block: clamp(16px, 1.8cqw, 24px);
+  }
+  .home-page main .lead {
+    font-size: clamp(14px, 1cqw, 17px);
+    margin-bottom: 0;
+  }
+  .home-page main .link-arrow {
+    font-size: 11px;
+  }
+  .home-page main .cards {
+    grid-template-columns: 1fr 1fr;
+    padding: 6px;
+    gap: 8px;
+  }
+  .home-page main .card {
+    min-height: clamp(176px, 13cqw, 240px);
+  }
+  .home-page main .card .body {
+    max-width: 58%;
+    padding: clamp(24px, 2cqw, 32px) clamp(24px, 2.5cqw, 40px) 12px;
+  }
+  .home-page main .card h3 {
+    font-size: clamp(30px, 2.5cqw, 44px);
+  }
+  .home-page main .card .eyebrow {
+    font-size: 7px;
+  }
+  .home-page main .card .copy {
+    font-size: clamp(14px, 1cqw, 16px);
+  }
+  .home-page main .card .media {
+    left: 12%;
+  }
+  .home-page main .home-crew {
+    min-height: clamp(180px, 16cqw, 260px);
+  }
+  .home-page main .home-crew .bg {
+    display: block;
+    left: 25%;
+  }
+  .home-page main .home-crew .bg::after {
+    background: linear-gradient(90deg, white, rgb(255 255 255 / 85%) 15%, transparent 45%);
+  }
+  .home-page main .home-crew .inner {
+    background: none;
+    min-height: 0;
+  }
+  .home-page main .home-crew .text {
+    max-width: min(48%, 760px);
+    padding-block: clamp(24px, 2.5cqw, 40px);
+  }
+  .home-page main .home-crew h2 {
+    font-size: var(--fs-h2);
+  }
+  .home-page main .home-crew .rule {
+    margin-block: clamp(12px, 1.5cqw, 20px);
+  }
+}
+
+@media (max-width: 959px) {
+  .home-page main .home-philosophy .bg {
+    aspect-ratio: 1.5;
+  }
+  .home-page main .cards {
+    margin-top: -52px;
+  }
+  .home-page main .home-crew {
+    min-height: 180px;
+    justify-content: center;
+  }
+  .home-page main .home-crew .bg {
+    display: block;
+    position: absolute;
+    inset: 0 0 0 45%;
+    aspect-ratio: auto;
+  }
+  .home-page main .home-crew .bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, white, rgb(255 255 255 / 75%) 25%, transparent 80%);
+  }
+  .home-page main .home-crew .inner {
+    position: relative;
+    background: none;
+    min-height: 0;
+  }
+  .home-page main .home-crew .text {
+    max-width: 72%;
+  }
+  .home-page main .home-crew h2 {
+    font-size: 21px;
+  }
+}

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/home.css';
 import Hero from '../../components/Hero.astro';
 import Band from '../../components/Band.astro';
 import DirectionCard from '../../components/DirectionCard.astro';
@@ -65,15 +66,23 @@ const T = {
 }[locale];
 ---
 
-<BaseLayout title="DECOBROSCREW" description={T.description}>
+<BaseLayout title="DECOBROSCREW" description={T.description} home>
   <Hero
     imageId="H01"
+    compact
     lines={T.hero}
     copy={T.heroCopy}
     cta={{ label: T.discover, href: '#philosophy' }}
   />
 
-  <Band id="philosophy" imageId="H02" position="center 22%" height="380px" mobileRatio="2 / 1">
+  <Band
+    class="home-philosophy"
+    id="philosophy"
+    imageId="H02"
+    position="center 22%"
+    height="380px"
+    mobileRatio="2 / 1"
+  >
     <h2>
       {T.philosophyH[0]}
       <br />
@@ -103,11 +112,11 @@ const T = {
     />
   </section>
 
-  <Band imageId="H05" position="center 45%" height="300px" mobileRatio="5 / 2">
+  <Band class="home-crew" imageId="H05" position="center 45%" height="300px" mobileRatio="5 / 2">
     <h2>{T.crewH}</h2>
     <span class="rule"></span>
     <p class="lead">{T.crew}</p>
-    <a class="btn" href={p('/crew')}>
+    <a class="link-arrow" href={p('/crew')}>
       {T.crewCta} <span aria-hidden="true">→</span>
     </a>
   </Band>

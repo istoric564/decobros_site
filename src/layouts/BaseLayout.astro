@@ -23,8 +23,9 @@ interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  home?: boolean;
 }
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, home = false } = Astro.props;
 const locale = localeFromUrl(Astro.url);
 
 // OG image: OG01 if the owner supplies it. Otherwise a crop of H01 (demo).
@@ -89,7 +90,7 @@ const fullTitle =
     <a href="#main" class="skip-link">
       {t(ui.skip, locale)}
     </a>
-    <div class="site-shell">
+    <div class:list={['site-shell', { 'home-page': home }]}>
       <SiteHeader />
       <main id="main">
         <slot />
