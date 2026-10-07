@@ -1,0 +1,64 @@
+---
+import EditorialImage from './EditorialImage.astro';
+import { brand } from '../data/site';
+import { localeFromUrl, localePath } from '../i18n';
+const locale = localeFromUrl(Astro.url);
+const p = (path: string) => localePath(locale, path);
+const words = {
+  ru: {
+    explore: ['ИССЛЕДУЕМ', 'УЧИМСЯ', 'ИДЁМ ДАЛЬШЕ'],
+    intro: 'ДАЙВИНГ-КЛУБ ДЛЯ ТЕХ, КТО ХОЧЕТ БОЛЬШЕГО.',
+    end: ['ЛЮДИ', 'ОБУЧЕНИЕ', 'ЭКСПЕДИЦИИ', 'ОКЕАН', 'НОВЫЙ УРОВЕНЬ'],
+    navigation: 'Знакомство с клубом',
+    photos: ['Погружения', 'Наша философия', 'Обучение', 'Команда'],
+  },
+  en: {
+    explore: ['WE EXPLORE', 'WE TRAIN', 'WE GO FURTHER'],
+    intro: 'A PREMIUM DIVING CLUB FOR A DEEPER TOMORROW.',
+    end: ['PEOPLE', 'TRAINING', 'EXPEDITIONS', 'OCEAN', 'A HIGHER STANDARD'],
+    navigation: 'Explore the club',
+    photos: ['Diving', 'Our philosophy', 'Training', 'The crew'],
+  },
+  zh: {
+    explore: ['我们探索', '我们训练', '我们走得更远'],
+    intro: '面向更深未来的高端潜水俱乐部。',
+    end: ['人物', '培训', '探险', '海洋', '更高标准'],
+    navigation: '了解俱乐部',
+    photos: ['潜水', '我们的理念', '培训', '团队'],
+  },
+}[locale];
+const photos = [
+  { id: 'H01', href: '#main' },
+  { id: 'H02', href: '#philosophy' },
+  { id: 'H03', href: p('/training') },
+  { id: 'H05', href: p('/crew') },
+];
+---
+
+<aside class="home-rail">
+  <a class="rail-brand" href={p('/')}>
+    {brand.short}
+  </a>
+  <p class="rail-lines">
+    {words.explore.map((line) => (
+      <span>{line}</span>
+    ))}
+  </p>
+  <span class="rail-rule" aria-hidden="true"></span>
+  <p class="rail-intro">{words.intro}</p>
+  <nav class="rail-photos" aria-label={words.navigation}>
+    {photos.map((photo, index) => (
+      <a href={photo.href} aria-label={words.photos[index]}>
+        <EditorialImage imageId={photo.id} ratio="1 / 1" alt="" sizes="120px" />
+      </a>
+    ))}
+  </nav>
+  <div class="rail-end">
+    <span class="rail-rule" aria-hidden="true"></span>
+    <p class="rail-lines">
+      {words.end.map((line) => (
+        <span>{line}</span>
+      ))}
+    </p>
+  </div>
+</aside>

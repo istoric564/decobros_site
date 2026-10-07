@@ -2,17 +2,19 @@
 import Band from './Band.astro';
 interface Props {
   imageId: string;
+  compact?: boolean;
   /** Headline lines. Each line is a separate row. */
   lines: string[];
   eyebrow?: string;
   copy?: string[];
   cta?: { label: string; href: string };
 }
-const { imageId, lines, eyebrow, copy = [], cta } = Astro.props;
+const { imageId, lines, eyebrow, copy = [], cta, compact = false } = Astro.props;
 ---
 
 <Band
   imageId={imageId}
+  class={compact ? 'home-hero' : undefined}
   priority
   imageFirst
   position="70% center"
@@ -36,6 +38,28 @@ const { imageId, lines, eyebrow, copy = [], cta } = Astro.props;
     <a class="btn" href={cta.href}>
       {cta.label} <span aria-hidden="true">→</span>
     </a>
+  )}
+  {compact && (
+    <div slot="decoration" class="hero-caption" aria-hidden="true">
+      <span>
+        DEEPER
+        <br />
+        SKILLS
+        <br />
+        SAFER DIVES
+        <br />
+        BIGGER HORIZONS
+      </span>
+      <span class="caption-rule"></span>
+    </div>
+  )}
+  {compact && (
+    <div slot="decoration" class="hero-agencies" aria-hidden="true">
+      <strong>
+        SDI <span>&middot;</span> TDI
+      </strong>
+      <span>TRAINING / EXPEDITIONS / COMMUNITY</span>
+    </div>
   )}
 </Band>
 

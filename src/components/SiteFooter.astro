@@ -39,7 +39,7 @@ const icons = {
         const Tag = href ? 'a' : 'span';
         const external = href && c.key !== 'email' && c.key !== 'phone';
         return (
-          <li>
+          <li data-contact={c.key}>
             <Tag
               href={href ?? undefined}
               target={external ? '_blank' : undefined}
