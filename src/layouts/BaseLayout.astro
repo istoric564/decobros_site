@@ -89,11 +89,13 @@ const fullTitle =
     <a href="#main" class="skip-link">
       {t(ui.skip, locale)}
     </a>
-    <SiteHeader />
-    <main id="main">
-      <slot />
-    </main>
-    <SiteFooter />
+    <div class="site-shell">
+      <SiteHeader />
+      <main id="main">
+        <slot />
+      </main>
+      <SiteFooter />
+    </div>
     <Analytics />
     <script>
       import '../scripts/reveal';

@@ -82,10 +82,11 @@ const contactHref = localePath(locale, '/contact');
 <style>
   .site-header {
     position: sticky;
-    top: 0;
+    top: var(--frame-top);
     z-index: 50;
     background: rgb(255 255 255 / 0.96);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgb(6 16 26 / 6%);
+    border-radius: var(--radius-frame) var(--radius-frame) 0 0;
   }
   .bar {
     display: flex;
@@ -142,6 +143,7 @@ const contactHref = localePath(locale, '/contact');
     padding: 0 10px;
     background: none;
     border: 0;
+    border-radius: 50%;
     cursor: pointer;
     color: var(--ink);
   }
@@ -159,7 +161,7 @@ const contactHref = localePath(locale, '/contact');
   }
   .mobile {
     position: fixed;
-    inset: var(--header-h) 0 0 0;
+    inset: calc(var(--header-h) + var(--frame-top)) 0 0 0;
     background: var(--white);
     padding: 24px var(--gutter);
     overflow-y: auto;
@@ -180,6 +182,11 @@ const contactHref = localePath(locale, '/contact');
     letter-spacing: -0.03em;
     text-decoration: none;
     border-bottom: 1px solid var(--line);
+  }
+  @media (max-width: 767px) {
+    .site-header {
+      border-radius: 0;
+    }
   }
   @media (min-width: 960px) {
     .desktop,
