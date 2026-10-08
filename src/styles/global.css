@@ -44,7 +44,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   scrollbar-gutter: stable;
-  scroll-padding-top: 20px;
+  scroll-padding-top: calc(var(--header-h) + 20px);
   scroll-behavior: smooth;
 }
 
@@ -153,6 +153,7 @@ p {
   background: currentColor;
   opacity: 0.7;
   margin-block: 20px;
+  transform-origin: left center;
 }
 
 .lead {
@@ -214,6 +215,24 @@ p {
 .link-arrow:hover {
   border-bottom-color: currentColor;
 }
+.link-arrow > span[aria-hidden='true'],
+.btn > span[aria-hidden='true'] {
+  display: inline-block;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+.link-arrow:hover > span[aria-hidden='true'],
+.btn:hover > span[aria-hidden='true'] {
+  transform: translateX(3px);
+}
+
+/* Photographs inside a link or a tile settle closer on hover, like leaning in to a print. */
+.zoom-media .ei img {
+  transition: transform 0.9s var(--motion-ease);
+}
+.zoom-media:hover .ei img,
+.zoom-media:focus-within .ei img {
+  transform: scale(1.035);
+}
 
 .notice {
   padding: 16px 20px;
@@ -258,12 +277,21 @@ p {
   }
 }
 
+/* Reduced motion keeps tone and colour feedback but removes travel and zoom. */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
-    transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    animation-iteration-count: 1 !important;
+  }
+  .zoom-media:hover .ei img,
+  .zoom-media:focus-within .ei img,
+  .link-arrow:hover > span[aria-hidden='true'],
+  .btn:hover > span[aria-hidden='true'] {
+    transform: none;
   }
 }

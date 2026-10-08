@@ -145,9 +145,10 @@ const T = {
   .map {
     margin-top: 32px;
     height: clamp(320px, 50vw, 480px);
-    border-radius: 12px;
+    border-radius: var(--radius-card);
     overflow: hidden;
-    border: 1px solid var(--muted);
+    border: 1px solid var(--line);
+    background: var(--paper);
   }
   .map-facade {
     display: grid;
@@ -160,12 +161,18 @@ const T = {
   }
   .map-btn {
     font: inherit;
-    padding: 12px 24px;
-    border: 1px solid currentColor;
+    min-height: 48px;
+    padding: 0 28px;
+    border: 1px solid var(--ink);
     border-radius: 999px;
-    background: transparent;
-    color: inherit;
+    background: var(--ink);
+    color: var(--white);
+    font-weight: 500;
     cursor: pointer;
+    transition: background var(--motion-fast);
+  }
+  .map-btn:hover {
+    background: var(--navy);
   }
   .map-note {
     max-width: 32em;

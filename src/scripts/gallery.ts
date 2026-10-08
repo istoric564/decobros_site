@@ -52,6 +52,7 @@ if (grid && viewer) {
       document
         .querySelectorAll('.chip')
         .forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      grid.dataset.filter = f;
       grid.querySelectorAll<HTMLLIElement>('li').forEach((li) => {
         li.hidden = f !== 'All' && li.dataset.category !== f;
       });

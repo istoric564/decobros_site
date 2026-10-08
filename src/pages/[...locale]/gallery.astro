@@ -53,6 +53,16 @@ const T = {
     next: '下一张',
   },
 }[locale];
+
+// Desktop mosaic: the first tile is a 2×2 feature; enough trailing tiles go wide (2×1)
+// that the three-column grid always closes without holes.
+const wideCount = (3 - ((galleryItems.length + 3) % 3)) % 3;
+const tileClass = (i: number) =>
+  galleryItems.length > 3 && i === 0
+    ? 'feature'
+    : galleryItems.length > 3 && i >= galleryItems.length - wideCount
+      ? 'wide'
+      : undefined;
 ---
 
 <BaseLayout title={T.title} description={T.description}>
@@ -79,11 +89,11 @@ const T = {
               </button>
             ))}
           </div>
-          <ul class="grid" id="grid">
-            {galleryItems.map((g) => {
+          <ul class="grid" id="grid" data-filter="All" data-stagger>
+            {galleryItems.map((g, i) => {
               const alt = t(g.alt, locale);
               return (
-                <li data-category={g.category}>
+                <li data-category={g.category} class:list={['zoom-media', tileClass(i)]}>
                   <button
                     type="button"
                     class="open"
@@ -166,6 +176,8 @@ const T = {
   }
   .open {
     display: block;
+    overflow: hidden;
+    border-radius: var(--radius-card);
     width: 100%;
     padding: 0;
     border: 0;
@@ -236,8 +248,28 @@ const T = {
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
-    .grid li:nth-child(5n + 1) {
+    .grid[data-filter='All'] {
+      grid-auto-flow: dense;
+    }
+    .grid[data-filter='All'] .feature {
       grid-column: span 2;
+      grid-row: span 2;
+    }
+    .grid[data-filter='All'] .wide {
+      grid-column: span 2;
+    }
+    /* Spanning tiles take their height from the row, never set it. */
+    .grid[data-filter='All'] :is(.feature, .wide) {
+      position: relative;
+      min-height: 100%;
+    }
+    .grid[data-filter='All'] :is(.feature, .wide) .open {
+      position: absolute;
+      inset: 0;
+    }
+    .grid[data-filter='All'] :is(.feature, .wide) :global(.ei) {
+      height: 100%;
+      aspect-ratio: auto !important;
     }
   }
 </style>

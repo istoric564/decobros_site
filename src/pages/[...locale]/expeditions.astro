@@ -2,14 +2,16 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import EditorialImage from '../../components/EditorialImage.astro';
-import ContactStrip from '../../components/ContactStrip.astro';
 import DemoBadge from '../../components/DemoBadge.astro';
 import { expeditions, expeditionStatusLabels } from '../../data/expeditions';
+import { galleryItems } from '../../data/gallery';
 import { localeFromUrl, localePath, localeStaticPaths, t } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
 
 const locale = localeFromUrl(Astro.url);
+// Preparation on deck: the photo behind "built for the dive" and the call to action.
+const prep = galleryItems.find((g) => g.file === 'G-2');
 
 const T = {
   ru: {
@@ -23,6 +25,7 @@ const T = {
     philH: ['Создано для погружения,', 'а не для буклета.'],
     phil: 'Настоящие экспедиции. Опытная команда. Тщательное планирование. Места, которые того стоят.',
     discuss: 'Обсудить экспедицию',
+    discussNote: 'Расскажите о своём опыте и квалификации — подберём поездку и подготовку к ней.',
   },
   en: {
     title: 'Expeditions',
@@ -35,6 +38,8 @@ const T = {
     philH: ['Built for the dive,', 'not the brochure.'],
     phil: 'Real expeditions. Experienced crew. Careful planning. Places that matter.',
     discuss: 'Discuss an expedition',
+    discussNote:
+      'Tell us about your experience and certification, and we will match a trip and the preparation for it.',
   },
   zh: {
     title: '探险',
@@ -46,6 +51,7 @@ const T = {
     philH: ['为潜水而生，', '而非为宣传册。'],
     phil: '真正的探险。经验丰富的团队。周密的计划。值得前往的地方。',
     discuss: '咨询探险行程',
+    discussNote: '告诉我们您的潜水经验和资质，我们会为您匹配合适的行程和行前准备。',
   },
 }[locale];
 ---
@@ -61,9 +67,9 @@ const T = {
       {expeditions.length === 0 ? (
         <p class="notice">{T.empty}</p>
       ) : (
-        <ul class="list">
+        <ul class="list" data-stagger>
           {expeditions.map((e) => (
-            <li id={e.slug}>
+            <li id={e.slug} class="zoom-media">
               {e.image && (
                 <EditorialImage
                   name={e.image}
@@ -92,21 +98,29 @@ const T = {
     </div>
   </section>
 
-  <section class="section dark" aria-labelledby="phil-h">
-    <div class="container">
-      <h2 id="phil-h">
-        {T.philH[0]}
-        <br />
-        {T.philH[1]}
-      </h2>
-      <span class="rule"></span>
-      <p class="lead">{T.phil}</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <ContactStrip heading={T.discuss} />
+  <section class="section dark closing" aria-labelledby="phil-h">
+    <div class="container split">
+      <div class="split-text">
+        <h2 id="phil-h">
+          {T.philH[0]}
+          <br />
+          {T.philH[1]}
+        </h2>
+        <span class="rule"></span>
+        <p class="lead">{T.phil}</p>
+        <p class="lead note">{T.discussNote}</p>
+        <a class="btn light" href={localePath(locale, '/contact')}>
+          {T.discuss} <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      {prep && (
+        <EditorialImage
+          name={`gallery/${prep.file}`}
+          ratio="4 / 3"
+          alt={prep.alt}
+          sizes="(min-width: 960px) 45vw, 100vw"
+        />
+      )}
     </div>
   </section>
 </BaseLayout>
@@ -140,6 +154,24 @@ const T = {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--blue);
+  }
+  /* The closing block sits on the ink footer; a deep hairline keeps them apart. */
+  .closing {
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .split {
+    display: grid;
+    gap: 32px;
+  }
+  .note {
+    margin-block: 16px 28px;
+  }
+  @media (min-width: 960px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      align-items: center;
+      gap: clamp(40px, 5vw, 96px);
+    }
   }
   @media (min-width: 768px) {
     .list {

@@ -1,5 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import { brand } from '../data/site';
+import mark from '../assets/brand/logo-mark.png';
+import markLight from '../assets/brand/logo-light-mark.png';
 interface Props {
   dark?: boolean;
 }
@@ -7,19 +10,40 @@ const { dark = false } = Astro.props;
 ---
 
 <span class:list={['lockup', { dark }]}>
-  <span class="short">{brand.short}</span>
-  <span class="full">{brand.full}</span>
-  <span class="desc">{brand.descriptor}</span>
+  <Image
+    class="mark"
+    src={dark ? markLight : mark}
+    alt=""
+    width={88}
+    densities={[1, 2]}
+    format="webp"
+    loading="eager"
+  />
+  <span class="words">
+    <span class="short">{brand.short}</span>
+    <span class="full">{brand.full}</span>
+    <span class="desc">{brand.descriptor}</span>
+  </span>
 </span>
 
 <style>
   .lockup {
     display: inline-flex;
+    align-items: center;
+    gap: clamp(8px, 3vw, 12px);
+  }
+  .mark {
+    width: clamp(44px, 15vw, 58px);
+    height: auto;
+    flex-shrink: 0;
+  }
+  .words {
+    display: inline-flex;
     flex-direction: column;
     line-height: 1.15;
   }
   .short {
-    font-size: 1.375rem;
+    font-size: clamp(1.125rem, 5.4vw, 1.375rem);
     font-weight: 600;
     letter-spacing: -0.03em;
   }
@@ -39,6 +63,12 @@ const { dark = false } = Astro.props;
     color: #9fb0bf;
   }
   @media (min-width: 768px) {
+    .lockup {
+      gap: 14px;
+    }
+    .mark {
+      width: 72px;
+    }
     .short {
       font-size: 1.625rem;
     }

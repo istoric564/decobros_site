@@ -11,7 +11,7 @@ interface Props {
 const { course, open = false } = Astro.props;
 const locale = localeFromUrl(Astro.url);
 const summary = { ru: 'Детали программы', en: 'Program details', zh: '课程详情' };
-const source = { ru: 'Официальные стандарты', en: 'Official standards', zh: '官方标准' };
+const source = { ru: 'Стандарты агентства', en: 'Agency standards', zh: '培训机构标准' };
 const rows = (Object.keys(detailLabels) as (keyof CourseDetails)[]).map((k) => ({
   label: t(detailLabels[k], locale),
   value: t(course.details[k], locale),

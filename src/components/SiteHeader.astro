@@ -81,7 +81,8 @@ const contactHref = localePath(locale, '/contact');
 
 <style>
   .site-header {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 50;
     background: var(--paper);
     border-bottom: 1px solid rgb(6 16 26 / 6%);
@@ -102,6 +103,7 @@ const contactHref = localePath(locale, '/contact');
   }
   .desktop,
   .cta,
+  .end,
   .end :global(.lang-desktop) {
     display: none;
   }
@@ -215,6 +217,9 @@ const contactHref = localePath(locale, '/contact');
       display: inline-flex;
       min-height: 44px;
       padding: 0 24px;
+    }
+    .end {
+      display: flex;
     }
     .burger,
     .mobile {
