@@ -7,9 +7,11 @@ export const brand = {
 } as const;
 
 const L = {
-  home: { ru: 'Главная', en: 'Home', zh: '首页' },
+  try: { ru: 'Попробовать', en: 'Try diving', zh: '体验潜水' },
   training: { ru: 'Обучение', en: 'Training', zh: '培训' },
   expeditions: { ru: 'Экспедиции', en: 'Expeditions', zh: '探险' },
+  service: { ru: 'Мастерская', en: 'Workshop', zh: '装备维修' },
+  pro: { ru: 'Для профи', en: 'For pros', zh: '专业服务' },
   crew: { ru: 'Команда', en: 'The Crew', zh: '团队' },
   gallery: { ru: 'Галерея', en: 'Gallery', zh: '图库' },
   contact: { ru: 'Контакты', en: 'Contact', zh: '联系' },
@@ -19,16 +21,20 @@ const L = {
 
 /** Hrefs have no language prefix. Add it with localePath(). */
 export const nav = [
-  { label: L.home, href: '/' },
+  { label: L.try, href: '/try' },
   { label: L.training, href: '/training' },
   { label: L.expeditions, href: '/expeditions' },
+  { label: L.service, href: '/service' },
+  { label: L.pro, href: '/pro' },
   { label: L.crew, href: '/crew' },
-  { label: L.gallery, href: '/gallery' },
 ] as const;
 
 export const footerNav = [
+  { label: L.try, href: '/try' },
   { label: L.training, href: '/training' },
   { label: L.expeditions, href: '/expeditions' },
+  { label: L.service, href: '/service' },
+  { label: L.pro, href: '/pro' },
   { label: L.crew, href: '/crew' },
   { label: L.gallery, href: '/gallery' },
   { label: L.contact, href: '/contact' },

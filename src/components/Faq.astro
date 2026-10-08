@@ -1,19 +1,22 @@
 ---
-import { faq } from '../data/faq';
+import { faq, type FaqItem } from '../data/faq';
 import { localeFromUrl, t } from '../i18n';
 interface Props {
   heading?: string;
+  /** Defaults to the shared FAQ. */
+  items?: FaqItem[];
 }
 const locale = localeFromUrl(Astro.url);
 const {
   heading = t({ ru: 'Частые вопросы', en: 'Frequently asked questions', zh: '常见问题' }, locale),
+  items = faq,
 } = Astro.props;
 ---
 
 <div class="faq">
   <h2 class="h">{heading}</h2>
   <div class="list">
-    {faq.map((item) => (
+    {items.map((item) => (
       <details>
         <summary>{t(item.question, locale)}</summary>
         <div class="a">

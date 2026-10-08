@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Steps from '../../components/Steps.astro';
+import ClosingCta from '../../components/ClosingCta.astro';
+import { address, hours } from '../../data/site';
+import { localeFromUrl, localePath, localeStaticPaths, t } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const p = (path: string) => localePath(locale, path);
+const where = `${t(address.text, locale)} · ${t(hours[0].days, locale)} ${t(hours[0].time, locale)}`;
+
+const T = {
+  ru: {
+    title: 'Мастерская',
+    description:
+      'Обслуживание и ремонт дайверского снаряжения в Новосибирске: регуляторы, компенсаторы (BCD), сухие и мокрые гидрокостюмы. Сервисная сертификация Apeks. Освидетельствование баллонов.',
+    eyebrow: 'Мастерская DECOBROSCREW',
+    hero: ['Снаряжение,', 'которому можно доверять.'],
+    heroCopy: [
+      'Обслуживание и ремонт регуляторов, BCD и гидрокостюмов всех типов.',
+      'Сервисная сертификация Apeks.',
+    ],
+    cta: 'Сдать в ремонт',
+    whatEyebrow: 'Что мы обслуживаем',
+    whatH: 'Всё, от чего зависит погружение.',
+    what: [
+      [
+        'Регуляторы',
+        'Плановое обслуживание и ремонт первых и вторых ступеней, октопусов, манометров и шлангов. Все типы и производители.',
+      ],
+      [
+        'Компенсаторы и крылья',
+        'Инфляторы, клапаны стравливания, утечки воздуха, мешки и крепления. После ремонта проверяем на герметичность.',
+      ],
+      [
+        'Гидрокостюмы',
+        'Сухие, мокрые и полусухие: замена манжет и шейных уплотнителей, молнии, клапаны, проколы и швы.',
+      ],
+      [
+        'Баллоны',
+        'Освидетельствование — через проверенных партнёров. Принесите баллон к нам, остальное организуем.',
+      ],
+    ],
+    apeks: 'Сервисная сертификация Apeks',
+    apeksNote: 'Apeks — товарный знак правообладателя.',
+    whyH: ['Регулятор — это то,', 'чем вы дышите.'],
+    why: 'Износ мембран и уплотнений не виден снаружи и проявляется уже под водой. Поэтому регулятор и компенсатор стоит обслуживать не реже раза в год — это же условие для погружений с нами.',
+    howEyebrow: 'Как это работает',
+    howH: 'Четыре шага от поломки до воды.',
+    how: [
+      ['Принесите', `Прямо в клуб: ${where}.`],
+      ['Диагностика', 'Осматриваем и тестируем снаряжение, находим причину, а не только симптом.'],
+      ['Согласование', 'До начала работ называем объём, стоимость и срок. Без сюрпризов.'],
+      ['Ремонт и проверка', 'Ремонтируем, тестируем и возвращаем снаряжение готовым к воде.'],
+    ],
+    closeH: ['Перед сезоном', 'или экспедицией?'],
+    close:
+      'Приносите снаряжение заранее — успеем всё проверить и заменить, если нужно. Напишите, что случилось, и подскажем, с чего начать.',
+    closeCta: 'Связаться',
+  },
+  en: {
+    title: 'Workshop',
+    description:
+      'Dive gear service and repair in Novosibirsk: regulators, BCDs, dry suits and wetsuits. Apeks service certification. Cylinder inspection.',
+    eyebrow: 'DECOBROSCREW Workshop',
+    hero: ['Gear', 'you can trust.'],
+    heroCopy: [
+      'Service and repair for regulators, BCDs and exposure suits of every type.',
+      'Apeks service certification.',
+    ],
+    cta: 'Bring in your gear',
+    whatEyebrow: 'What we service',
+    whatH: 'Everything a dive depends on.',
+    what: [
+      [
+        'Regulators',
+        'Scheduled service and repair of first and second stages, octopuses, gauges and hoses. Every type and manufacturer.',
+      ],
+      [
+        'BCDs and wings',
+        'Inflators, dump valves, air leaks, bladders and harnesses. Leak-tested after every repair.',
+      ],
+      [
+        'Exposure suits',
+        'Dry, wet and semi-dry: wrist and neck seal replacement, zips, valves, punctures and seams.',
+      ],
+      [
+        'Cylinders',
+        'Inspection through trusted partners. Bring the cylinder to us and we will arrange the rest.',
+      ],
+    ],
+    apeks: 'Apeks service certification',
+    apeksNote: 'Apeks is a trademark of its respective owner.',
+    whyH: ['A regulator is', 'what you breathe from.'],
+    why: 'Worn diaphragms and seals do not show from the outside — they show underwater. That is why a regulator and a BCD should be serviced at least once a year, and it is also our condition for diving with us.',
+    howEyebrow: 'How it works',
+    howH: 'Four steps from fault to water.',
+    how: [
+      ['Bring it in', `Straight to the club: ${where}.`],
+      ['Diagnosis', 'We inspect and test the gear and find the cause, not just the symptom.'],
+      ['Agreement', 'Before any work we confirm the scope, price and timing. No surprises.'],
+      ['Repair and test', 'We repair, test and hand the gear back ready for the water.'],
+    ],
+    closeH: ['Before the season', 'or an expedition?'],
+    close:
+      'Bring your gear early so there is time to check everything and replace parts if needed. Tell us what happened and we will advise where to start.',
+    closeCta: 'Get in touch',
+  },
+  zh: {
+    title: '装备维修',
+    description:
+      '新西伯利亚潜水装备保养与维修：调节器、浮力控制装置、干式和湿式潜水服。Apeks 维修认证。气瓶检验。',
+    eyebrow: 'DECOBROSCREW 维修工坊',
+    hero: ['值得信赖的', '装备。'],
+    heroCopy: ['各类调节器、浮力控制装置和潜水服的保养与维修。', 'Apeks 维修认证。'],
+    cta: '送修装备',
+    whatEyebrow: '维修范围',
+    whatH: '潜水所依赖的一切。',
+    what: [
+      [
+        '调节器',
+        '一级头、二级头、备用二级头、压力表和管路的定期保养与维修。适用于所有类型和品牌。',
+      ],
+      ['浮力控制装置与背飞', '充气阀、排气阀、漏气、气囊和背带。每次维修后都进行气密性测试。'],
+      ['潜水服', '干式、湿式和半干式：更换腕部和颈部密封圈、拉链、阀门，修补破洞和接缝。'],
+      ['气瓶', '通过可靠的合作方进行检验。把气瓶交给我们，其余由我们安排。'],
+    ],
+    apeks: 'Apeks 维修认证',
+    apeksNote: 'Apeks 是其所有者的商标。',
+    whyH: ['调节器', '是您赖以呼吸的装备。'],
+    why: '膜片和密封件的磨损从外面看不出来，却会在水下显现。因此调节器和浮力控制装置至少每年保养一次——这也是与我们一起潜水的条件。',
+    howEyebrow: '维修流程',
+    howH: '从故障到下水的四个步骤。',
+    how: [
+      ['送来', `直接送到俱乐部：${where}。`],
+      ['诊断', '我们检查并测试装备，找到根本原因，而不只是表面症状。'],
+      ['确认', '开工前确认维修范围、费用和时间。没有意外。'],
+      ['维修与测试', '维修、测试，交还时装备即可下水。'],
+    ],
+    closeH: ['赛季前', '或探险前？'],
+    close:
+      '请提前送来装备，以便有时间全面检查并在需要时更换零件。告诉我们出了什么问题，我们会建议从哪里开始。',
+    closeCta: '联系我们',
+  },
+}[locale];
+---
+
+<BaseLayout title={T.title} description={T.description}>
+  <Hero
+    imageId="SRV01"
+    eyebrow={T.eyebrow}
+    lines={T.hero}
+    copy={T.heroCopy}
+    cta={{ label: T.cta, href: p('/contact') }}
+  />
+
+  <section class="section" aria-labelledby="what-h">
+    <div class="container">
+      <p class="eyebrow">{T.whatEyebrow}</p>
+      <h2 id="what-h">{T.whatH}</h2>
+      <span class="rule"></span>
+      <ul class="what" data-stagger>
+        {T.what.map(([title, copy]) => (
+          <li>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="apeks">
+        <strong>{T.apeks}</strong>
+        <span>{T.apeksNote}</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section dark" aria-labelledby="why-h">
+    <div class="container why">
+      <h2 id="why-h">
+        {T.whyH[0]}
+        <br />
+        {T.whyH[1]}
+      </h2>
+      <p class="lead">{T.why}</p>
+    </div>
+  </section>
+
+  <section class="section paper" aria-labelledby="how-h">
+    <div class="container">
+      <p class="eyebrow">{T.howEyebrow}</p>
+      <h2 id="how-h">{T.howH}</h2>
+      <span class="rule"></span>
+      <Steps items={T.how.map(([title, copy]) => ({ title, copy }))} />
+    </div>
+  </section>
+
+  <ClosingCta
+    id="close-h"
+    heading={T.closeH}
+    lead={T.close}
+    cta={{ label: T.closeCta, href: p('/contact') }}
+  />
+</BaseLayout>
+
+<style>
+  h2 {
+    font-size: var(--fs-h2);
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  .what {
+    display: grid;
+    gap: 0 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .what li {
+    padding-block: 24px 28px;
+    border-bottom: 1px solid var(--line);
+  }
+  .what h3 {
+    font-size: var(--fs-h3);
+    margin-bottom: 12px;
+  }
+  .what p {
+    max-width: 30rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .apeks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 16px;
+    margin-top: 28px;
+  }
+  .apeks strong {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .apeks span {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+  .why {
+    display: grid;
+    gap: 24px 64px;
+  }
+  @media (min-width: 768px) {
+    .what {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1100px) {
+    .what {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .why {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: end;
+    }
+  }
+</style>

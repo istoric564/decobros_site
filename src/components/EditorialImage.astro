@@ -42,7 +42,10 @@ const alt = t(altProp ?? def?.alt ?? '', locale);
 const files = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/photos/**/*.{jpg,jpeg,png,webp,avif}',
 );
-const found = Object.keys(files).find((p) => /\/photos\/(.+)\.[a-z]+$/.exec(p)?.[1] === key);
+const fileFor = (k: string) =>
+  Object.keys(files).find((p) => /\/photos\/(.+)\.[a-z]+$/.exec(p)?.[1] === k);
+// A slot's own photo wins; until the owner supplies it, the slot may borrow an existing one.
+const found = fileFor(key) ?? (!name && def?.file ? fileFor(def.file) : undefined);
 const img = found ? (await files[found]()).default : undefined;
 ---
 
