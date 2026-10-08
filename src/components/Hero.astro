@@ -69,7 +69,7 @@ const { imageId, lines, eyebrow, copy = [], cta, compact = false } = Astro.props
   }
   h1 {
     font-size: var(--fs-display);
-    letter-spacing: -0.045em;
+    letter-spacing: -0.04em;
     display: flex;
     flex-direction: column;
   }
@@ -84,6 +84,8 @@ const { imageId, lines, eyebrow, copy = [], cta, compact = false } = Astro.props
     gap: 0 0.3em;
     max-width: 40rem;
     margin-block: 18px 20px;
-    font-size: clamp(14px, 1.2cqw, 18px);
+    font-size: clamp(1rem, 1.2cqw, 1.125rem);
+    line-height: 1.6;
+    text-wrap: pretty;
   }
 </style>

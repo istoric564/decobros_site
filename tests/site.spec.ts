@@ -164,3 +164,86 @@ test('page navigation preserves frame, header and hero sizes on wide screens', a
     }
   }
 });
+
+test('header starts at the top and scrolls away without covering content', async ({ page }) => {
+  for (const width of [390, 1280]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto('/training');
+    const header = page.locator('.site-header');
+    const initial = await header.boundingBox();
+    expect(initial!.y).toBe(0);
+    await page.evaluate(() => window.scrollTo({ top: 400, behavior: 'instant' }));
+    const scrolled = await header.boundingBox();
+    expect(scrolled!.y + scrolled!.height).toBeLessThan(0);
+  }
+});
+
+test('back to top is available after scrolling a long page and restores keyboard focus', async ({
+  page,
+}) => {
+  await page.goto('/training');
+  const control = page.getByRole('button', { name: 'Наверх' });
+  await expect(control).toBeHidden();
+  await page.evaluate(() =>
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }),
+  );
+  await expect(control).toBeVisible();
+  await control.click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await expect(page.locator('.site-header .brand')).toBeFocused();
+});
+
+test('training outline follows sections in both scroll directions and links to them', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/training');
+  const outline = page.locator('.training-outline nav');
+  for (const id of ['recreational', 'specialties', 'professional', 'technical', 'specialties']) {
+    await page.locator(`#${id}`).evaluate((el) =>
+      window.scrollTo({
+        top: el.getBoundingClientRect().top + window.scrollY + 40,
+        behavior: 'instant',
+      }),
+    );
+    await expect(outline.locator(`a[href='#${id}']`)).toHaveAttribute('aria-current', 'location');
+    const navBox = await outline.boundingBox();
+    const sectionBox = await page.locator(`#${id}`).boundingBox();
+    expect(navBox!.x + navBox!.width).toBeLessThanOrEqual(sectionBox!.x);
+  }
+  await outline.locator("a[href='#technical']").click();
+  await expect(page).toHaveURL(/#technical$/);
+  await expect(outline.locator("a[href='#technical']")).toHaveAttribute('aria-current', 'location');
+});
+
+test('mobile training outline closes after choosing a section and clears its heading', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/training');
+  await page.locator('#recreational').scrollIntoViewIfNeeded();
+  const outline = page.locator('.training-mobile-outline');
+  await outline.locator('summary').click();
+  await outline.locator("a[href='#technical']").click();
+  await expect(outline).not.toHaveAttribute('open');
+  await expect(outline.locator('[data-toc-current]')).toHaveText('Технический фундамент');
+  await expect
+    .poll(async () => {
+      const nav = await outline.boundingBox();
+      const heading = await page.locator('#tech-h').boundingBox();
+      return heading!.y >= nav!.y + nav!.height;
+    })
+    .toBe(true);
+});
+
+test('training outline labels are localized', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  for (const [route, label] of [
+    ['/training', 'Специализации'],
+    ['/en/training', 'Specialties'],
+    ['/zh/training', '专项课程'],
+  ]) {
+    await page.goto(route);
+    await expect(page.locator('.training-outline a').nth(1)).toHaveText(label);
+  }
+});

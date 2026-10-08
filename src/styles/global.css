@@ -20,6 +20,9 @@
   --fs-h1: clamp(2.5rem, 7vw + 0.5rem, 5.5rem);
   --fs-h2: clamp(1.75rem, 3.2vw + 0.7rem, 3rem);
   --fs-h3: clamp(1.5rem, 2vw + 0.8rem, 2.25rem);
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-fast: 0.2s;
+  --motion-reveal: 0.7s;
 }
 
 /* Inter has no CJK glyphs: use the system Chinese fonts. */
@@ -41,7 +44,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scrollbar-gutter: stable;
-  scroll-padding-top: calc(var(--header-h) + var(--frame-top) + 12px);
+  scroll-padding-top: 20px;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -74,6 +78,12 @@ h3 {
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--blue-soft);
+  color: var(--ink);
 }
 
 p {
@@ -168,11 +178,16 @@ p {
   font-weight: 500;
   text-decoration: none;
   transition:
-    background 0.2s,
-    color 0.2s;
+    background var(--motion-fast),
+    color var(--motion-fast),
+    border-color var(--motion-fast);
 }
 .btn:hover {
   background: var(--navy);
+}
+.btn:active {
+  background: var(--blue);
+  border-color: var(--blue);
 }
 .btn.light {
   background: var(--white);
@@ -192,6 +207,9 @@ p {
   font-weight: 500;
   text-decoration: none;
   border-bottom: 1px solid transparent;
+  transition:
+    border-color var(--motion-fast),
+    color var(--motion-fast);
 }
 .link-arrow:hover {
   border-bottom-color: currentColor;
@@ -208,18 +226,6 @@ p {
   color: var(--blue-soft);
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
-}
-.reveal.in {
-  opacity: 1;
-  transform: none;
-}
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -233,16 +239,16 @@ p {
   :root {
     --gutter: 32px;
     --header-h: 76px;
-    --frame-top: 24px;
+    --frame-top: 0px;
   }
   body {
     background: #e9edef;
   }
   .site-shell {
     max-width: var(--max);
-    margin: var(--frame-top) auto;
+    margin: 0 auto 24px;
     width: calc(100% - 2 * var(--outer-gutter));
-    border-radius: var(--radius-frame);
+    border-radius: 0 0 var(--radius-frame) var(--radius-frame);
     box-shadow: 0 16px 56px rgb(6 16 26 / 8%);
   }
 }
@@ -259,9 +265,5 @@ p {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
   }
 }

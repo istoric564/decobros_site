@@ -13,7 +13,7 @@ const { title, agency, copy, href, imageId } = Astro.props;
 const locale = localeFromUrl(Astro.url);
 ---
 
-<article class="card">
+<article class="card reveal">
   <div class="media">
     <EditorialImage
       fill
@@ -37,12 +37,12 @@ const locale = localeFromUrl(Astro.url);
 <style>
   .card {
     position: relative;
-    min-height: 230px;
+    display: flex;
+    min-height: 250px;
     background: var(--white);
-    border: 1px solid rgb(6 16 26 / 10%);
+    border: 1px solid var(--line);
     border-radius: var(--radius-card);
     overflow: hidden;
-    box-shadow: 0 3px 12px rgb(6 16 26 / 4%);
   }
   .media {
     position: absolute;
@@ -52,44 +52,65 @@ const locale = localeFromUrl(Astro.url);
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, #fff 0%, #fff 38%, rgb(255 255 255 / 0) 78%);
+    background: linear-gradient(
+      90deg,
+      var(--white) 0%,
+      var(--white) 42%,
+      rgb(255 255 255 / 92%) 52%,
+      rgb(255 255 255 / 0) 86%
+    );
+    pointer-events: none;
   }
   .body {
     position: relative;
     z-index: 1;
-    max-width: 62%;
-    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 67%;
+    padding: 24px;
   }
   h3 {
-    font-size: clamp(2rem, 3vw + 1rem, 3rem);
+    font-size: clamp(2.25rem, 3cqw, 3rem);
     letter-spacing: -0.04em;
+    font-weight: 500;
   }
   .heading {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px 14px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   .eyebrow {
-    max-width: 110px;
-    font-size: 0.5625rem;
+    max-width: 150px;
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
   }
   .copy {
     color: var(--muted);
-    font-size: 0.875rem;
-    margin-bottom: 8px;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    text-wrap: pretty;
   }
-  @media (min-width: 960px) {
-    .card {
-      min-height: 230px;
-    }
+  .link-arrow {
+    margin-top: auto;
+  }
+  @media (max-width: 479px) {
     .body {
-      max-width: 58%;
-      padding: 28px 32px;
+      width: 74%;
+      padding: 24px 20px;
     }
     .media::after {
-      background: linear-gradient(90deg, #fff 0%, #fff 40%, rgb(255 255 255 / 0) 80%);
+      background: linear-gradient(
+        90deg,
+        var(--white) 0%,
+        var(--white) 48%,
+        rgb(255 255 255 / 88%) 60%,
+        transparent 100%
+      );
     }
   }
 </style>

@@ -121,7 +121,7 @@ const icons = {
   .footer {
     background: var(--ink);
     color: var(--white);
-    padding-block: 32px 20px;
+    padding-block: 48px 28px;
     border-radius: 0 0 var(--radius-frame) var(--radius-frame);
   }
   ul {
@@ -140,28 +140,29 @@ const icons = {
   }
   .contacts {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
   }
   .contact {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 6px;
+    align-items: flex-start;
+    gap: 10px;
     min-height: 44px;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
   }
   .t {
     display: flex;
     flex-direction: column;
+    overflow-wrap: anywhere;
   }
   .label {
     font-size: 0.8125rem;
     font-weight: 500;
   }
   .note {
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     color: #9fb0bf;
   }
   a.contact:hover .label {
@@ -239,6 +240,11 @@ const icons = {
   @media (max-width: 767px) {
     .footer {
       border-radius: 0;
+    }
+  }
+  @media (min-width: 768px) {
+    .contacts {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
   @media (min-width: 1200px) {

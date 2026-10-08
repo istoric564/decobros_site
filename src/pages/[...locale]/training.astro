@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import CourseDetails from '../../components/CourseDetails.astro';
+import TrainingOutline from '../../components/TrainingOutline.astro';
 import { courses, courseBySlug, trainingDisclaimer } from '../../data/training';
 import { localeFromUrl, localePath, localeStaticPaths, translator } from '../../i18n';
 
@@ -88,6 +89,15 @@ const T = {
   },
 }[locale];
 
+const outlineItems = [
+  { id: 'recreational', label: T.sections[0] },
+  { id: 'specialties', label: T.specH.charAt(0) + T.specH.slice(1).toLowerCase() },
+  { id: rescue.slug, label: rescue.title },
+  { id: refresher.slug, label: refresher.title },
+  { id: 'professional', label: T.sections[1] },
+  { id: 'technical', label: T.sections[2] },
+];
+
 const sections = [
   { n: '01', id: 'recreational', label: T.sections[0] },
   { n: '02', id: 'professional', label: T.sections[1] },
@@ -101,213 +111,282 @@ const sections = [
   <nav class="section index" aria-label={T.indexAria}>
     <div class="container">
       <ol>
-        {
-          sections.map((s) => (
-            <li>
-              <a href={`#${s.id}`}>
-                <span class="n">{s.n}</span>
-                <span class="l">{s.label}</span>
-              </a>
-            </li>
-          ))
-        }
+        {sections.map((s) => (
+          <li>
+            <a href={`#${s.id}`}>
+              <span class="n">{s.n}</span>
+              <span class="l">{s.label}</span>
+            </a>
+          </li>
+        ))}
       </ol>
     </div>
   </nav>
 
-  <!-- 01 RECREATIONAL -->
-  <section id="recreational" class="section" aria-labelledby="rec-h">
-    <div class="container">
-      <header class="sec-head">
-        <p class="eyebrow">01 — {T.sections[0]}</p>
-        <h2 id="rec-h">{T.recH}</h2>
-        <p class="display">{T.recDisplay[0]}<br />{T.recDisplay[1]}</p>
-        <p class="lead">{T.recLead}</p>
-      </header>
+  <div class="training-reader">
+    <TrainingOutline items={outlineItems} />
+    <div class="training-content">
+      <!-- 01 RECREATIONAL -->
+      <section id="recreational" class="section" aria-labelledby="rec-h">
+        <div class="container">
+          <header class="sec-head">
+            <p class="eyebrow">01 — {T.sections[0]}</p>
+            <h2 id="rec-h">{T.recH}</h2>
+            <p class="display">
+              {T.recDisplay[0]}
+              <br />
+              {T.recDisplay[1]}
+            </p>
+            <p class="lead">{T.recLead}</p>
+          </header>
 
-      <article class="row" id={discovery.slug}>
-        <div>
-          <p class="eyebrow tag">{tr(discovery.eyebrow)}</p>
-          <h3>{discovery.title}</h3>
-          <p class="sub">{tr(discovery.subtitle)}</p>
-        </div>
-        <div>
-          {tr(discovery.description).map((p) => <p>{p}</p>)}
-          <CourseDetails course={discovery} />
-        </div>
-      </article>
+          <article class="row" id={discovery.slug}>
+            <div>
+              <p class="eyebrow tag">{tr(discovery.eyebrow)}</p>
+              <h3>{discovery.title}</h3>
+              <p class="sub">{tr(discovery.subtitle)}</p>
+            </div>
+            <div>
+              {tr(discovery.description).map((p) => (
+                <p>{p}</p>
+              ))}
+              <CourseDetails course={discovery} />
+            </div>
+          </article>
 
-      <article class="feature" id={openWater.slug}>
-        <div class="f-main">
-          <p class="eyebrow">{tr(openWater.eyebrow)}</p>
-          <h3 class="f-title">{openWater.title}</h3>
-          {openWater.headline && <p class="f-headline">{tr(openWater.headline)}</p>}
-          <p class="sub">{tr(openWater.subtitle)}</p>
-          {tr(openWater.description).map((p) => <p>{p}</p>)}
-          <div class="ctas">
-            {openWater.cta && (
-              <a class="btn" href={`#${openWater.slug}-details`} data-open-details>
-                {tr(openWater.cta)}
-              </a>
-            )}
-            <a class="link-arrow" href={contact}>{T.discuss}</a>
+          <article class="feature" id={openWater.slug}>
+            <div class="f-main">
+              <p class="eyebrow">{tr(openWater.eyebrow)}</p>
+              <h3 class="f-title">{openWater.title}</h3>
+              {openWater.headline && <p class="f-headline">{tr(openWater.headline)}</p>}
+              <p class="sub">{tr(openWater.subtitle)}</p>
+              {tr(openWater.description).map((p) => (
+                <p>{p}</p>
+              ))}
+              <div class="ctas">
+                {openWater.cta && (
+                  <a class="btn" href={`#${openWater.slug}-details`} data-open-details>
+                    {tr(openWater.cta)}
+                  </a>
+                )}
+                <a class="link-arrow" href={contact}>
+                  {T.discuss}
+                </a>
+              </div>
+            </div>
+            <aside class="f-focus" aria-label={T.focus}>
+              <p class="eyebrow">{T.focus}</p>
+              <ul class="focus">
+                {tr(openWater.focus).map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+            </aside>
+            <div class="f-details">
+              <CourseDetails course={openWater} />
+            </div>
+          </article>
+
+          <article class="mid" id={advanced.slug}>
+            <div>
+              <p class="eyebrow">{tr(advanced.eyebrow)}</p>
+              <h3>{advanced.title}</h3>
+              <p class="sub">{tr(advanced.subtitle)}</p>
+            </div>
+            <div>
+              {tr(advanced.description).map((p) => (
+                <p>{p}</p>
+              ))}
+              <p class="eyebrow focus-h">{T.mainFocus}</p>
+              <ul class="focus inline">
+                {tr(advanced.focus).map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+              <CourseDetails course={advanced} />
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="specialties" class="section paper" aria-labelledby="spec-h">
+        <div class="container">
+          <header class="spec-head">
+            <h2 id="spec-h" class="eyebrow big">
+              {T.specH}
+            </h2>
+            <p class="display sm">
+              {T.specDisplay[0]}
+              <br />
+              {T.specDisplay[1]}
+            </p>
+          </header>
+          <ol class="spec-list">
+            {specialties.map((c, i) => (
+              <li id={c.slug}>
+                <span class="n">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{c.title}</h3>
+                <div>
+                  {tr(c.description).map((p) => (
+                    <p>{p}</p>
+                  ))}
+                  <CourseDetails course={c} />
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section id={rescue.slug} class="section navy" aria-labelledby="rescue-h">
+        <div class="container feature-wide">
+          <div>
+            <p class="eyebrow">{tr(rescue.eyebrow)}</p>
+            <h2 id="rescue-h" class="f-title">
+              {rescue.title}
+            </h2>
+            {rescue.headline && <p class="display">{tr(rescue.headline)}</p>}
+          </div>
+          <div>
+            {tr(rescue.description).map((p, i) => (
+              <p class={i === 0 ? 'lede' : ''}>{p}</p>
+            ))}
+            <p class="eyebrow focus-h">{T.focus}</p>
+            <ul class="focus inline">
+              {tr(rescue.focus).map((f) => (
+                <li>{f}</li>
+              ))}
+            </ul>
+            <CourseDetails course={rescue} />
           </div>
         </div>
-        <aside class="f-focus" aria-label={T.focus}>
-          <p class="eyebrow">{T.focus}</p>
-          <ul class="focus">{tr(openWater.focus).map((f) => <li>{f}</li>)}</ul>
-        </aside>
-        <div class="f-details">
-          <CourseDetails course={openWater} />
-        </div>
-      </article>
+      </section>
 
-      <article class="mid" id={advanced.slug}>
-        <div>
-          <p class="eyebrow">{tr(advanced.eyebrow)}</p>
-          <h3>{advanced.title}</h3>
-          <p class="sub">{tr(advanced.subtitle)}</p>
-        </div>
-        <div>
-          {tr(advanced.description).map((p) => <p>{p}</p>)}
-          <p class="eyebrow focus-h">{T.mainFocus}</p>
-          <ul class="focus inline">{tr(advanced.focus).map((f) => <li>{f}</li>)}</ul>
-          <CourseDetails course={advanced} />
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <section id="specialties" class="section paper" aria-labelledby="spec-h">
-    <div class="container">
-      <header class="spec-head">
-        <h2 id="spec-h" class="eyebrow big">{T.specH}</h2>
-        <p class="display sm">{T.specDisplay[0]}<br />{T.specDisplay[1]}</p>
-      </header>
-      <ol class="spec-list">
-        {
-          specialties.map((c, i) => (
-            <li id={c.slug}>
-              <span class="n">{String(i + 1).padStart(2, '0')}</span>
-              <h3>{c.title}</h3>
-              <div>
-                {tr(c.description).map((p) => <p>{p}</p>)}
-                <CourseDetails course={c} />
-              </div>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-  </section>
-
-  <section id={rescue.slug} class="section navy" aria-labelledby="rescue-h">
-    <div class="container feature-wide">
-      <div>
-        <p class="eyebrow">{tr(rescue.eyebrow)}</p>
-        <h2 id="rescue-h" class="f-title">{rescue.title}</h2>
-        {rescue.headline && <p class="display">{tr(rescue.headline)}</p>}
-      </div>
-      <div>
-        {tr(rescue.description).map((p, i) => <p class={i === 0 ? 'lede' : ''}>{p}</p>)}
-        <p class="eyebrow focus-h">{T.focus}</p>
-        <ul class="focus inline">{tr(rescue.focus).map((f) => <li>{f}</li>)}</ul>
-        <CourseDetails course={rescue} />
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="refresher-h">
-    <div class="container">
-      <article class="mid" id={refresher.slug}>
-        <div>
-          <p class="eyebrow">{tr(refresher.eyebrow)}</p>
-          <h2 id="refresher-h" class="h3">{refresher.title}</h2>
-          <p class="sub">{tr(refresher.subtitle)}</p>
-        </div>
-        <div>
-          {tr(refresher.description).map((p) => <p>{p}</p>)}
-          <p class="eyebrow focus-h">{T.focus}</p>
-          <ul class="focus inline">{tr(refresher.focus).map((f) => <li>{f}</li>)}</ul>
-          <CourseDetails course={refresher} />
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- 02 PROFESSIONAL -->
-  <section id="professional" class="section paper pro" aria-labelledby="pro-h">
-    <div class="container">
-      <p class="eyebrow">02 — {tr(divemaster.eyebrow)}</p>
-      <h2 id="pro-h" class="display">{T.proH}</h2>
-      <article class="feature" id={divemaster.slug}>
-        <div class="f-main">
-          <h3 class="f-title">{divemaster.title}</h3>
-          {divemaster.headline && <p class="f-headline">{tr(divemaster.headline)}</p>}
-          <p class="sub">{tr(divemaster.subtitle)}</p>
-          {tr(divemaster.description).map((p) => <p>{p}</p>)}
-          {divemaster.cta && (
-            <div class="ctas">
-              <a class="btn" href={contact}>{tr(divemaster.cta)}</a>
+      <section class="section" aria-labelledby="refresher-h">
+        <div class="container">
+          <article class="mid" id={refresher.slug}>
+            <div>
+              <p class="eyebrow">{tr(refresher.eyebrow)}</p>
+              <h2 id="refresher-h" class="h3">
+                {refresher.title}
+              </h2>
+              <p class="sub">{tr(refresher.subtitle)}</p>
             </div>
-          )}
+            <div>
+              {tr(refresher.description).map((p) => (
+                <p>{p}</p>
+              ))}
+              <p class="eyebrow focus-h">{T.focus}</p>
+              <ul class="focus inline">
+                {tr(refresher.focus).map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+              <CourseDetails course={refresher} />
+            </div>
+          </article>
         </div>
-        <aside class="f-focus" aria-label={T.mainFocus}>
-          <p class="eyebrow">{T.mainFocus}</p>
-          <ul class="focus">{tr(divemaster.focus).map((f) => <li>{f}</li>)}</ul>
-        </aside>
-        <div class="f-details">
-          <CourseDetails course={divemaster} />
+      </section>
+
+      <!-- 02 PROFESSIONAL -->
+      <section id="professional" class="section paper pro" aria-labelledby="pro-h">
+        <div class="container">
+          <p class="eyebrow">02 — {tr(divemaster.eyebrow)}</p>
+          <h2 id="pro-h" class="display">
+            {T.proH}
+          </h2>
+          <article class="feature" id={divemaster.slug}>
+            <div class="f-main">
+              <h3 class="f-title">{divemaster.title}</h3>
+              {divemaster.headline && <p class="f-headline">{tr(divemaster.headline)}</p>}
+              <p class="sub">{tr(divemaster.subtitle)}</p>
+              {tr(divemaster.description).map((p) => (
+                <p>{p}</p>
+              ))}
+              {divemaster.cta && (
+                <div class="ctas">
+                  <a class="btn" href={contact}>
+                    {tr(divemaster.cta)}
+                  </a>
+                </div>
+              )}
+            </div>
+            <aside class="f-focus" aria-label={T.mainFocus}>
+              <p class="eyebrow">{T.mainFocus}</p>
+              <ul class="focus">
+                {tr(divemaster.focus).map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+            </aside>
+            <div class="f-details">
+              <CourseDetails course={divemaster} />
+            </div>
+          </article>
         </div>
-      </article>
+      </section>
+
+      <!-- 03 TECHNICAL -->
+      <section id="technical" class="section dark" aria-labelledby="tech-h">
+        <div class="container">
+          <p class="eyebrow">03 — TDI</p>
+          <h2 id="tech-h" class="display">
+            {T.techH}
+          </h2>
+          <p class="tech-lede">
+            {T.techLede[0]}
+            <br />
+            {T.techLede[1]}
+          </p>
+
+          <ol class="progression" aria-label={T.progressionAria}>
+            {tech.map((c) => (
+              <li>
+                <a href={`#${c.slug}`}>{c.shortTitle}</a>
+              </li>
+            ))}
+          </ol>
+
+          <ol class="tech-steps">
+            {tech.map((c) => (
+              <li class="step" id={c.slug}>
+                <div>
+                  <p class="eyebrow">{tr(c.eyebrow)}</p>
+                  <h3>{c.title}</h3>
+                  <p class="sub">{tr(c.subtitle)}</p>
+                </div>
+                <div>
+                  {tr(c.description).map((p) => (
+                    <p>{p}</p>
+                  ))}
+                  <p class="eyebrow focus-h">{T.focus}</p>
+                  <ul class="focus inline">
+                    {tr(c.focus).map((f) => (
+                      <li>{f}</li>
+                    ))}
+                  </ul>
+                  {c.cta && (
+                    <div class="ctas">
+                      <a class="btn light" href={contact}>
+                        {tr(c.cta)}
+                      </a>
+                    </div>
+                  )}
+                  <CourseDetails course={c} />
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <p class="disclaimer">{tr(trainingDisclaimer)}</p>
+        </div>
+      </section>
     </div>
-  </section>
-
-  <!-- 03 TECHNICAL -->
-  <section id="technical" class="section dark" aria-labelledby="tech-h">
-    <div class="container">
-      <p class="eyebrow">03 — TDI</p>
-      <h2 id="tech-h" class="display">{T.techH}</h2>
-      <p class="tech-lede">
-        {T.techLede[0]}<br />{T.techLede[1]}
-      </p>
-
-      <ol class="progression" aria-label={T.progressionAria}>
-        {tech.map((c) => <li><a href={`#${c.slug}`}>{c.shortTitle}</a></li>)}
-      </ol>
-
-      <ol class="tech-steps">
-        {
-          tech.map((c) => (
-            <li class="step" id={c.slug}>
-              <div>
-                <p class="eyebrow">{tr(c.eyebrow)}</p>
-                <h3>{c.title}</h3>
-                <p class="sub">{tr(c.subtitle)}</p>
-              </div>
-              <div>
-                {tr(c.description).map((p) => <p>{p}</p>)}
-                <p class="eyebrow focus-h">{T.focus}</p>
-                <ul class="focus inline">{tr(c.focus).map((f) => <li>{f}</li>)}</ul>
-                {c.cta && (
-                  <div class="ctas">
-                    <a class="btn light" href={contact}>{tr(c.cta)}</a>
-                  </div>
-                )}
-                <CourseDetails course={c} />
-              </div>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <p class="disclaimer">{tr(trainingDisclaimer)}</p>
-    </div>
-  </section>
+  </div>
 </BaseLayout>
 
 <script>
@@ -320,6 +399,25 @@ const sections = [
 </script>
 
 <style>
+  .training-content {
+    min-width: 0;
+    container-type: inline-size;
+  }
+  .training-content [id] {
+    scroll-margin-top: 56px;
+  }
+  @media (min-width: 1200px) {
+    .training-reader {
+      display: grid;
+      grid-template-columns: clamp(220px, 18%, 280px) minmax(0, 1fr);
+    }
+    .training-content [id] {
+      scroll-margin-top: 20px;
+    }
+    .training-content .display {
+      font-size: clamp(2.25rem, 5cqw, 5rem);
+    }
+  }
   h2 {
     font-size: var(--fs-h2);
   }

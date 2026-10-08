@@ -6,6 +6,7 @@ import type { ImageMetadata } from 'astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import Analytics from '../components/Analytics.astro';
+import BackToTop from '../components/BackToTop.astro';
 import {
   locales,
   defaultLocale,
@@ -97,6 +98,7 @@ const fullTitle =
       </main>
       <SiteFooter />
     </div>
+    <BackToTop />
     <Analytics />
     <script>
       import '../scripts/reveal';

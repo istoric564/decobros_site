@@ -81,19 +81,18 @@ const contactHref = localePath(locale, '/contact');
 
 <style>
   .site-header {
-    position: sticky;
-    top: var(--frame-top);
+    position: relative;
     z-index: 50;
-    background: rgb(255 255 255 / 0.96);
+    background: var(--paper);
     border-bottom: 1px solid rgb(6 16 26 / 6%);
-    border-radius: var(--radius-frame) var(--radius-frame) 0 0;
+    border-radius: 0;
   }
   .bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: var(--header-h);
-    gap: 24px;
+    gap: 16px;
   }
   .brand {
     text-decoration: none;
@@ -128,6 +127,7 @@ const contactHref = localePath(locale, '/contact');
     font-size: 0.8125rem;
     text-decoration: none;
     border-bottom: 1px solid transparent;
+    transition: border-color var(--motion-fast);
   }
   .desktop a:hover,
   .desktop a[aria-current='page'] {
@@ -146,6 +146,11 @@ const contactHref = localePath(locale, '/contact');
     border-radius: 50%;
     cursor: pointer;
     color: var(--ink);
+    flex-shrink: 0;
+    transition: background var(--motion-fast);
+  }
+  .burger:hover {
+    background: var(--paper);
   }
   .burger span {
     display: block;
@@ -161,10 +166,23 @@ const contactHref = localePath(locale, '/contact');
   }
   .mobile {
     position: fixed;
-    inset: calc(var(--header-h) + var(--frame-top)) 0 0 0;
+    inset: var(--header-h) 0 0;
     background: var(--white);
     padding: 24px var(--gutter);
     overflow-y: auto;
+  }
+  .mobile:not([hidden]) {
+    animation: menu-enter var(--motion-fast) var(--motion-ease);
+  }
+  @keyframes menu-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
   .mobile[hidden] {
     display: none;
@@ -205,7 +223,7 @@ const contactHref = localePath(locale, '/contact');
   }
   @media (min-width: 1280px) {
     .desktop ul {
-      gap: 36px;
+      gap: clamp(20px, 2vw, 32px);
     }
   }
 </style>

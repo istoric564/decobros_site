@@ -1,0 +1,68 @@
+---
+import { localeFromUrl, t } from '../i18n';
+const locale = localeFromUrl(Astro.url);
+const label = t({ ru: 'Наверх', en: 'Back to top', zh: '返回顶部' }, locale);
+---
+
+<button class="back-to-top" type="button" aria-label={label} title={label} hidden>
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 19V5m-6 6 6-6 6 6" />
+  </svg>
+</button>
+<script>
+  import '../scripts/back-to-top';
+</script>
+<style>
+  .back-to-top {
+    position: fixed;
+    right: clamp(16px, 1.5vw, 28px);
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 1px solid var(--line-dark);
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgb(6 16 26 / 12%);
+    transition:
+      background var(--motion-fast),
+      border-color var(--motion-fast);
+    animation: appear var(--motion-fast) var(--motion-ease);
+  }
+  .back-to-top[hidden] {
+    display: none;
+  }
+  .back-to-top:hover {
+    background: var(--navy);
+    border-color: var(--blue-soft);
+  }
+  .back-to-top:active {
+    background: var(--navy);
+  }
+  :global(body.menu-open) .back-to-top {
+    visibility: hidden;
+  }
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
