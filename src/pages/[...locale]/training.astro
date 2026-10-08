@@ -130,13 +130,12 @@ const sections = [
       <section id="recreational" class="section" aria-labelledby="rec-h">
         <div class="container">
           <header class="sec-head">
-            <p class="eyebrow">01 — {T.sections[0]}</p>
-            <h2 id="rec-h">{T.recH}</h2>
-            <p class="display">
+            <p class="eyebrow">01 — {T.recH}</p>
+            <h2 id="rec-h" class="display">
               {T.recDisplay[0]}
               <br />
               {T.recDisplay[1]}
-            </p>
+            </h2>
             <p class="lead">{T.recLead}</p>
           </header>
 
@@ -484,9 +483,6 @@ const sections = [
   .sec-head {
     margin-bottom: clamp(28px, 4vw, 48px);
   }
-  .sec-head h2 {
-    margin-top: 16px;
-  }
 
   /* Compact row */
   .row,
@@ -654,7 +650,7 @@ const sections = [
   .disclaimer {
     font-size: 0.875rem;
     color: var(--muted);
-    border-left: 2px solid var(--blue);
+    border-left: 1px solid var(--line);
     padding-left: 16px;
   }
 

@@ -72,7 +72,7 @@ const T = {
       {people.length === 0 ? (
         <p class="notice">{T.empty}</p>
       ) : (
-        <ul class="people">
+        <ul class="people" data-stagger>
           {people.map((p) => {
             const name = t(p.name, locale);
             const role = t(p.role, locale);
@@ -117,9 +117,12 @@ const T = {
     <div class="container">
       <h2 id="values-h">{T.values}</h2>
       <span class="rule"></span>
-      <ul class="values">
+      <ul class="values" data-stagger>
         {values.map((v) => (
-          <li>{t(v, locale)}</li>
+          <li>
+            <h3>{t(v.name, locale)}</h3>
+            <p>{t(v.text, locale)}</p>
+          </li>
         ))}
       </ul>
     </div>
@@ -165,10 +168,19 @@ const T = {
     font-size: 0.9375rem;
   }
   .values li {
-    padding: 18px 0;
+    padding: 20px 0 24px;
     border-top: 1px solid var(--line);
-    font-size: clamp(1.5rem, 3vw + 0.5rem, 2.5rem);
+  }
+  .values h3 {
+    margin: 0 0 10px;
+    font-size: clamp(1.5rem, 2vw + 0.75rem, 2rem);
     letter-spacing: -0.03em;
+  }
+  .values p {
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    text-wrap: pretty;
   }
   @media (min-width: 768px) {
     .people {
@@ -185,7 +197,7 @@ const T = {
       grid-template-columns: repeat(5, 1fr);
       gap: 24px;
     }
-    .values li {
+    .values h3 {
       font-size: 1.5rem;
     }
   }

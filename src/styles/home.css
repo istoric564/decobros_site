@@ -142,16 +142,17 @@
   .home-page main .home-crew {
     min-height: clamp(280px, 22cqw, 380px);
   }
+  /* The crew photo starts later so no faded figure sits behind the heading. */
   .home-page main .home-crew .bg {
-    left: 28%;
+    left: max(36%, 480px);
   }
   .home-page main .home-crew .bg::after {
     background: linear-gradient(
       90deg,
       var(--white),
-      rgb(255 255 255 / 96%) 18%,
-      rgb(255 255 255 / 30%) 42%,
-      transparent 68%
+      rgb(255 255 255 / 96%) 16%,
+      rgb(255 255 255 / 55%) 30%,
+      transparent 58%
     );
   }
   .home-page main .home-crew .text {

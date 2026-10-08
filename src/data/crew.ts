@@ -114,7 +114,12 @@ export const people: Person[] = [
         'Техническая конфигурация',
         'Рэк-дайвинг',
       ],
-      en: ['Advanced Nitrox', 'Decompression Procedures', 'Technical configuration', 'Wreck diving'],
+      en: [
+        'Advanced Nitrox',
+        'Decompression Procedures',
+        'Technical configuration',
+        'Wreck diving',
+      ],
       zh: ['高级高氧', '减压程序', '技术配置', '沉船潜水'],
     },
     languages: langs(lang.ru, lang.en),
@@ -161,10 +166,46 @@ export const people: Person[] = [
   },
 ];
 
-export const values: Loc[] = [
-  { ru: 'Безопасность', en: 'Safety', zh: '安全' },
-  { ru: 'Знания', en: 'Knowledge', zh: '知识' },
-  { ru: 'Дисциплина', en: 'Discipline', zh: '纪律' },
-  { ru: 'Братство', en: 'Brotherhood', zh: '兄弟情谊' },
-  { ru: 'Исследование', en: 'Exploration', zh: '探索' },
+/** Club values: a name and one line on what it means in practice. */
+export const values: { name: Loc; text: Loc }[] = [
+  {
+    name: { ru: 'Безопасность', en: 'Safety', zh: '安全' },
+    text: {
+      ru: 'Каждое погружение начинается с плана и проверки снаряжения. Отменить его может любой.',
+      en: 'Every dive starts with a plan and a gear check. Anyone can call it off.',
+      zh: '每次潜水都从计划和装备检查开始。任何人都可以叫停。',
+    },
+  },
+  {
+    name: { ru: 'Знания', en: 'Knowledge', zh: '知识' },
+    text: {
+      ru: 'Понимаем не только как, но и почему: физиология, газы, процедуры.',
+      en: 'We learn why, not just how: physiology, gases, procedures.',
+      zh: '不只知道怎么做，更明白为什么：生理、气体、程序。',
+    },
+  },
+  {
+    name: { ru: 'Дисциплина', en: 'Discipline', zh: '纪律' },
+    text: {
+      ru: 'Доводим навыки до автоматизма, прежде чем идти глубже.',
+      en: 'We drill skills until they are automatic before going deeper.',
+      zh: '在潜得更深之前，把技能练成本能。',
+    },
+  },
+  {
+    name: { ru: 'Братство', en: 'Brotherhood', zh: '兄弟情谊' },
+    text: {
+      ru: 'Ныряем в паре и командой. Каждый отвечает не только за себя.',
+      en: 'We dive as buddies and as a team. Nobody answers only for themselves.',
+      zh: '以潜伴和团队的方式潜水。每个人都不只对自己负责。',
+    },
+  },
+  {
+    name: { ru: 'Исследование', en: 'Exploration', zh: '探索' },
+    text: {
+      ru: 'Новые места, условия и задачи, когда команда к ним готова.',
+      en: 'New sites, conditions and challenges, once the team is ready for them.',
+      zh: '新的潜点、环境与挑战，在团队准备好之后。',
+    },
+  },
 ];

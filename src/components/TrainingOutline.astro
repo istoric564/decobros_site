@@ -99,7 +99,7 @@ const overview = t({ ru: 'Обзор обучения', en: 'Training overview',
   }
   .training-mobile-outline {
     position: sticky;
-    top: 0;
+    top: var(--header-h);
     z-index: 10;
     background: var(--paper);
     border-block: 1px solid var(--line);
@@ -151,8 +151,8 @@ const overview = t({ ru: 'Обзор обучения', en: 'Training overview',
     }
     .training-outline nav {
       position: sticky;
-      top: 24px;
-      max-height: calc(100dvh - 48px);
+      top: calc(var(--header-h) + 24px);
+      max-height: calc(100dvh - var(--header-h) - 48px);
       overflow-y: auto;
     }
     .toc-heading {

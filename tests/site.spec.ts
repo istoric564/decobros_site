@@ -31,6 +31,10 @@ for (const r of routes) {
       );
       expect(over, `horizontal scroll at ${w}px`).toBe(false);
     }
+    // Reveal animations start mid-opacity; measure contrast on the settled page.
+    await page.evaluate(() =>
+      Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))),
+    );
     const res = await new AxeBuilder({ page }).analyze();
     expect(res.violations.map((v) => `${v.id}: ${v.nodes[0].html}`)).toEqual([]);
   });
@@ -165,16 +169,18 @@ test('page navigation preserves frame, header and hero sizes on wide screens', a
   }
 });
 
-test('header starts at the top and scrolls away without covering content', async ({ page }) => {
+test('header stays pinned and anchored sections are not covered by it', async ({ page }) => {
   for (const width of [390, 1280]) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto('/training');
     const header = page.locator('.site-header');
-    const initial = await header.boundingBox();
-    expect(initial!.y).toBe(0);
-    await page.evaluate(() => window.scrollTo({ top: 400, behavior: 'instant' }));
-    const scrolled = await header.boundingBox();
-    expect(scrolled!.y + scrolled!.height).toBeLessThan(0);
+    expect((await header.boundingBox())!.y).toBe(0);
+    await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'instant' }));
+    const pinned = await header.boundingBox();
+    expect(pinned!.y).toBe(0);
+    await page.goto('/training#technical');
+    const heading = await page.locator('#tech-h').boundingBox();
+    expect(heading!.y).toBeGreaterThanOrEqual(pinned!.height);
   }
 });
 
