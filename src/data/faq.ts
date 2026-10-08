@@ -78,15 +78,15 @@ export const faq: FaqItem[] = [
     },
     answer: {
       ru: [
-        'Начать можно и так. Для первого знакомства подходит пробное погружение в бассейне с инструктором — уметь плавать для него не обязательно.',
+        'Начать можно и так. Для первого знакомства подходит пробное погружение в бассейне с инструктором — хорошо плавать для него не обязательно, достаточно спокойно держаться на воде.',
         'Для сертификационного курса нужно уверенно держаться на воде. Мы поможем подготовиться в бассейне до начала обучения.',
       ],
       en: [
-        'You can still start. A trial dive in the pool with an instructor is a good first step — you don’t need to swim for it.',
+        'You can still start. A trial dive in the pool with an instructor is a good first step — you don’t need to be a strong swimmer, just comfortable in the water.',
         'A certification course requires you to be comfortable in the water. We will help you prepare in the pool before the course.',
       ],
       zh: [
-        '依然可以开始。在泳池中由教练陪同的体验潜水是很好的第一步，无需会游泳。',
+        '依然可以开始。在泳池中由教练陪同的体验潜水是很好的第一步，不需要游得很好，只要能在水中保持放松即可。',
         '参加认证课程则需要能在水中自如漂浮。我们会在课程开始前帮助您在泳池中做好准备。',
       ],
     },

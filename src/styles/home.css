@@ -1,4 +1,4 @@
-/* The homepage is one photographic composition, punctuated by compact training panels. */
+/* The homepage opens on one photograph, then turns into an index of entry points. */
 .home-page main .home-hero h1 {
   font-size: var(--fs-display);
 }
@@ -17,44 +17,11 @@
   margin-bottom: 10px;
   text-wrap: pretty;
 }
-.home-page main .home-philosophy .text,
-.home-page main .home-crew .text {
+.home-page main .home-philosophy .text {
   padding-block: 36px 28px;
-}
-.home-page main .cards {
-  gap: 12px;
-  padding: 12px var(--gutter) 24px;
 }
 .home-page main .home-philosophy .bg {
   aspect-ratio: 2 / 1;
-}
-.home-page main .home-crew {
-  min-height: 260px;
-  justify-content: center;
-}
-.home-page main .home-crew .bg {
-  position: absolute;
-  inset: 0 0 0 35%;
-  aspect-ratio: auto;
-}
-.home-page main .home-crew .bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    var(--white),
-    rgb(255 255 255 / 96%) 30%,
-    rgb(255 255 255 / 80%) 55%,
-    transparent 100%
-  );
-  pointer-events: none;
-}
-.home-page main .home-crew .inner {
-  position: relative;
-}
-.home-page main .home-crew .text {
-  max-width: 85%;
 }
 @media (min-width: 960px) {
   .home-page main .home-hero .bg {
@@ -133,30 +100,5 @@
   }
   .home-page main .lead {
     font-size: 1.0625rem;
-  }
-  .home-page main .cards {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding: 12px;
-  }
-  .home-page main .home-crew {
-    min-height: clamp(280px, 22cqw, 380px);
-  }
-  /* The crew photo starts later so no faded figure sits behind the heading. */
-  .home-page main .home-crew .bg {
-    left: max(36%, 480px);
-  }
-  .home-page main .home-crew .bg::after {
-    background: linear-gradient(
-      90deg,
-      var(--white),
-      rgb(255 255 255 / 96%) 16%,
-      rgb(255 255 255 / 55%) 30%,
-      transparent 58%
-    );
-  }
-  .home-page main .home-crew .text {
-    max-width: min(49%, 680px);
-    padding-block: 40px;
   }
 }

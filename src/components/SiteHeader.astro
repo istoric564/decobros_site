@@ -124,6 +124,7 @@ const contactHref = localePath(locale, '/contact');
   }
   .desktop a {
     display: inline-flex;
+    white-space: nowrap;
     align-items: center;
     min-height: 44px;
     font-size: 0.8125rem;
@@ -208,13 +209,14 @@ const contactHref = localePath(locale, '/contact');
       border-radius: 0;
     }
   }
-  @media (min-width: 1200px) {
+  @media (min-width: 1280px) {
     .desktop,
     .end :global(.lang-desktop) {
       display: block;
     }
     .cta {
       display: inline-flex;
+      white-space: nowrap;
       min-height: 44px;
       padding: 0 24px;
     }
@@ -226,7 +228,7 @@ const contactHref = localePath(locale, '/contact');
       display: none !important;
     }
   }
-  @media (min-width: 1280px) {
+  @media (min-width: 1440px) {
     .desktop ul {
       gap: clamp(20px, 2vw, 32px);
     }

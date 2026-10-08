@@ -1,0 +1,335 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Steps from '../../components/Steps.astro';
+import Faq from '../../components/Faq.astro';
+import ClosingCta from '../../components/ClosingCta.astro';
+import type { FaqItem } from '../../data/faq';
+import { localeFromUrl, localePath, localeStaticPaths } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const p = (path: string) => localePath(locale, path);
+
+const T = {
+  ru: {
+    title: 'Попробовать дайвинг',
+    description:
+      'Пробное погружение с аквалангом: бассейны «Спартак» и «Нептун» в Новосибирске, открытая вода в Абрашино и Темире. Инструктор рядом, опыт не нужен. Подарочные сертификаты.',
+    eyebrow: 'Пробное погружение · SDI Scuba Discovery',
+    hero: ['Первый вдох', 'под водой.'],
+    heroCopy: [
+      'Около двух часов с инструктором — в бассейне или в открытой воде.',
+      'Опыт не нужен.',
+    ],
+    cta: 'Записаться',
+    factsH: 'Коротко',
+    facts: [
+      ['Бассейн', '«Спартак» и «Нептун», Новосибирск'],
+      ['Открытая вода', 'Абрашино (НСО) и Темир (Таштагольский район)'],
+      ['Сколько длится', 'Около 2 часов — так рекомендует стандарт SDI'],
+      ['Опыт', 'Не нужен'],
+      ['Что нужно от вас', 'Спокойно держаться на воде и заполнить медицинскую анкету'],
+      ['Стоимость', 'Сообщим при записи'],
+    ],
+    howEyebrow: 'Как это проходит',
+    howH: 'Четыре шага до первого вдоха.',
+    how: [
+      [
+        'Знакомство и инструктаж',
+        'Инструктор объясняет, как дышать из регулятора, выравнивать давление в ушах и общаться под водой жестами.',
+      ],
+      [
+        'Снаряжение',
+        'Подбираем маску, ласты, гидрокостюм и акваланг по размеру и вместе настраиваем. Ничего своего не нужно.',
+      ],
+      [
+        'В воду',
+        'Сначала там, где можно встать. Первые вдохи у поверхности, потом — под воду. Инструктор на расстоянии вытянутой руки.',
+      ],
+      [
+        'Что дальше',
+        'Понравилось — расскажем, как получить свой сертификат. Нет — вы просто попробовали, без обязательств.',
+      ],
+    ],
+    fearsH: 'Страшно? Это нормально.',
+    fears: [
+      [
+        'Я плохо плаваю',
+        'Для пробного погружения достаточно спокойно держаться на воде. Начинаем на глубине, где можно встать, и инструктор всё время рядом.',
+      ],
+      [
+        'Боюсь глубины',
+        'Начинаем на небольшой глубине — в бассейне или у берега в открытой воде. Вы сами решаете, когда опускаться дальше, и можете подняться к поверхности в любой момент.',
+      ],
+      [
+        'Будут болеть уши',
+        'Это давление, и с ним справляются за минуту. Научим выравнивать его ещё на поверхности, а спускаться будем медленно.',
+      ],
+      [
+        'Вдруг будет нечем дышать',
+        'Регулятор подаёт воздух на вдохе — так же естественно, как на суше. Запас воздуха в баллоне инструктор контролирует за вас.',
+      ],
+      [
+        'В Новосибирске же нет моря',
+        'Учиться удобно рядом с домом: бассейн, открытая вода в Абрашино и Темире, подлёдные погружения. А море ждёт в экспедициях с командой.',
+      ],
+    ],
+    giftEyebrow: 'Подарочный сертификат',
+    giftH: 'Подарите первый вдох.',
+    gift: 'Сертификат на пробное погружение — подарок для того, кто давно мечтает, но не решается. Напишите нам — всё оформим.',
+    giftCta: 'Заказать сертификат',
+    closeH: ['Готовы', 'попробовать?'],
+    close:
+      'Напишите нам — подберём день и место, ответим на вопросы и расскажем, что взять с собой.',
+    closeCta: 'Записаться',
+  },
+  en: {
+    title: 'Try Diving',
+    description:
+      'A try scuba dive: Spartak and Neptun pools in Novosibirsk, open water at Abrashino and Temir. An instructor at your side, no experience needed. Gift certificates available.',
+    eyebrow: 'Try dive · SDI Scuba Discovery',
+    hero: ['Your first breath', 'underwater.'],
+    heroCopy: [
+      'About two hours with an instructor — in a pool or in open water.',
+      'No experience needed.',
+    ],
+    cta: 'Book a try dive',
+    factsH: 'In short',
+    facts: [
+      ['Pool', 'Spartak and Neptun, Novosibirsk'],
+      ['Open water', 'Abrashino (Novosibirsk Region) and Temir (Tashtagol District)'],
+      ['How long', 'About 2 hours, as recommended by the SDI standard'],
+      ['Experience', 'None needed'],
+      ['What you need', 'Be comfortable in the water and fill in a medical questionnaire'],
+      ['Price', 'Given when you book'],
+    ],
+    howEyebrow: 'How it works',
+    howH: 'Four steps to your first breath.',
+    how: [
+      [
+        'Briefing',
+        'The instructor explains how to breathe from a regulator, equalize your ears and talk underwater with hand signals.',
+      ],
+      [
+        'Gear',
+        'We fit the mask, fins, wetsuit and scuba set to you and adjust them together. You do not need anything of your own.',
+      ],
+      [
+        'Into the water',
+        'First where you can stand. Your first breaths at the surface, then under. The instructor stays within arm’s reach.',
+      ],
+      [
+        'What next',
+        'Liked it? We will show you how to get your own certification. If not, you simply tried it — no commitment.',
+      ],
+    ],
+    fearsH: 'Nervous? That is normal.',
+    fears: [
+      [
+        'I am not a strong swimmer',
+        'For a try dive it is enough to be comfortable in the water. We start where you can stand, and the instructor is beside you the whole time.',
+      ],
+      [
+        'I am afraid of depth',
+        'We start shallow — in a pool or close to shore in open water. You decide when to go further down, and you can come back to the surface at any moment.',
+      ],
+      [
+        'My ears will hurt',
+        'That is pressure, and it takes a minute to handle. We teach you to equalize at the surface, and we descend slowly.',
+      ],
+      [
+        'What if I run out of air',
+        'The regulator gives you air when you inhale — as naturally as on land. The instructor watches your cylinder pressure for you.',
+      ],
+      [
+        'There is no sea in Novosibirsk',
+        'Training close to home is easy: pools, open water at Abrashino and Temir, ice dives. The sea waits on expeditions with the crew.',
+      ],
+    ],
+    giftEyebrow: 'Gift certificate',
+    giftH: 'Give a first breath.',
+    gift: 'A try dive certificate is a gift for someone who has dreamed of it for years but never dared. Write to us and we will arrange it.',
+    giftCta: 'Order a certificate',
+    closeH: ['Ready', 'to try?'],
+    close:
+      'Write to us — we will find a day and a place, answer your questions and tell you what to bring.',
+    closeCta: 'Book a try dive',
+  },
+  zh: {
+    title: '体验潜水',
+    description:
+      '水肺体验潜水：新西伯利亚 Spartak 和 Neptun 泳池，阿布拉希诺和捷米尔的开放水域。教练全程陪同，无需经验。可提供礼品卡。',
+    eyebrow: '体验潜水 · SDI Scuba Discovery',
+    hero: ['第一次', '水下呼吸。'],
+    heroCopy: ['由教练陪同约两小时——在泳池或开放水域。', '无需经验。'],
+    cta: '预约体验',
+    factsH: '简要信息',
+    facts: [
+      ['泳池', '新西伯利亚 Spartak 和 Neptun'],
+      ['开放水域', '阿布拉希诺（新西伯利亚州）和捷米尔（塔什塔戈尔区）'],
+      ['时长', '约 2 小时，遵循 SDI 标准建议'],
+      ['经验', '无需经验'],
+      ['您需要', '能在水中保持放松，并填写健康问卷'],
+      ['费用', '预约时告知'],
+    ],
+    howEyebrow: '体验流程',
+    howH: '四步完成第一次水下呼吸。',
+    how: [
+      ['讲解', '教练讲解如何用调节器呼吸、如何平衡耳压，以及如何在水下用手势交流。'],
+      ['装备', '我们为您挑选合身的面镜、脚蹼、潜水服和水肺装备，并一起调整。无需自带任何装备。'],
+      ['下水', '先在能站立的地方。在水面完成第一口呼吸，然后下潜。教练始终在您伸手可及之处。'],
+      [
+        '之后',
+        '喜欢的话，我们会告诉您如何获得自己的证书。不喜欢也没关系——您只是体验了一次，没有任何义务。',
+      ],
+    ],
+    fearsH: '紧张？这很正常。',
+    fears: [
+      [
+        '我游泳不太好',
+        '体验潜水只需要能在水中保持放松。我们从能站立的地方开始，教练全程在您身边。',
+      ],
+      [
+        '我害怕深水',
+        '我们从浅处开始——在泳池或开放水域的岸边。由您决定何时继续下潜，并且可以随时返回水面。',
+      ],
+      ['耳朵会疼', '那是压力，一分钟就能学会应对。我们会在水面教您平衡耳压，并且缓慢下潜。'],
+      ['万一没气了怎么办', '吸气时调节器就会供气，和在陆地上一样自然。教练会替您留意气瓶压力。'],
+      [
+        '新西伯利亚没有海',
+        '在家附近学习很方便：泳池、阿布拉希诺和捷米尔的开放水域、冰潜。大海则在与团队同行的探险中等着您。',
+      ],
+    ],
+    giftEyebrow: '礼品卡',
+    giftH: '送出第一次水下呼吸。',
+    gift: '体验潜水礼品卡，送给梦想已久却一直没有迈出第一步的人。联系我们，我们来安排。',
+    giftCta: '订购礼品卡',
+    closeH: ['准备好', '试一试了吗？'],
+    close: '联系我们——我们会安排日期和地点，解答您的问题，并告诉您需要带什么。',
+    closeCta: '预约体验',
+  },
+}[locale];
+
+const fears: FaqItem[] = T.fears.map(([q, a]) => ({
+  question: { ru: q, en: q, zh: q },
+  answer: { ru: [a], en: [a], zh: [a] },
+}));
+---
+
+<BaseLayout title={T.title} description={T.description}>
+  <Hero
+    imageId="TRY01"
+    eyebrow={T.eyebrow}
+    lines={T.hero}
+    copy={T.heroCopy}
+    cta={{ label: T.cta, href: p('/contact') }}
+  />
+
+  <section class="section" aria-labelledby="facts-h">
+    <div class="container">
+      <h2 id="facts-h" class="sr-only">
+        {T.factsH}
+      </h2>
+      <dl class="facts" data-stagger>
+        {T.facts.map(([term, value]) => (
+          <div>
+            <dt class="eyebrow">{term}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section paper" aria-labelledby="how-h">
+    <div class="container">
+      <p class="eyebrow">{T.howEyebrow}</p>
+      <h2 id="how-h">{T.howH}</h2>
+      <span class="rule"></span>
+      <Steps items={T.how.map(([title, copy]) => ({ title, copy }))} />
+    </div>
+  </section>
+
+  <section class="section" aria-label={T.fearsH}>
+    <div class="container narrow">
+      <Faq heading={T.fearsH} items={fears} />
+    </div>
+  </section>
+
+  <section class="section paper" aria-labelledby="gift-h">
+    <div class="container gift">
+      <div>
+        <p class="eyebrow">{T.giftEyebrow}</p>
+        <h2 id="gift-h">{T.giftH}</h2>
+        <span class="rule"></span>
+      </div>
+      <div>
+        <p class="lead">{T.gift}</p>
+        <a class="btn" href={p('/contact')}>
+          {T.giftCta} <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <ClosingCta
+    id="close-h"
+    heading={T.closeH}
+    lead={T.close}
+    cta={{ label: T.closeCta, href: p('/contact') }}
+  />
+</BaseLayout>
+
+<style>
+  h2 {
+    font-size: var(--fs-h2);
+  }
+  .eyebrow {
+    margin-bottom: 16px;
+  }
+  .facts {
+    display: grid;
+    gap: 0 32px;
+    margin: 0;
+    border-top: 1px solid var(--line);
+  }
+  .facts > div {
+    padding-block: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .facts dt {
+    margin-bottom: 8px;
+  }
+  .facts dd {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.45;
+    text-wrap: pretty;
+  }
+  .narrow {
+    max-width: 960px;
+  }
+  .gift {
+    display: grid;
+    gap: 8px 48px;
+  }
+  .gift .lead {
+    margin-bottom: 28px;
+  }
+  @media (min-width: 640px) {
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1100px) {
+    .facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .gift {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+</style>

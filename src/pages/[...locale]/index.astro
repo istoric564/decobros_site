@@ -3,7 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import '../../styles/home.css';
 import Hero from '../../components/Hero.astro';
 import Band from '../../components/Band.astro';
-import DirectionCard from '../../components/DirectionCard.astro';
+import Steps from '../../components/Steps.astro';
+import ClosingCta from '../../components/ClosingCta.astro';
+import EditorialImage from '../../components/EditorialImage.astro';
 import { localeFromUrl, localePath, localeStaticPaths } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
@@ -14,56 +16,286 @@ const p = (path: string) => localePath(locale, path);
 const T = {
   ru: {
     description:
-      'DECOBROSCREW (Decompression Brothers CREW) — дайвинг-клуб в Новосибирске. Обучение по программам SDI и TDI, технический дайвинг и экспедиции.',
-    hero: ['Ныряй', 'иначе.'],
-    heroCopy: ['Технический дайвинг.', 'Экспедиции.', 'Премиальное обучение.'],
-    discover: 'Узнать больше',
-    philosophyH: ['Чем глубже погружение,', 'тем важнее подготовка.'],
+      'DECOBROSCREW — команда подводных решений из Новосибирска: пробные погружения, обучение SDI и TDI, экспедиции, мастерская снаряжения, аудит дайв-центров.',
+    hero: ['Хочешь', 'под воду?'],
+    heroCopy: [
+      'Попробовать. Научиться. Увидеть мант.',
+      'Починить регулятор. Проверить дайв-центр.',
+      'Всё, что под водой, — к нам.',
+    ],
+    heroCta: 'Попробовать впервые',
+    heroSecondary: 'Я уже ныряю',
+    wantEyebrow: 'С чего начать',
+    wantH: 'Что вы хотите сделать под водой?',
+    want: [
+      ['Попробовать впервые', 'Бассейн или открытая вода, инструктор рядом, опыт не нужен.'],
+      ['Научиться и получить сертификат', 'Open Water с нуля: теория, бассейн, открытая вода.'],
+      ['Нырять глубже', 'Рэки, пещеры, декомпрессия, подлёдные погружения.'],
+      ['Увидеть мант, рэки и сеноты', 'Экспедиции под ваш уровень — вместе с командой.'],
+      ['Починить снаряжение', 'Регуляторы, BCD, гидрокостюмы. Сертификация Apeks.'],
+      ['Задача для профи или дайв-центра', 'Аудит, оценка инструкторов, консультации.'],
+    ],
+    philosophyH: ['Мы водим в пещеры.', 'Ваш первый вдох — в надёжных руках.'],
     philosophy:
-      'Мы — DECOBROSCREW. Мы учимся, планируем и ныряем как команда. Наши направления — технический дайвинг, настоящие экспедиции и сильная клубная культура.',
-    philosophyLink: 'Наша философия',
-    cardsAria: 'Направления обучения',
-    sdi: 'От рекреационного до продвинутого и технического обучения. Настоящие навыки.',
-    tdi: 'Продвинутая подготовка для тех, кто хочет идти дальше. Глубже знания.',
-    crewH: 'Знакомьтесь с командой',
-    crew: 'Дайверы. Инструкторы. Исследователи. Команда, объединённая общей целью.',
-    crewCta: 'Наша команда',
+      'DECOBROSCREW — команда технических дайверов из Новосибирска. Декомпрессия, пещеры и подлёдные погружения приучили нас к одному: к безопасности не бывает скидок. Ни в экспедиции, ни в бассейне.',
+    philosophyLink: 'Наша команда',
+    pathEyebrow: 'Путь с нуля',
+    pathH: 'От первого вдоха до пещеры.',
+    pathLead:
+      'Никто не начинает с глубины. Каждый шаг — с инструктором и по международным стандартам SDI и TDI.',
+    path: [
+      {
+        meta: 'SDI Scuba Discovery',
+        title: 'Первый вдох',
+        copy: 'Около двух часов с инструктором: в бассейне («Спартак», «Нептун») или в открытой воде — Абрашино, Темир. Опыт не нужен.',
+        link: ['Как это проходит', '/try'],
+      },
+      {
+        meta: 'SDI Open Water Scuba Diver',
+        title: 'Свой сертификат',
+        copy: 'Теория, бассейн и открытая вода. Итог — международный сертификат: нырять с напарником до 18 метров.',
+        link: ['Курс Open Water', '/training#recreational'],
+      },
+      {
+        meta: 'SDI Advanced · специализации',
+        title: 'Опыт и уверенность',
+        copy: 'Глубина, ночь, навигация, сухой костюм. Дальше — рэки и экспедиции.',
+        link: ['Специализации', '/training#specialties'],
+      },
+      {
+        meta: 'TDI',
+        title: 'Технический дайвинг',
+        copy: 'Декомпрессия, газовые смеси, пещеры — наша основная специализация.',
+        link: ['Техническое обучение', '/training#technical'],
+      },
+    ],
+    dreamsEyebrow: 'Куда это ведёт',
+    dreamsH: 'Видели это в кино? Мы знаем дорогу.',
+    dreamsLead:
+      'Каждая мечта — это конкретный маршрут: какой сертификат нужен, сколько погружений и где набраться опыта. Мы проложим его вместе с вами.',
+    dreamsLink: 'Как туда попасть',
+    dreams: [
+      ['Манты', 'Мальдивы, сафари. Нужен сертификат и немного опыта.'],
+      ['Затонувшие корабли', 'Красное море. Сначала Advanced — потом внутрь.'],
+      ['Сеноты и пещеры', 'Мексика. Начинается с cavern, дальше — пещерная подготовка TDI.'],
+      ['Подо льдом', 'Сибирь и Байкал — наша домашняя вода. Подлёдные погружения с командой.'],
+    ],
+    serviceEyebrow: 'Мастерская',
+    serviceH: 'Чиним то, чем вы дышите.',
+    serviceCopy: 'Обслуживание и ремонт снаряжения всех типов. Сервисная сертификация Apeks.',
+    serviceList: [
+      'Регуляторы',
+      'Компенсаторы и крылья (BCD)',
+      'Сухие, мокрые и полусухие гидрокостюмы',
+      'Баллоны — освидетельствование через партнёров',
+    ],
+    serviceLink: 'В мастерскую',
+    proEyebrow: 'Для профи и бизнеса',
+    proH: 'Независимый взгляд технических дайверов.',
+    proCopy: 'Для дайв-центров, клубов и профессиональных дайверов.',
+    proList: [
+      'Аудит дайв-центра',
+      'Оценка навыков инструкторов',
+      'Консультации и внутренние процедуры',
+      'Сложные погружения и экспедиции под задачу',
+    ],
+    proLink: 'Подробнее',
+    giftEyebrow: 'Подарочный сертификат',
+    giftH: ['Подарите', 'первый вдох под водой.'],
+    gift: 'Для того, кто давно мечтает, но не решается. Сертификат на пробное погружение с инструктором — напишите нам, и мы всё оформим.',
+    giftCta: 'Заказать сертификат',
   },
   en: {
     description:
-      'DECOBROSCREW (Decompression Brothers CREW) is a diving club in Novosibirsk. Training to SDI and TDI programs, technical diving and expeditions.',
-    hero: ['Dive', 'different.'],
-    heroCopy: ['Technical diving.', 'Expeditions.', 'Premium training.'],
-    discover: 'Discover',
-    philosophyH: ['The deeper you go,', 'the more preparation matters.'],
+      'DECOBROSCREW is an underwater solutions crew from Novosibirsk: try dives, SDI and TDI training, expeditions, a gear workshop and dive center audits.',
+    hero: ['Want to go', 'underwater?'],
+    heroCopy: [
+      'Try it. Learn it. Meet a manta.',
+      'Fix a regulator. Audit a dive center.',
+      'Anything underwater — one crew.',
+    ],
+    heroCta: 'Try your first dive',
+    heroSecondary: 'I already dive',
+    wantEyebrow: 'Where to start',
+    wantH: 'What do you want to do underwater?',
+    want: [
+      [
+        'Try it for the first time',
+        'A pool or open water, an instructor at your side, no experience needed.',
+      ],
+      ['Learn and get certified', 'Open Water from zero: theory, pool, open water.'],
+      ['Go deeper', 'Wrecks, caves, decompression, ice diving.'],
+      ['See mantas, wrecks and cenotes', 'Expeditions matched to your level, with the crew.'],
+      ['Fix my gear', 'Regulators, BCDs, exposure suits. Apeks certified.'],
+      ['A job for pros or a dive center', 'Audits, instructor assessment, consulting.'],
+    ],
+    philosophyH: ['We take divers into caves.', 'Your first breath is in safe hands.'],
     philosophy:
-      'We are DECOBROSCREW. We train, plan and dive as a team. We work on technical diving, real expeditions and a strong club culture.',
-    philosophyLink: 'Our Philosophy',
-    cardsAria: 'Training directions',
-    sdi: 'From recreational to advanced and technical training. Build real skills.',
-    tdi: 'Advanced training for divers who want to go further. Deeper knowledge.',
-    crewH: 'Meet the Crew',
-    crew: 'Divers. Instructors. Explorers. A team united by a deeper purpose.',
-    crewCta: 'Meet the Crew',
+      'DECOBROSCREW is a crew of technical divers from Novosibirsk. Decompression, caves and ice have taught us one thing: safety has no discounts — on an expedition or in a pool.',
+    philosophyLink: 'Meet the Crew',
+    pathEyebrow: 'The path from zero',
+    pathH: 'From your first breath to a cave.',
+    pathLead:
+      'Nobody starts deep. Every step is taken with an instructor and to the international SDI and TDI standards.',
+    path: [
+      {
+        meta: 'SDI Scuba Discovery',
+        title: 'First breath',
+        copy: 'About two hours with an instructor: in a pool (Spartak, Neptun) or in open water at Abrashino or Temir. No experience needed.',
+        link: ['How it works', '/try'],
+      },
+      {
+        meta: 'SDI Open Water Scuba Diver',
+        title: 'Your own certificate',
+        copy: 'Theory, pool and open water. The result is an international certification to dive with a buddy to 18 metres.',
+        link: ['Open Water course', '/training#recreational'],
+      },
+      {
+        meta: 'SDI Advanced · specialties',
+        title: 'Experience and confidence',
+        copy: 'Depth, night, navigation, dry suit. Then wrecks and expeditions.',
+        link: ['Specialties', '/training#specialties'],
+      },
+      {
+        meta: 'TDI',
+        title: 'Technical diving',
+        copy: 'Decompression, gas mixes, caves — our core specialty.',
+        link: ['Technical training', '/training#technical'],
+      },
+    ],
+    dreamsEyebrow: 'Where it leads',
+    dreamsH: 'Saw it in a film? We know the way.',
+    dreamsLead:
+      'Every dream is a concrete route: which certification you need, how many dives, where to gain experience. We will plot it with you.',
+    dreamsLink: 'How to get there',
+    dreams: [
+      ['Mantas', 'Maldives, liveaboard. You need a certification and a little experience.'],
+      ['Shipwrecks', 'Red Sea. Advanced first, then inside.'],
+      ['Cenotes and caves', 'Mexico. It starts with cavern, then TDI cave training.'],
+      ['Under the ice', 'Siberia and Baikal — our home water. Ice dives with the crew.'],
+    ],
+    serviceEyebrow: 'Workshop',
+    serviceH: 'We fix what you breathe from.',
+    serviceCopy: 'Service and repair for every type of gear. Apeks service certification.',
+    serviceList: [
+      'Regulators',
+      'BCDs and wings',
+      'Dry, wet and semi-dry suits',
+      'Cylinders — inspection through partners',
+    ],
+    serviceLink: 'Visit the workshop',
+    proEyebrow: 'For pros and business',
+    proH: 'An independent view from technical divers.',
+    proCopy: 'For dive centers, clubs and professional divers.',
+    proList: [
+      'Dive center audit',
+      'Instructor skills assessment',
+      'Consulting and internal procedures',
+      'Demanding dives and expeditions to order',
+    ],
+    proLink: 'Learn more',
+    giftEyebrow: 'Gift certificate',
+    giftH: ['Give someone', 'their first breath underwater.'],
+    gift: 'For someone who has dreamed of it for years but never dared. A certificate for a try dive with an instructor — write to us and we will arrange it.',
+    giftCta: 'Order a certificate',
   },
   zh: {
     description:
-      'DECOBROSCREW（Decompression Brothers CREW）是新西伯利亚的潜水俱乐部，按照 SDI 和 TDI 课程进行培训，并开展技术潜水和探险。',
-    hero: ['潜得', '与众不同。'],
-    heroCopy: ['技术潜水。', '探险。', '高端培训。'],
-    discover: '探索',
-    philosophyH: ['潜得越深，', '准备就越重要。'],
+      'DECOBROSCREW 是来自新西伯利亚的水下解决方案团队：体验潜水、SDI 和 TDI 培训、探险、装备维修以及潜水中心审核。',
+    hero: ['想去', '水下看看吗？'],
+    heroCopy: ['体验、学习、与蝠鲼相遇。', '维修调节器、审核潜水中心。', '水下的一切，交给我们。'],
+    heroCta: '首次体验潜水',
+    heroSecondary: '我已经会潜水',
+    wantEyebrow: '从哪里开始',
+    wantH: '您想在水下做什么？',
+    want: [
+      ['第一次体验', '泳池或开放水域，教练全程在旁，无需经验。'],
+      ['学习并获得证书', '从零开始的开放水域课程：理论、泳池、开放水域。'],
+      ['潜得更深', '沉船、洞穴、减压潜水、冰潜。'],
+      ['去看蝠鲼、沉船和天然井', '与团队同行、匹配您水平的探险。'],
+      ['维修装备', '调节器、浮力控制装置、潜水服。Apeks 认证。'],
+      ['专业潜水员或潜水中心的需求', '审核、教练评估、咨询。'],
+    ],
+    philosophyH: ['我们带潜水员进入洞穴。', '您的第一口水下呼吸，有我们守护。'],
     philosophy:
-      '我们是 DECOBROSCREW。我们以团队的方式训练、计划和潜水，专注于技术潜水、真正的探险和深厚的俱乐部文化。',
-    philosophyLink: '我们的理念',
-    cardsAria: '培训方向',
-    sdi: '从休闲潜水到进阶和技术培训，打造真正的技能。',
-    tdi: '为想要走得更远的潜水员提供进阶培训，获取更深的知识。',
-    crewH: '认识我们的团队',
-    crew: '潜水员、教练、探险者——一支因共同目标而团结的团队。',
-    crewCta: '认识团队',
+      'DECOBROSCREW 是来自新西伯利亚的技术潜水团队。减压潜水、洞穴和冰潜让我们明白一件事：安全从不打折——无论是在探险中，还是在泳池里。',
+    philosophyLink: '认识团队',
+    pathEyebrow: '从零开始的路径',
+    pathH: '从第一口呼吸到洞穴。',
+    pathLead: '没有人一开始就潜得很深。每一步都有教练陪同，并遵循 SDI 和 TDI 国际标准。',
+    path: [
+      {
+        meta: 'SDI Scuba Discovery',
+        title: '第一口呼吸',
+        copy: '由教练陪同约两小时：在泳池（Spartak、Neptun）或阿布拉希诺、捷米尔的开放水域。无需经验。',
+        link: ['体验流程', '/try'],
+      },
+      {
+        meta: 'SDI Open Water Scuba Diver',
+        title: '属于您的证书',
+        copy: '理论、泳池和开放水域。结业获得国际认证，可与潜伴潜至 18 米。',
+        link: ['开放水域课程', '/training#recreational'],
+      },
+      {
+        meta: 'SDI Advanced · 专项课程',
+        title: '经验与自信',
+        copy: '深潜、夜潜、导航、干式潜水服。然后是沉船和探险。',
+        link: ['专项课程', '/training#specialties'],
+      },
+      {
+        meta: 'TDI',
+        title: '技术潜水',
+        copy: '减压、混合气体、洞穴——这是我们的核心专长。',
+        link: ['技术潜水培训', '/training#technical'],
+      },
+    ],
+    dreamsEyebrow: '它将带您去往',
+    dreamsH: '在电影里见过？我们知道怎么去。',
+    dreamsLead:
+      '每个梦想都是一条具体的路线：需要什么证书、多少次潜水、在哪里积累经验。我们会和您一起规划。',
+    dreamsLink: '如何到达',
+    dreams: [
+      ['蝠鲼', '马尔代夫船宿。需要证书和一些经验。'],
+      ['沉船', '红海。先完成进阶课程，再进入船体。'],
+      ['天然井与洞穴', '墨西哥。从半洞穴开始，然后是 TDI 洞穴培训。'],
+      ['冰下潜水', '西伯利亚和贝加尔湖——我们的主场。与团队一起冰潜。'],
+    ],
+    serviceEyebrow: '装备维修',
+    serviceH: '我们维修您赖以呼吸的装备。',
+    serviceCopy: '各类潜水装备的保养与维修。Apeks 维修认证。',
+    serviceList: [
+      '调节器',
+      '浮力控制装置与背飞',
+      '干式、湿式和半干式潜水服',
+      '气瓶——通过合作方检验',
+    ],
+    serviceLink: '前往维修',
+    proEyebrow: '专业与企业服务',
+    proH: '来自技术潜水员的独立视角。',
+    proCopy: '面向潜水中心、俱乐部和专业潜水员。',
+    proList: ['潜水中心审核', '教练技能评估', '咨询与内部流程', '按需定制的高难度潜水与探险'],
+    proLink: '了解更多',
+    giftEyebrow: '礼品卡',
+    giftH: ['送出', '第一次水下呼吸。'],
+    gift: '送给梦想已久却一直没有迈出第一步的人。体验潜水礼品卡，由教练全程陪同——联系我们，我们来安排。',
+    giftCta: '订购礼品卡',
   },
 }[locale];
+
+const wantHrefs = [
+  '/try',
+  '/training#recreational',
+  '/training#technical',
+  '/expeditions',
+  '/service',
+  '/pro',
+];
+const dreamLinks = [
+  ['D01', '/expeditions'],
+  ['D02', '/expeditions'],
+  ['D03', '/expeditions'],
+  ['D04', '/contact'],
+] as const;
 ---
 
 <BaseLayout title="DECOBROSCREW" description={T.description} home>
@@ -72,8 +304,33 @@ const T = {
     compact
     lines={T.hero}
     copy={T.heroCopy}
-    cta={{ label: T.discover, href: '#philosophy' }}
+    cta={{ label: T.heroCta, href: p('/try') }}
+    secondary={{ label: T.heroSecondary, href: '#want' }}
   />
+
+  <section id="want" class="section want" aria-labelledby="want-h">
+    <div class="container">
+      <p class="eyebrow">{T.wantEyebrow}</p>
+      <h2 id="want-h">{T.wantH}</h2>
+      <span class="rule"></span>
+      <ol class="want-list" data-stagger>
+        {T.want.map(([title, note], i) => (
+          <li>
+            <a href={p(wantHrefs[i])}>
+              <span class="n" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="t">{title}</span>
+              <span class="d">{note}</span>
+              <span class="arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
 
   <Band
     class="home-philosophy"
@@ -95,51 +352,264 @@ const T = {
     </a>
   </Band>
 
-  <section class="cards" aria-label={T.cardsAria}>
-    <DirectionCard
-      title="SDI"
-      agency="Scuba Diving International"
-      copy={T.sdi}
-      href={p('/training#recreational')}
-      imageId="H03"
-    />
-    <DirectionCard
-      title="TDI"
-      agency="Technical Diving International"
-      copy={T.tdi}
-      href={p('/training#technical')}
-      imageId="H04"
-    />
+  <section class="section paper" aria-labelledby="path-h">
+    <div class="container">
+      <p class="eyebrow">{T.pathEyebrow}</p>
+      <h2 id="path-h">{T.pathH}</h2>
+      <span class="rule"></span>
+      <p class="lead intro">{T.pathLead}</p>
+      <Steps
+        items={T.path.map((s) => ({
+          meta: s.meta,
+          title: s.title,
+          copy: s.copy,
+          link: { label: s.link[0], href: p(s.link[1]) },
+        }))}
+      />
+    </div>
   </section>
 
-  <Band class="home-crew" imageId="H05" position="center 45%" height="300px" mobileRatio="5 / 2">
-    <h2>{T.crewH}</h2>
-    <span class="rule"></span>
-    <p class="lead">{T.crew}</p>
-    <a class="link-arrow" href={p('/crew')}>
-      {T.crewCta} <span aria-hidden="true">→</span>
-    </a>
-  </Band>
+  <section class="section" aria-labelledby="dreams-h">
+    <div class="container">
+      <p class="eyebrow">{T.dreamsEyebrow}</p>
+      <h2 id="dreams-h">{T.dreamsH}</h2>
+      <span class="rule"></span>
+      <p class="lead intro">{T.dreamsLead}</p>
+      <ul class="dreams" data-stagger>
+        {T.dreams.map(([title, note], i) => (
+          <li>
+            <a class="dream zoom-media" href={p(dreamLinks[i][1])}>
+              <EditorialImage
+                imageId={dreamLinks[i][0]}
+                sizes="(min-width: 1100px) 25vw, (min-width: 640px) 50vw, 100vw"
+              />
+              <h3>{title}</h3>
+              <p>{note}</p>
+              <span class="link-arrow">
+                {T.dreamsLink} <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="services" aria-label={`${T.serviceEyebrow}, ${T.proEyebrow}`}>
+    <div class="panel dark reveal">
+      <p class="eyebrow">{T.serviceEyebrow}</p>
+      <h2>{T.serviceH}</h2>
+      <span class="rule"></span>
+      <p class="lead">{T.serviceCopy}</p>
+      <ul>
+        {T.serviceList.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+      <a class="link-arrow" href={p('/service')}>
+        {T.serviceLink} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="panel paper reveal">
+      <p class="eyebrow">{T.proEyebrow}</p>
+      <h2>{T.proH}</h2>
+      <span class="rule"></span>
+      <p class="lead">{T.proCopy}</p>
+      <ul>
+        {T.proList.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+      <a class="link-arrow" href={p('/pro')}>
+        {T.proLink} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <ClosingCta
+    id="gift-h"
+    eyebrow={T.giftEyebrow}
+    heading={T.giftH}
+    lead={T.gift}
+    cta={{ label: T.giftCta, href: p('/contact') }}
+    imageId="H03"
+  />
 </BaseLayout>
 
 <style>
   h2 {
     font-size: var(--fs-h2);
   }
-  .lead {
-    margin-bottom: 20px;
+  .eyebrow {
+    margin-bottom: 16px;
   }
-  .cards {
+  .intro {
+    margin-bottom: 36px;
+  }
+
+  /* "I want to…": an index of entry points, one hairline row each. */
+  .want-list {
+    list-style: none;
+    margin: 32px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .want-list li {
+    border-bottom: 1px solid var(--line);
+  }
+  .want-list a {
     display: grid;
-    gap: 12px;
-    padding: 12px var(--gutter);
-    background: var(--white);
+    grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      'n t arrow'
+      'n d arrow';
+    align-items: center;
+    gap: 4px 12px;
+    min-height: 72px;
+    padding-block: 16px;
+    text-decoration: none;
+  }
+  .want-list .n {
+    grid-area: n;
+    align-self: start;
+    padding-top: 0.35em;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    /* Deep blue keeps AA contrast on paper as well as white. */
+    color: #1f5f86;
+    font-variant-numeric: tabular-nums;
+  }
+  .want-list .t {
+    grid-area: t;
+    font-size: clamp(1.25rem, 1.6vw + 0.8rem, 1.75rem);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+  .want-list .d {
+    grid-area: d;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+  .want-list .arrow {
+    grid-area: arrow;
+    font-size: 1.25rem;
+    transition: transform var(--motion-fast) var(--motion-ease);
+  }
+  .want-list a:hover .arrow,
+  .want-list a:focus-visible .arrow {
+    transform: translateX(4px);
+  }
+  .want-list a:hover .t {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
   }
   @media (min-width: 960px) {
-    .cards {
+    .want-list a {
+      grid-template-columns: 3.5rem minmax(0, 1.1fr) minmax(0, 1fr) auto;
+      grid-template-areas: 'n t d arrow';
+      gap: 24px;
+      min-height: 88px;
+    }
+    .want-list .n {
+      align-self: center;
+      padding-top: 0;
+    }
+  }
+
+  /* Where it leads: four photographs, each a route. */
+  .dreams {
+    display: grid;
+    gap: 32px 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .dream {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    text-decoration: none;
+  }
+  .dream :global(.ei) {
+    width: 100%;
+    margin-bottom: 16px;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  .dream h3 {
+    font-size: var(--fs-h3);
+    margin-bottom: 8px;
+  }
+  .dream p {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    margin-bottom: 8px;
+    text-wrap: pretty;
+  }
+  .dream .link-arrow {
+    margin-top: auto;
+  }
+  .dream:hover .link-arrow {
+    border-bottom-color: currentColor;
+  }
+  .dream:hover .link-arrow > span {
+    transform: translateX(3px);
+  }
+  @media (min-width: 640px) {
+    .dreams {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1100px) {
+    .dreams {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Workshop and professional services side by side, navy and paper; navy keeps the ink closing block distinct. */
+  .services {
+    display: grid;
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: clamp(40px, 6vw, 80px) var(--gutter);
+  }
+  .panel.paper {
+    background: var(--paper);
+  }
+  .panel.dark {
+    background: var(--navy);
+    color: var(--white);
+  }
+  .panel h2 {
+    max-width: 18ch;
+  }
+  .panel ul {
+    list-style: none;
+    margin: 24px 0 20px;
+    padding: 0;
+    width: 100%;
+    max-width: 32rem;
+    border-top: 1px solid var(--line);
+  }
+  .panel.dark ul,
+  .panel.dark li {
+    border-color: var(--line-dark);
+  }
+  .panel li {
+    padding-block: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .panel .link-arrow {
+    margin-top: auto;
+  }
+  @media (min-width: 960px) {
+    .services {
       grid-template-columns: 1fr 1fr;
-      padding: 12px;
-      gap: 12px;
     }
   }
 </style>

@@ -3,8 +3,11 @@ import AxeBuilder from '@axe-core/playwright';
 
 const paths = [
   '/',
+  '/try',
   '/training',
   '/expeditions',
+  '/service',
+  '/pro',
   '/crew',
   '/gallery',
   '/contact',
@@ -60,10 +63,12 @@ test('desktop navigation reaches every page', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('/en/');
   for (const [name, path] of [
+    ['Try diving', '/en/try'],
     ['Training', '/en/training'],
     ['Expeditions', '/en/expeditions'],
+    ['Workshop', '/en/service'],
+    ['For pros', '/en/pro'],
     ['The Crew', '/en/crew'],
-    ['Gallery', '/en/gallery'],
   ]) {
     await page.locator('header nav[aria-label="Main"]').getByRole('link', { name }).click();
     await expect(page).toHaveURL(path);

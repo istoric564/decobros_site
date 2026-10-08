@@ -8,8 +8,10 @@ interface Props {
   eyebrow?: string;
   copy?: string[];
   cta?: { label: string; href: string };
+  /** Quieter second way forward, shown as a text link next to the button. */
+  secondary?: { label: string; href: string };
 }
-const { imageId, lines, eyebrow, copy = [], cta, compact = false } = Astro.props;
+const { imageId, lines, eyebrow, copy = [], cta, secondary, compact = false } = Astro.props;
 ---
 
 <Band
@@ -34,10 +36,19 @@ const { imageId, lines, eyebrow, copy = [], cta, compact = false } = Astro.props
       ))}
     </p>
   )}
-  {cta && (
-    <a class="btn" href={cta.href}>
-      {cta.label} <span aria-hidden="true">→</span>
-    </a>
+  {(cta || secondary) && (
+    <div class="actions">
+      {cta && (
+        <a class="btn" href={cta.href}>
+          {cta.label} <span aria-hidden="true">→</span>
+        </a>
+      )}
+      {secondary && (
+        <a class="link-arrow" href={secondary.href}>
+          {secondary.label} <span aria-hidden="true">→</span>
+        </a>
+      )}
+    </div>
   )}
   {compact && (
     <div slot="decoration" class="hero-caption" aria-hidden="true">
@@ -77,6 +88,15 @@ const { imageId, lines, eyebrow, copy = [], cta, compact = false } = Astro.props
     min-height: 44px;
     padding-inline: 24px;
     font-size: 14px;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+  }
+  h1 + .actions {
+    margin-top: 24px;
   }
   .copy {
     display: flex;

@@ -35,6 +35,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-window.matchMedia('(min-width: 1200px)').addEventListener('change', (m) => {
+window.matchMedia('(min-width: 1280px)').addEventListener('change', (m) => {
   if (m.matches) setOpen(false);
 });
