@@ -1,0 +1,132 @@
+---
+/*
+  Home only. A depth gauge on the edge of the screen reads the data-depth marks of the
+  sections, and colours of the spectrum fade out as they do in water.
+*/
+interface Props {
+  unit: string;
+  /** [depth from which the zone starts, name] */
+  zones: [number, string][];
+  /** [depth by which the colour is gone, colour name, swatch] */
+  spectrum: [number, string, string][];
+}
+const { unit, zones, spectrum } = Astro.props;
+---
+
+<div class="gauge" aria-hidden="true" data-zones={JSON.stringify(zones)}>
+  <div class="v mono">0</div>
+  <div class="u">{unit}</div>
+  <div class="z">{zones[0][1]}</div>
+  <div class="spec">
+    {spectrum.map(([gone, name, color]) => (
+      <div data-gone={gone}>
+        <span>{name}</span>
+        <i style={`background:${color}`}></i>
+      </div>
+    ))}
+  </div>
+</div>
+<script>
+  import '../scripts/depth-gauge';
+</script>
+
+<style>
+  .gauge {
+    position: fixed;
+    z-index: 40;
+    right: clamp(12px, 2vw, 28px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 96px;
+    text-align: right;
+    pointer-events: none;
+    opacity: 0;
+    color: var(--ink);
+    transition:
+      opacity 0.6s var(--ease),
+      color 0.6s;
+  }
+  .gauge:global(.on) {
+    opacity: 1;
+  }
+  .gauge:global(.lite) {
+    color: var(--white);
+  }
+  .v {
+    font-size: 44px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .u {
+    margin-top: 4px;
+    font: 500 10px/1.4 var(--sans);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .z {
+    min-height: 1.4em;
+    margin-top: 10px;
+    font: 400 11px/1.4 var(--sans);
+    opacity: 0.85;
+  }
+  .spec {
+    display: grid;
+    gap: 4px;
+    margin-top: 14px;
+    justify-items: end;
+  }
+  .spec div {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font: 400 10px var(--sans);
+    opacity: 0.8;
+    transition: opacity 0.6s;
+  }
+  .spec i {
+    display: block;
+    width: 18px;
+    height: 6px;
+    border-radius: 1px;
+    transition:
+      filter 0.6s,
+      opacity 0.6s;
+  }
+  .spec div:global(.gone) {
+    opacity: 0.3;
+  }
+  .spec div:global(.gone) i {
+    filter: grayscale(1);
+    opacity: 0.5;
+  }
+  /* Phones and tablets: a small chip bottom left, clear of the chat button on the right. */
+  @media (max-width: 1099px) {
+    .gauge {
+      top: auto;
+      right: auto;
+      left: 12px;
+      bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+      transform: none;
+      width: auto;
+      display: flex;
+      gap: 6px;
+      align-items: baseline;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: rgb(255 255 255 / 88%);
+      backdrop-filter: blur(8px);
+    }
+    .gauge:global(.lite) {
+      background: rgb(3 8 13 / 72%);
+    }
+    .v {
+      font-size: 24px;
+    }
+    .spec,
+    .z {
+      display: none;
+    }
+  }
+</style>

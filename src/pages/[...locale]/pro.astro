@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Closing from '../../components/Closing.astro';
+import { localeFromUrl, localePath, localeStaticPaths } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const p = (path: string) => localePath(locale, path);
+
+const T = {
+  ru: {
+    title: 'Аудит дайв-центров и оценка инструкторов',
+    description:
+      'Аудит дайв-центров, независимая оценка навыков инструкторов, консультации и сложные погружения под задачу от команды технических дайверов DECOBROSCREW.',
+    kicker: 'Для профессионалов и дайв-центров',
+    h1: 'Независимая экспертиза.',
+    sub: 'Аудит дайв-центров, оценка инструкторов и консультации от команды технических дайверов.',
+    cta: 'Обсудить задачу',
+    secondary: 'Техническое обучение',
+    servicesKicker: 'Что мы делаем',
+    servicesH: 'Четыре задачи, с которыми к нам приходят.',
+    result: 'Результат',
+    services: [
+      [
+        'Аудит дайв-центра',
+        'Смотрим, как центр работает на самом деле: процедуры безопасности и план действий в аварийной ситуации, состояние снаряжения и газа, организацию погружений, документацию.',
+        'Список рисков по приоритету и понятный план исправлений.',
+      ],
+      [
+        'Оценка навыков инструкторов',
+        'Практическая проверка в воде и на суше: демонстрация навыков, контроль группы, действия в нештатной ситуации, качество брифингов.',
+        'Независимое заключение — для найма, внутреннего контроля или развития команды.',
+      ],
+      [
+        'Консультации и процедуры',
+        'Конфигурация снаряжения, планирование технических погружений, газовые смеси, внутренние стандарты и чек-листы.',
+        'Рабочие процедуры, адаптированные под ваш центр или команду.',
+      ],
+      [
+        'Сложные погружения под задачу',
+        'Пещеры, рэки, подлёдные погружения, индивидуальные экспедиции: планирование, логистика и сопровождение командой.',
+        'Погружение, подготовленное как экспедиция.',
+      ],
+    ],
+    note: 'Аудит и оценка навыков — независимое экспертное заключение команды DECOBROSCREW. Они не заменяют аттестацию, сертификацию или контроль качества учебных агентств.',
+    howKicker: 'Как мы работаем',
+    howH: 'От задачи до заключения.',
+    how: [
+      ['Задача', 'Рассказываете, что нужно проверить или решить и почему это важно сейчас.'],
+      ['План', 'Согласуем объём, формат, сроки и стоимость до начала работы.'],
+      ['Работа на месте', 'Работаем в вашем центре: на воде, на берегу и с документами.'],
+      [
+        'Заключение',
+        'Выводы и рекомендации по приоритету; при необходимости — повторная проверка.',
+      ],
+    ],
+    closeKicker: 'Для дайв-центров, клубов и профи',
+    closeH: 'Опишите задачу.',
+    close: 'Напишите, что нужно, — ответим, как можем помочь и кто из команды возьмётся.',
+    closeBtn: 'Связаться',
+  },
+  en: {
+    title: 'Dive Center Audits and Instructor Assessment',
+    description:
+      'Dive center audits, independent instructor skills assessment, consulting and demanding dives to order from the DECOBROSCREW crew of technical divers.',
+    kicker: 'For professionals and dive centers',
+    h1: 'Independent expertise.',
+    sub: 'Dive center audits, instructor assessment and consulting from a crew of technical divers.',
+    cta: 'Discuss your task',
+    secondary: 'Technical training',
+    servicesKicker: 'What we do',
+    servicesH: 'Four jobs people bring to us.',
+    result: 'Outcome',
+    services: [
+      [
+        'Dive center audit',
+        'We look at how the center really works: safety procedures and the emergency action plan, gear and gas condition, dive operations, documentation.',
+        'A prioritized list of risks and a clear plan to fix them.',
+      ],
+      [
+        'Instructor skills assessment',
+        'A practical check in the water and on land: skill demonstrations, group control, response to incidents, quality of briefings.',
+        'An independent opinion — for hiring, internal control or team development.',
+      ],
+      [
+        'Consulting and procedures',
+        'Gear configuration, technical dive planning, gas mixes, internal standards and checklists.',
+        'Working procedures adapted to your center or team.',
+      ],
+      [
+        'Demanding dives to order',
+        'Caves, wrecks, ice dives, private expeditions: planning, logistics and support from the crew.',
+        'A dive prepared like an expedition.',
+      ],
+    ],
+    note: 'Audits and skills assessments are an independent expert opinion of the DECOBROSCREW crew. They do not replace the certification, accreditation or quality control of training agencies.',
+    howKicker: 'How we work',
+    howH: 'From task to findings.',
+    how: [
+      ['Task', 'You tell us what needs checking or solving and why it matters now.'],
+      ['Plan', 'We agree scope, format, timing and price before any work starts.'],
+      ['On site', 'We work at your center: in the water, on shore and with the paperwork.'],
+      ['Findings', 'Prioritized conclusions and recommendations; a follow-up check if needed.'],
+    ],
+    closeKicker: 'For dive centers, clubs and pros',
+    closeH: 'Tell us the task.',
+    close:
+      'Write what you need, and we will tell you how we can help and who on the crew will take it on.',
+    closeBtn: 'Get in touch',
+  },
+  zh: {
+    title: '潜水中心审核与教练评估',
+    description:
+      'DECOBROSCREW 技术潜水团队提供潜水中心审核、独立的教练技能评估、咨询以及按需定制的高难度潜水。',
+    kicker: '面向专业潜水员和潜水中心',
+    h1: '独立的专业评估。',
+    sub: '潜水中心审核、教练评估与咨询，由技术潜水团队提供。',
+    cta: '讨论您的需求',
+    secondary: '技术潜水培训',
+    servicesKicker: '我们做什么',
+    servicesH: '客户找我们解决的四类问题。',
+    result: '成果',
+    services: [
+      [
+        '潜水中心审核',
+        '我们查看中心的真实运营情况：安全流程与应急预案、装备和气体状况、潜水组织、文件资料。',
+        '按优先级排列的风险清单和清晰的整改计划。',
+      ],
+      [
+        '教练技能评估',
+        '水中与陆上的实际考核：技能示范、团队控制、突发情况处置、简报质量。',
+        '独立评估意见——用于招聘、内部管控或团队发展。',
+      ],
+      [
+        '咨询与流程',
+        '装备配置、技术潜水计划、混合气体、内部标准和检查清单。',
+        '为您的中心或团队量身定制的工作流程。',
+      ],
+      [
+        '按需定制的高难度潜水',
+        '洞穴、沉船、冰潜、私人探险：由团队负责计划、后勤和全程保障。',
+        '像探险一样精心准备的潜水。',
+      ],
+    ],
+    note: '审核和技能评估是 DECOBROSCREW 团队的独立专家意见，不能替代培训机构的认证、资质评定或质量管控。',
+    howKicker: '工作方式',
+    howH: '从需求到结论。',
+    how: [
+      ['需求', '告诉我们需要检查或解决什么，以及为什么现在很重要。'],
+      ['计划', '开始前确定范围、形式、时间和费用。'],
+      ['现场工作', '在您的中心开展工作：水中、岸上以及文件资料。'],
+      ['结论', '按优先级给出结论和建议；如有需要，进行复查。'],
+    ],
+    closeKicker: '面向潜水中心、俱乐部和专业潜水员',
+    closeH: '告诉我们您的需求。',
+    close: '写下您的需求，我们会告诉您能提供哪些帮助，以及由团队中的哪位负责。',
+    closeBtn: '联系我们',
+  },
+}[locale];
+---
+
+<BaseLayout title={T.title} description={T.description} overlay>
+  <PageHero
+    imageId="PRO01"
+    kicker={T.kicker}
+    title={T.h1}
+    sub={T.sub}
+    actions={[
+      { label: T.cta, href: p('/contact') },
+      { label: T.secondary, href: p('/training#technical') },
+    ]}
+  />
+
+  <section class="wrap sec" aria-labelledby="pro-svc-h">
+    <p class="kicker">{T.servicesKicker}</p>
+    <h2 class="h2" id="pro-svc-h">{T.servicesH}</h2>
+    <ul class="svc-list">
+      {T.services.map(([h, d, r], i) => (
+        <li>
+          <span class="mono n">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>{h}</h3>
+            <p>{d}</p>
+          </div>
+          <div class="res">
+            <span class="kicker">{T.result}</span>
+            <p>{r}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <p class="notice">{T.note}</p>
+  </section>
+
+  <section class="wrap sec paper" aria-labelledby="pro-how-h">
+    <p class="kicker">{T.howKicker}</p>
+    <h2 class="h2" id="pro-how-h">{T.howH}</h2>
+    <ol class="step-list">
+      {T.how.map(([b, d]) => (
+        <li>
+          <b>{b}</b>
+          <p>{d}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <Closing
+    kicker={T.closeKicker}
+    heading={T.closeH}
+    text={T.close}
+    action={{ label: T.closeBtn, href: p('/contact') }}
+  />
+</BaseLayout>

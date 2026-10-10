@@ -1,706 +1,263 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Hero from '../../components/Hero.astro';
-import CourseDetails from '../../components/CourseDetails.astro';
-import TrainingOutline from '../../components/TrainingOutline.astro';
-import { courses, courseBySlug, trainingDisclaimer } from '../../data/training';
+import PageHero from '../../components/PageHero.astro';
+import Accordion from '../../components/Accordion.astro';
+import { courses, courseBySlug, detailLabels, trainingDisclaimer } from '../../data/training';
+import { faq } from '../../data/faq';
 import { localeFromUrl, localePath, localeStaticPaths, translator } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
 
 const locale = localeFromUrl(Astro.url);
 const tr = translator(locale);
-const contact = localePath(locale, '/contact');
+const p = (path: string) => localePath(locale, path);
+const course = (slug: string) => p(`/training/${slug}`);
 
-const discovery = courseBySlug('scuba-discovery');
 const openWater = courseBySlug('open-water-scuba-diver');
-const advanced = courseBySlug('advanced-adventure-diver');
-const rescue = courseBySlug('rescue-diver');
-const refresher = courseBySlug('refresher');
-const divemaster = courseBySlug('divemaster');
+const list = ['scuba-discovery', 'advanced-adventure-diver', 'rescue-diver', 'refresher'].map(
+  courseBySlug,
+);
 const specialties = courses.filter((c) => c.category === 'specialty');
+const divemaster = courseBySlug('divemaster');
 const tech = courses.filter((c) => c.category === 'technical');
+const featuredRows = ['minimumAge', 'prerequisites', 'openWater', 'maxDepth', 'price'] as const;
 
 const T = {
   ru: {
-    title: 'Обучение',
-    description:
-      'Обучение SDI и TDI в DECOBROSCREW: рекреационный дайвинг, Divemaster и основы технического дайвинга.',
-    heroEyebrow: 'Обучение SDI · TDI',
-    hero: ['Готовься', 'к следующему шагу.'],
-    indexAria: 'Разделы обучения',
+    title: 'Обучение дайвингу в Новосибирске',
+    description: `Обучение дайвингу SDI и TDI в Новосибирске: ${courses.length} программ от пробного погружения и Open Water до Divemaster и технической подготовки.`,
+    kicker: 'Обучение SDI · TDI',
+    h1: 'Готовься к следующему шагу.',
+    sub: `${courses.length} программ: от первого погружения до технической подготовки. Реальные навыки, а не карточки.`,
+    choose: 'Выбрать курс',
+    discuss: 'Обсудить обучение',
+    subnav: 'Разделы обучения',
     sections: ['Рекреационный дайвинг', 'Профессиональный уровень', 'Технический фундамент'],
-    recH: 'Рекреационное обучение',
-    recDisplay: ['Сначала контроль.', 'Потом глубина.'],
+    recKicker: 'Рекреационное обучение',
+    recH: 'Сначала контроль. Потом глубина.',
     recLead:
-      'Обучение в DECOBROSCREW строится вокруг реальных навыков: плавучести, трима, работы со снаряжением, планирования и уверенного поведения под водой.',
-    discuss: 'Обсудить обучение →',
-    focus: 'Фокус',
-    mainFocus: 'Основной фокус',
-    specH: 'СПЕЦИАЛИЗАЦИИ',
-    specDisplay: ['Развивай конкретный навык.', 'Не собирай карточки.'],
+      'Обучение строится вокруг реальных навыков: плавучести, трима, работы со снаряжением, планирования и уверенности под водой.',
+    featured: 'Фундамент · главный курс',
+    specH: 'Специализации: развивай конкретный навык',
+    ice: 'подо льдом',
     proH: 'Веди погружение.',
-    techH: 'Технический фундамент',
-    techLede: ['Технический дайвинг начинается не с глубины.', 'Он начинается с дисциплины.'],
-    progressionAria: 'Последовательность технической подготовки',
+    proLead:
+      'SDI Divemaster — первый профессиональный уровень. Когда дайвинг становится ответственностью за других.',
+    proBtn: 'Стать Divemaster',
+    techKicker: 'Технический фундамент · TDI',
+    techH: 'Технический дайвинг начинается не с глубины. Он начинается с дисциплины.',
+    step: 'ШАГ',
+    techBtn: 'Начать техническую подготовку',
+    faqKicker: 'Вопросы',
+    faqH: 'Частые вопросы об обучении.',
   },
   en: {
-    title: 'Training',
-    description:
-      'SDI and TDI training at DECOBROSCREW: recreational diving, Divemaster and the foundations of technical diving.',
-    heroEyebrow: 'SDI · TDI Training',
-    hero: ['Train for', 'what comes next.'],
-    indexAria: 'Training sections',
-    sections: ['Recreational Diving', 'Professional Level', 'Technical Foundation'],
-    recH: 'Recreational training',
-    recDisplay: ['Control first.', 'Depth later.'],
+    title: 'Scuba Diving Courses in Novosibirsk',
+    description: `SDI and TDI diving courses in Novosibirsk: ${courses.length} programs from a try dive and Open Water to Divemaster and technical training.`,
+    kicker: 'SDI · TDI Training',
+    h1: 'Train for what comes next.',
+    sub: `${courses.length} programs: from a first dive to technical training. Real skills, not cards.`,
+    choose: 'Choose a course',
+    discuss: 'Discuss training',
+    subnav: 'Training sections',
+    sections: ['Recreational diving', 'Professional level', 'Technical foundation'],
+    recKicker: 'Recreational training',
+    recH: 'Control first. Depth later.',
     recLead:
-      'Training at DECOBROSCREW is built around real skills: buoyancy, trim, equipment handling, planning and confident behavior underwater.',
-    discuss: 'Discuss training →',
-    focus: 'Focus',
-    mainFocus: 'Main focus',
-    specH: 'SPECIALTIES',
-    specDisplay: ['Build a specific skill.', "Don't collect cards."],
+      'Training is built around real skills: buoyancy, trim, equipment handling, planning and confidence underwater.',
+    featured: 'Foundation · core course',
+    specH: 'Specialties: build a specific skill',
+    ice: 'under the ice',
     proH: 'Lead the dive.',
-    techH: 'Technical Foundation',
-    techLede: ["Technical diving doesn't start with depth.", 'It starts with discipline.'],
-    progressionAria: 'Technical training progression',
+    proLead:
+      'SDI Divemaster is the first professional level. When diving becomes responsibility for others.',
+    proBtn: 'Become a Divemaster',
+    techKicker: 'Technical foundation · TDI',
+    techH: 'Technical diving does not start with depth. It starts with discipline.',
+    step: 'STEP',
+    techBtn: 'Start technical training',
+    faqKicker: 'Questions',
+    faqH: 'Common questions about training.',
   },
   zh: {
-    title: '培训',
-    description: 'DECOBROSCREW 的 SDI 与 TDI 培训：休闲潜水、潜水长以及技术潜水基础。',
-    heroEyebrow: 'SDI · TDI 培训',
-    hero: ['为下一步', '做好准备。'],
-    indexAria: '培训板块',
+    title: '新西伯利亚潜水培训',
+    description: `新西伯利亚 SDI 与 TDI 潜水培训：${courses.length} 个课程，从体验潜水和开放水域到潜水长与技术潜水培训。`,
+    kicker: 'SDI · TDI 培训',
+    h1: '为下一步做好准备。',
+    sub: `${courses.length} 个课程：从第一次潜水到技术潜水培训。真正的技能，而不是证书。`,
+    choose: '选择课程',
+    discuss: '咨询培训',
+    subnav: '培训板块',
     sections: ['休闲潜水', '专业级别', '技术潜水基础'],
-    recH: '休闲潜水培训',
-    recDisplay: ['先学控制，', '再谈深度。'],
-    recLead:
-      'DECOBROSCREW 的培训围绕真正的技能展开：浮力、水平姿态、装备操作、潜水计划以及在水下从容应对。',
-    discuss: '咨询培训 →',
-    focus: '重点',
-    mainFocus: '主要重点',
-    specH: '专项课程',
-    specDisplay: ['专注提升一项技能，', '而不是收集证书。'],
+    recKicker: '休闲潜水培训',
+    recH: '先学控制，再谈深度。',
+    recLead: '培训围绕真正的技能展开：浮力、水平姿态、装备操作、潜水计划以及在水下从容应对。',
+    featured: '基础 · 核心课程',
+    specH: '专项课程：专注提升一项技能',
+    ice: '冰下',
     proH: '带领潜水。',
-    techH: '技术潜水基础',
-    techLede: ['技术潜水不是从深度开始的，', '而是从纪律开始的。'],
-    progressionAria: '技术潜水培训进阶路线',
+    proLead: 'SDI 潜水长是第一个专业级别。潜水从此意味着对他人负责。',
+    proBtn: '成为潜水长',
+    techKicker: '技术潜水基础 · TDI',
+    techH: '技术潜水不是从深度开始的，而是从纪律开始的。',
+    step: '第',
+    techBtn: '开始技术潜水培训',
+    faqKicker: '常见问题',
+    faqH: '关于培训的常见问题。',
   },
 }[locale];
 
-const outlineItems = [
+const sections = [
   { id: 'recreational', label: T.sections[0] },
-  { id: 'specialties', label: T.specH.charAt(0) + T.specH.slice(1).toLowerCase() },
-  { id: rescue.slug, label: rescue.title },
-  { id: refresher.slug, label: refresher.title },
   { id: 'professional', label: T.sections[1] },
   { id: 'technical', label: T.sections[2] },
 ];
-
-const sections = [
-  { n: '01', id: 'recreational', label: T.sections[0] },
-  { n: '02', id: 'professional', label: T.sections[1] },
-  { n: '03', id: 'technical', label: T.sections[2] },
-];
+const stepLabel = (i: number) =>
+  locale === 'zh' ? `第 ${i + 1} 步` : `${T.step} ${String(i + 1).padStart(2, '0')}`;
 ---
 
-<BaseLayout title={T.title} description={T.description}>
-  <Hero imageId="T01" eyebrow={T.heroEyebrow} lines={T.hero} />
+<BaseLayout title={T.title} description={T.description} overlay>
+  <PageHero
+    imageId="T01"
+    kicker={T.kicker}
+    title={T.h1}
+    sub={T.sub}
+    actions={[
+      { label: T.choose, href: '#recreational' },
+      { label: T.discuss, href: p('/contact') },
+    ]}
+  />
 
-  <nav class="section index" aria-label={T.indexAria}>
-    <div class="container">
-      <ol>
-        {sections.map((s) => (
+  <nav class="subnav wrap" aria-label={T.subnav}>
+    {sections.map((s, i) => (
+      <a href={`#${s.id}`}>
+        <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+        {s.label}
+      </a>
+    ))}
+  </nav>
+
+  <section class="wrap sec" id="recreational" aria-labelledby="rec-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.recKicker}</p>
+        <h2 class="h2" id="rec-h">{T.recH}</h2>
+      </div>
+      <p class="lead">{T.recLead}</p>
+    </div>
+
+    <article class="course">
+      <div>
+        <p class="kicker">{T.featured}</p>
+        <h3>{openWater.title}</h3>
+        <p class="course-lead">{tr(openWater.headline!)}. {tr(openWater.description)[0]}</p>
+        <ul class="chips">
+          {tr(openWater.focus).map((f) => (
+            <li>{f}</li>
+          ))}
+        </ul>
+        <a class="btn course-btn" href={course(openWater.slug)}>
+          {tr(openWater.cta!)}
+          <span class="ar" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <dl class="spec-table compact">
+        {featuredRows.map((k) => (
+          <div>
+            <dt>{tr(detailLabels[k])}</dt>
+            <dd>{tr(openWater.details[k])}</dd>
+          </div>
+        ))}
+      </dl>
+    </article>
+
+    <ul class="course-list">
+      {list.map((c) => (
+        <li>
+          <a href={course(c.slug)}>
+            <span class="mono n">{tr(c.eyebrow)}</span>
+            <b>{c.title}</b>
+            <span class="d">{tr(c.subtitle)}</span>
+            <span class="mono v">{c.metric ? tr(c.metric) : '—'}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <h3 class="sub-h" id="specialties">{T.specH}</h3>
+    <ul class="spec-grid">
+      {specialties.map((c) => (
+        <li>
+          <a href={course(c.slug)}>
+            <b>{c.title}</b>
+            {c.metric && <span class="mono">{tr(c.metric)}</span>}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href={p('/ice')}>
+          <b>Ice Diver →</b>
+          <span class="mono">{T.ice}</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="wrap sec paper" id="professional" aria-labelledby="pro-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.sections[1]}</p>
+        <h2 class="h2" id="pro-h">{T.proH}</h2>
+        <p class="lead sub-lead">{T.proLead}</p>
+      </div>
+      <div class="pro-card">
+        <span class="mono n">SDI DIVEMASTER</span>
+        <b>{tr(divemaster.subtitle)}</b>
+        <p>{tr(divemaster.description)[0]}</p>
+        <a class="btn" href={course(divemaster.slug)}>
+          {T.proBtn}
+          <span class="ar" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="deep dk" id="technical" aria-labelledby="tech-h">
+    <canvas class="sea" data-mode="deep" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <p class="kicker">{T.techKicker}</p>
+      <h2 id="tech-h">{T.techH}</h2>
+      <ol class="tech-steps">
+        {tech.map((c, i) => (
           <li>
-            <a href={`#${s.id}`}>
-              <span class="n">{s.n}</span>
-              <span class="l">{s.label}</span>
-            </a>
+            <span class="mono s">{stepLabel(i)}</span>
+            <b>
+              <a href={course(c.slug)}>{c.title}</a>
+            </b>
+            <p>{tr(c.subtitle)}.</p>
+            {c.metric && <span class="mono g">{tr(c.metric)}</span>}
           </li>
         ))}
       </ol>
+      <a class="btn white tech-btn" href={p('/contact')}>
+        {T.techBtn}
+        <span class="ar" aria-hidden="true">→</span>
+      </a>
     </div>
-  </nav>
+  </section>
 
-  <div class="training-reader">
-    <TrainingOutline items={outlineItems} />
-    <div class="training-content">
-      <!-- 01 RECREATIONAL -->
-      <section id="recreational" class="section" aria-labelledby="rec-h">
-        <div class="container">
-          <header class="sec-head">
-            <p class="eyebrow">01 — {T.recH}</p>
-            <h2 id="rec-h" class="display">
-              {T.recDisplay[0]}
-              <br />
-              {T.recDisplay[1]}
-            </h2>
-            <p class="lead">{T.recLead}</p>
-          </header>
-
-          <article class="row" id={discovery.slug}>
-            <div>
-              <p class="eyebrow tag">{tr(discovery.eyebrow)}</p>
-              <h3>{discovery.title}</h3>
-              <p class="sub">{tr(discovery.subtitle)}</p>
-            </div>
-            <div>
-              {tr(discovery.description).map((p) => (
-                <p>{p}</p>
-              ))}
-              <CourseDetails course={discovery} />
-            </div>
-          </article>
-
-          <article class="feature" id={openWater.slug}>
-            <div class="f-main">
-              <p class="eyebrow">{tr(openWater.eyebrow)}</p>
-              <h3 class="f-title">{openWater.title}</h3>
-              {openWater.headline && <p class="f-headline">{tr(openWater.headline)}</p>}
-              <p class="sub">{tr(openWater.subtitle)}</p>
-              {tr(openWater.description).map((p) => (
-                <p>{p}</p>
-              ))}
-              <div class="ctas">
-                {openWater.cta && (
-                  <a class="btn" href={`#${openWater.slug}-details`} data-open-details>
-                    {tr(openWater.cta)}
-                  </a>
-                )}
-                <a class="link-arrow" href={contact}>
-                  {T.discuss}
-                </a>
-              </div>
-            </div>
-            <aside class="f-focus" aria-label={T.focus}>
-              <p class="eyebrow">{T.focus}</p>
-              <ul class="focus">
-                {tr(openWater.focus).map((f) => (
-                  <li>{f}</li>
-                ))}
-              </ul>
-            </aside>
-            <div class="f-details">
-              <CourseDetails course={openWater} />
-            </div>
-          </article>
-
-          <article class="mid" id={advanced.slug}>
-            <div>
-              <p class="eyebrow">{tr(advanced.eyebrow)}</p>
-              <h3>{advanced.title}</h3>
-              <p class="sub">{tr(advanced.subtitle)}</p>
-            </div>
-            <div>
-              {tr(advanced.description).map((p) => (
-                <p>{p}</p>
-              ))}
-              <p class="eyebrow focus-h">{T.mainFocus}</p>
-              <ul class="focus inline">
-                {tr(advanced.focus).map((f) => (
-                  <li>{f}</li>
-                ))}
-              </ul>
-              <CourseDetails course={advanced} />
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="specialties" class="section paper" aria-labelledby="spec-h">
-        <div class="container">
-          <header class="spec-head">
-            <h2 id="spec-h" class="eyebrow big">
-              {T.specH}
-            </h2>
-            <p class="display sm">
-              {T.specDisplay[0]}
-              <br />
-              {T.specDisplay[1]}
-            </p>
-          </header>
-          <ol class="spec-list">
-            {specialties.map((c, i) => (
-              <li id={c.slug}>
-                <span class="n">{String(i + 1).padStart(2, '0')}</span>
-                <h3>{c.title}</h3>
-                <div>
-                  {tr(c.description).map((p) => (
-                    <p>{p}</p>
-                  ))}
-                  <CourseDetails course={c} />
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section id={rescue.slug} class="section navy" aria-labelledby="rescue-h">
-        <div class="container feature-wide">
-          <div>
-            <p class="eyebrow">{tr(rescue.eyebrow)}</p>
-            <h2 id="rescue-h" class="f-title">
-              {rescue.title}
-            </h2>
-            {rescue.headline && <p class="display">{tr(rescue.headline)}</p>}
-          </div>
-          <div>
-            {tr(rescue.description).map((p, i) => (
-              <p class={i === 0 ? 'lede' : ''}>{p}</p>
-            ))}
-            <p class="eyebrow focus-h">{T.focus}</p>
-            <ul class="focus inline">
-              {tr(rescue.focus).map((f) => (
-                <li>{f}</li>
-              ))}
-            </ul>
-            <CourseDetails course={rescue} />
-          </div>
-        </div>
-      </section>
-
-      <section class="section" aria-labelledby="refresher-h">
-        <div class="container">
-          <article class="mid" id={refresher.slug}>
-            <div>
-              <p class="eyebrow">{tr(refresher.eyebrow)}</p>
-              <h2 id="refresher-h" class="h3">
-                {refresher.title}
-              </h2>
-              <p class="sub">{tr(refresher.subtitle)}</p>
-            </div>
-            <div>
-              {tr(refresher.description).map((p) => (
-                <p>{p}</p>
-              ))}
-              <p class="eyebrow focus-h">{T.focus}</p>
-              <ul class="focus inline">
-                {tr(refresher.focus).map((f) => (
-                  <li>{f}</li>
-                ))}
-              </ul>
-              <CourseDetails course={refresher} />
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- 02 PROFESSIONAL -->
-      <section id="professional" class="section paper pro" aria-labelledby="pro-h">
-        <div class="container">
-          <p class="eyebrow">02 — {tr(divemaster.eyebrow)}</p>
-          <h2 id="pro-h" class="display">
-            {T.proH}
-          </h2>
-          <article class="feature" id={divemaster.slug}>
-            <div class="f-main">
-              <h3 class="f-title">{divemaster.title}</h3>
-              {divemaster.headline && <p class="f-headline">{tr(divemaster.headline)}</p>}
-              <p class="sub">{tr(divemaster.subtitle)}</p>
-              {tr(divemaster.description).map((p) => (
-                <p>{p}</p>
-              ))}
-              {divemaster.cta && (
-                <div class="ctas">
-                  <a class="btn" href={contact}>
-                    {tr(divemaster.cta)}
-                  </a>
-                </div>
-              )}
-            </div>
-            <aside class="f-focus" aria-label={T.mainFocus}>
-              <p class="eyebrow">{T.mainFocus}</p>
-              <ul class="focus">
-                {tr(divemaster.focus).map((f) => (
-                  <li>{f}</li>
-                ))}
-              </ul>
-            </aside>
-            <div class="f-details">
-              <CourseDetails course={divemaster} />
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- 03 TECHNICAL -->
-      <section id="technical" class="section dark" aria-labelledby="tech-h">
-        <div class="container">
-          <p class="eyebrow">03 — TDI</p>
-          <h2 id="tech-h" class="display">
-            {T.techH}
-          </h2>
-          <p class="tech-lede">
-            {T.techLede[0]}
-            <br />
-            {T.techLede[1]}
-          </p>
-
-          <ol class="progression" aria-label={T.progressionAria}>
-            {tech.map((c) => (
-              <li>
-                <a href={`#${c.slug}`}>{c.shortTitle}</a>
-              </li>
-            ))}
-          </ol>
-
-          <ol class="tech-steps">
-            {tech.map((c) => (
-              <li class="step" id={c.slug}>
-                <div>
-                  <p class="eyebrow">{tr(c.eyebrow)}</p>
-                  <h3>{c.title}</h3>
-                  <p class="sub">{tr(c.subtitle)}</p>
-                </div>
-                <div>
-                  {tr(c.description).map((p) => (
-                    <p>{p}</p>
-                  ))}
-                  <p class="eyebrow focus-h">{T.focus}</p>
-                  <ul class="focus inline">
-                    {tr(c.focus).map((f) => (
-                      <li>{f}</li>
-                    ))}
-                  </ul>
-                  {c.cta && (
-                    <div class="ctas">
-                      <a class="btn light" href={contact}>
-                        {tr(c.cta)}
-                      </a>
-                    </div>
-                  )}
-                  <CourseDetails course={c} />
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <p class="disclaimer">{tr(trainingDisclaimer)}</p>
-        </div>
-      </section>
+  <section class="wrap sec" aria-labelledby="faq-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.faqKicker}</p>
+        <h2 class="h2" id="faq-h">{T.faqH}</h2>
+      </div>
+      <Accordion items={faq.map((f) => ({ q: tr(f.question), a: tr(f.answer) }))} />
     </div>
-  </div>
+    <p class="fine">{tr(trainingDisclaimer)}</p>
+  </section>
 </BaseLayout>
 
 <script>
-  const openTarget = () => {
-    const el = location.hash && document.getElementById(location.hash.slice(1));
-    if (el instanceof HTMLDetailsElement) el.open = true;
-  };
-  window.addEventListener('hashchange', openTarget);
-  openTarget();
+  import '../../scripts/sea';
 </script>
-
-<style>
-  .training-content {
-    min-width: 0;
-    container-type: inline-size;
-  }
-  .training-content [id] {
-    scroll-margin-top: 56px;
-  }
-  @media (min-width: 1200px) {
-    .training-reader {
-      display: grid;
-      grid-template-columns: clamp(220px, 18%, 280px) minmax(0, 1fr);
-    }
-    .training-content [id] {
-      scroll-margin-top: 20px;
-    }
-    .training-content .display {
-      font-size: clamp(2.25rem, 5cqw, 5rem);
-    }
-  }
-  h2 {
-    font-size: var(--fs-h2);
-  }
-  h3,
-  .h3 {
-    font-size: var(--fs-h3);
-    letter-spacing: -0.02em;
-    margin: 8px 0 8px;
-  }
-  .display {
-    font-size: clamp(2.25rem, 6vw + 0.5rem, 5rem);
-    line-height: 1.02;
-    letter-spacing: -0.035em;
-    margin: 12px 0 24px;
-  }
-  .display.sm {
-    font-size: clamp(1.75rem, 3.5vw + 0.5rem, 3.25rem);
-  }
-  .sub {
-    color: var(--muted);
-    font-size: 1.0625rem;
-  }
-  .dark .sub,
-  .navy .sub {
-    color: var(--blue-soft);
-  }
-  .container p {
-    max-width: 42rem;
-  }
-
-  /* Index */
-  .index {
-    padding-block: 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .index ol {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-  }
-  .index a {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    padding: 16px 0;
-    text-decoration: none;
-    border-top: 1px solid var(--line);
-  }
-  .index li:first-child a {
-    border-top: 0;
-  }
-  .n {
-    font-size: 0.75rem;
-    letter-spacing: 0.18em;
-    color: var(--blue);
-    min-width: 2rem;
-  }
-  .index .l {
-    font-size: clamp(1.25rem, 1.5vw + 0.75rem, 1.75rem);
-    letter-spacing: -0.02em;
-  }
-
-  .sec-head {
-    margin-bottom: clamp(28px, 4vw, 48px);
-  }
-
-  /* Compact row */
-  .row,
-  .mid {
-    display: grid;
-    gap: 16px;
-    padding-block: 28px;
-    border-top: 1px solid var(--line);
-  }
-  .tag {
-    color: var(--blue);
-  }
-
-  /* Featured */
-  .feature {
-    display: grid;
-    gap: 28px;
-    padding-block: clamp(32px, 4vw, 48px);
-    border-top: 2px solid var(--ink);
-  }
-  .f-title {
-    font-size: var(--fs-h2);
-    letter-spacing: -0.03em;
-    margin: 12px 0 8px;
-  }
-  .f-headline {
-    font-size: clamp(1.5rem, 2.5vw + 0.75rem, 2.5rem);
-    line-height: 1.12;
-    letter-spacing: -0.025em;
-    margin: 0 0 20px;
-  }
-  .ctas {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px 28px;
-    margin-top: 20px;
-  }
-  .focus {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .f-focus .focus li {
-    padding: 12px 0;
-    border-top: 1px solid var(--line);
-    font-size: 1rem;
-  }
-  .focus.inline {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .focus.inline li {
-    padding: 6px 14px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    font-size: 0.8125rem;
-  }
-  .dark .focus.inline li,
-  .navy .focus.inline li {
-    border-color: var(--line-dark);
-  }
-  .focus-h {
-    margin: 20px 0 10px;
-  }
-
-  /* Specialties */
-  .spec-head {
-    margin-bottom: 32px;
-  }
-  .eyebrow.big {
-    font-size: 0.75rem;
-    color: var(--navy);
-  }
-  .spec-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .spec-list li {
-    display: grid;
-    gap: 8px;
-    padding-block: 24px;
-    border-top: 1px solid var(--line);
-  }
-  .spec-list .n {
-    color: var(--navy);
-  }
-  .spec-list h3 {
-    margin: 0;
-  }
-
-  /* Rescue */
-  .navy {
-    background: var(--navy);
-    color: var(--white);
-  }
-  .navy .eyebrow {
-    color: var(--blue-soft);
-  }
-  .feature-wide {
-    display: grid;
-    gap: 24px;
-  }
-  .lede {
-    font-size: 1.25rem;
-  }
-
-  /* Technical */
-  .tech-lede {
-    font-size: clamp(1.375rem, 2.5vw + 0.75rem, 2.25rem);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: #b8c4cf;
-    max-width: 44rem;
-  }
-  .progression {
-    list-style: none;
-    margin: clamp(28px, 4vw, 48px) 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .progression li {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .progression li + li::before {
-    content: '↓';
-    color: var(--blue-soft);
-    font-size: 1.5rem;
-    padding: 8px 0 8px 20px;
-  }
-  .progression a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 56px;
-    padding: 0 24px;
-    border: 1px solid var(--blue-soft);
-    border-radius: 999px;
-    text-decoration: none;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-size: 0.875rem;
-  }
-  .progression a:hover {
-    background: var(--white);
-    color: var(--ink);
-  }
-  .tech-steps {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .step {
-    display: grid;
-    gap: 16px;
-    padding-block: 32px;
-    border-top: 1px solid var(--line-dark);
-  }
-
-  .disclaimer {
-    font-size: 0.875rem;
-    color: var(--muted);
-    border-left: 1px solid var(--line);
-    padding-left: 16px;
-  }
-
-  @media (min-width: 960px) {
-    .index ol {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .index a {
-      flex-direction: column;
-      gap: 8px;
-      padding: 24px 0;
-      border-top: 0;
-    }
-    .row,
-    .mid,
-    .step,
-    .feature-wide {
-      grid-template-columns: 5fr 7fr;
-      gap: 40px;
-    }
-    .feature {
-      grid-template-columns: 8fr 4fr;
-      column-gap: 48px;
-    }
-    .f-details {
-      grid-column: 1 / -1;
-    }
-    .spec-head {
-      display: grid;
-      grid-template-columns: 5fr 7fr;
-      gap: 40px;
-      align-items: end;
-    }
-    .spec-list li {
-      grid-template-columns: 4rem 4fr 7fr;
-      gap: 24px;
-      align-items: baseline;
-    }
-    .progression {
-      flex-direction: row;
-      align-items: center;
-    }
-    .progression li {
-      flex-direction: row;
-      align-items: center;
-    }
-    .progression li + li::before {
-      content: '→';
-      padding: 0 20px;
-    }
-  }
-</style>

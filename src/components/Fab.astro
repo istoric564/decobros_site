@@ -1,0 +1,56 @@
+---
+/* Phones only: one tap to the club chat from anywhere on the page. */
+import Icon from './Icon.astro';
+import { contactHref } from '../data/site';
+import { localeFromUrl, localePath, t } from '../i18n';
+
+const locale = localeFromUrl(Astro.url);
+const telegram = contactHref('telegram');
+const label = t(
+  {
+    ru: 'Написать · ответим за 15 мин',
+    en: 'Message us · reply in 15 min',
+    zh: '留言 · 15 分钟内回复',
+  },
+  locale,
+);
+---
+
+<a
+  class="fab"
+  href={telegram ?? localePath(locale, '/contact')}
+  target={telegram ? '_blank' : undefined}
+  rel={telegram ? 'noopener noreferrer' : undefined}
+>
+  <Icon name="telegram" />
+  <span class="ph">{label}</span>
+</a>
+
+<style>
+  .fab {
+    position: fixed;
+    z-index: 45;
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    display: none;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 16px 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 20%);
+    background: var(--ink);
+    color: var(--white);
+    font: 600 14px var(--sans);
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgb(6 16 26 / 30%);
+  }
+  @media (max-width: 899px) {
+    .fab {
+      display: inline-flex;
+    }
+  }
+  :global(body.menu-open) .fab {
+    visibility: hidden;
+  }
+</style>

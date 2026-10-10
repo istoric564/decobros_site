@@ -1,0 +1,80 @@
+---
+interface Props {
+  head: [string, string];
+  aria: string;
+  caption: string;
+  /** Units for the chart: minutes, metres, the word for the bottom phase. */
+  units: { min: string; m: string; bottom: string };
+  /** Decimal comma (ru) instead of a point. */
+  comma?: boolean;
+}
+const { head, aria, caption, units, comma = false } = Astro.props;
+---
+
+<figure
+  class="profile"
+  data-dive-profile
+  data-min={units.min}
+  data-m={units.m}
+  data-bottom={units.bottom}
+  data-comma={comma ? '' : undefined}
+>
+  <div class="head mono">
+    <span>{head[0]}</span>
+    <span>{head[1]}</span>
+  </div>
+  <svg role="img" aria-label={aria}></svg>
+  <div class="readout mono" aria-hidden="true"></div>
+  <figcaption>{caption}</figcaption>
+</figure>
+<script>
+  import '../scripts/dive-profile';
+</script>
+
+<style>
+  .profile {
+    position: relative;
+    margin: 0;
+  }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ink);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  svg {
+    display: block;
+    width: 100%;
+    min-height: 250px;
+    touch-action: pan-y;
+  }
+  svg :global(text) {
+    font-family: var(--mono);
+  }
+  .readout {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    font-size: 12px;
+    line-height: 1.4;
+    background: var(--ink);
+    color: var(--white);
+    padding: 7px 10px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  figcaption {
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>

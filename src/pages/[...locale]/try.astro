@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Accordion from '../../components/Accordion.astro';
+import { localeFromUrl, localePath, localeStaticPaths } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const p = (path: string) => localePath(locale, path);
+
+const T = {
+  ru: {
+    title: 'Пробное погружение с аквалангом в Новосибирске',
+    description:
+      'Пробное погружение с аквалангом: бассейны «Спартак» и «Нептун» в Новосибирске, открытая вода в Абрашино и Темире. Инструктор рядом, опыт не нужен.',
+    kicker: 'Пробное погружение · SDI Scuba Discovery',
+    h1: 'Первый вдох под водой.',
+    sub: 'Около двух часов с инструктором — в бассейне или в открытой воде. Опыт не нужен.',
+    book: 'Записаться',
+    gift: 'Подарить сертификат',
+    factsKicker: 'Коротко',
+    factsH: 'Всё, что нужно знать до записи.',
+    facts: [
+      ['Бассейн', '«Спартак» и «Нептун», Новосибирск'],
+      ['Открытая вода', 'Абрашино (НСО) и Темир (Таштагольский район)'],
+      ['Сколько длится', '≈ 2 ч — так рекомендует стандарт SDI'],
+      ['Опыт', 'Не нужен'],
+      ['Что нужно от вас', 'Спокойно держаться на воде и заполнить медицинскую анкету'],
+    ],
+    priceLabel: 'Стоимость',
+    price: 'от ··· ₽',
+    priceNote: 'точно — при записи',
+    howKicker: 'Как это проходит',
+    howH: 'Четыре шага до первого вдоха.',
+    how: [
+      [
+        'Знакомство и инструктаж',
+        'Инструктор объясняет, как дышать из регулятора, выравнивать давление в ушах и общаться под водой жестами.',
+      ],
+      [
+        'Снаряжение',
+        'Подбираем маску, ласты, гидрокостюм и акваланг по размеру и вместе настраиваем. Ничего своего не нужно.',
+      ],
+      [
+        'В воду',
+        'Сначала там, где можно встать. Первые вдохи у поверхности, потом — под воду. Инструктор на расстоянии вытянутой руки.',
+      ],
+      [
+        'Что дальше',
+        'Понравилось — расскажем, как получить свой сертификат. Нет — вы просто попробовали, без обязательств.',
+      ],
+    ],
+    fearsKicker: 'Частые страхи',
+    fearsH: 'Страшно? Это нормально.',
+    fearsLead: 'Пять вопросов, которые задают почти все перед первым погружением.',
+    fears: [
+      [
+        'Я плохо плаваю',
+        'Для пробного погружения достаточно спокойно держаться на воде. Начинаем на глубине, где можно встать, и инструктор всё время рядом.',
+      ],
+      [
+        'Боюсь глубины',
+        'Начинаем на небольшой глубине — в бассейне или у берега в открытой воде. Вы сами решаете, когда опускаться дальше, и можете подняться к поверхности в любой момент.',
+      ],
+      [
+        'Будут болеть уши',
+        'Это давление, и с ним справляются за минуту. Научим выравнивать его ещё на поверхности, а спускаться будем медленно.',
+      ],
+      [
+        'Вдруг будет нечем дышать',
+        'Регулятор подаёт воздух на вдохе — так же естественно, как на суше. Запас воздуха в баллоне инструктор контролирует за вас.',
+      ],
+      [
+        'В Новосибирске же нет моря',
+        'Учиться удобно рядом с домом: бассейн, открытая вода в Абрашино и Темире, подлёдные погружения. А море ждёт в экспедициях с командой.',
+      ],
+    ],
+    giftKicker: 'Подарочный сертификат',
+    giftH: 'Подарите первый вдох.',
+    giftText:
+      'Сертификат на пробное погружение — подарок для того, кто давно мечтает, но не решается. Напишите нам — всё оформим.',
+    giftBtn: 'Заказать сертификат',
+    readyKicker: 'Готовы попробовать?',
+    readyH: 'Подберём день и место.',
+    readyText: 'Напишите нам — ответим на вопросы и расскажем, что взять с собой.',
+  },
+  en: {
+    title: 'Try Scuba Diving in Novosibirsk',
+    description:
+      'A try scuba dive: Spartak and Neptun pools in Novosibirsk, open water at Abrashino and Temir. An instructor at your side, no experience needed.',
+    kicker: 'Try dive · SDI Scuba Discovery',
+    h1: 'Your first breath underwater.',
+    sub: 'About two hours with an instructor — in a pool or in open water. No experience needed.',
+    book: 'Book a try dive',
+    gift: 'Give a certificate',
+    factsKicker: 'In short',
+    factsH: 'Everything to know before you book.',
+    facts: [
+      ['Pool', 'Spartak and Neptun, Novosibirsk'],
+      ['Open water', 'Abrashino (Novosibirsk Region) and Temir (Tashtagol District)'],
+      ['How long', '≈ 2 h, as recommended by the SDI standard'],
+      ['Experience', 'None needed'],
+      ['What you need', 'Be comfortable in the water and fill in a medical questionnaire'],
+    ],
+    priceLabel: 'Price',
+    price: 'from ··· ₽',
+    priceNote: 'exact price when you book',
+    howKicker: 'How it works',
+    howH: 'Four steps to your first breath.',
+    how: [
+      [
+        'Briefing',
+        'The instructor explains how to breathe from a regulator, equalize your ears and talk underwater with hand signals.',
+      ],
+      [
+        'Gear',
+        'We fit the mask, fins, wetsuit and scuba set to you and adjust them together. You do not need anything of your own.',
+      ],
+      [
+        'Into the water',
+        'First where you can stand. Your first breaths at the surface, then under. The instructor stays within arm’s reach.',
+      ],
+      [
+        'What next',
+        'Liked it? We will show you how to get your own certification. If not, you simply tried it — no commitment.',
+      ],
+    ],
+    fearsKicker: 'Common fears',
+    fearsH: 'Nervous? That is normal.',
+    fearsLead: 'Five questions almost everyone asks before their first dive.',
+    fears: [
+      [
+        'I am not a strong swimmer',
+        'For a try dive it is enough to be comfortable in the water. We start where you can stand, and the instructor is beside you the whole time.',
+      ],
+      [
+        'I am afraid of depth',
+        'We start shallow — in a pool or close to shore in open water. You decide when to go further down, and you can come back to the surface at any moment.',
+      ],
+      [
+        'My ears will hurt',
+        'That is pressure, and it takes a minute to handle. We teach you to equalize at the surface, and we descend slowly.',
+      ],
+      [
+        'What if I run out of air',
+        'The regulator gives you air when you inhale — as naturally as on land. The instructor watches your cylinder pressure for you.',
+      ],
+      [
+        'There is no sea in Novosibirsk',
+        'Training close to home is easy: pools, open water at Abrashino and Temir, ice dives. The sea waits on expeditions with the crew.',
+      ],
+    ],
+    giftKicker: 'Gift certificate',
+    giftH: 'Give a first breath.',
+    giftText:
+      'A try dive certificate is a gift for someone who has dreamed of it for years but never dared. Write to us and we will arrange it.',
+    giftBtn: 'Order a certificate',
+    readyKicker: 'Ready to try?',
+    readyH: 'We will find a day and a place.',
+    readyText: 'Write to us — we will answer your questions and tell you what to bring.',
+  },
+  zh: {
+    title: '新西伯利亚水肺体验潜水',
+    description:
+      '水肺体验潜水：新西伯利亚 Spartak 和 Neptun 泳池，阿布拉希诺和捷米尔的开放水域。教练全程陪同，无需经验。',
+    kicker: '体验潜水 · SDI Scuba Discovery',
+    h1: '第一次水下呼吸。',
+    sub: '由教练陪同约两小时——在泳池或开放水域。无需经验。',
+    book: '预约体验',
+    gift: '赠送礼品券',
+    factsKicker: '简要信息',
+    factsH: '预约前需要了解的一切。',
+    facts: [
+      ['泳池', '新西伯利亚 Spartak 和 Neptun'],
+      ['开放水域', '阿布拉希诺（新西伯利亚州）和捷米尔（塔什塔戈尔区）'],
+      ['时长', '约 2 小时，遵循 SDI 标准建议'],
+      ['经验', '无需经验'],
+      ['您需要', '能在水中保持放松，并填写健康问卷'],
+    ],
+    priceLabel: '费用',
+    price: '··· ₽ 起',
+    priceNote: '预约时确认准确价格',
+    howKicker: '体验流程',
+    howH: '四步完成第一次水下呼吸。',
+    how: [
+      ['讲解', '教练讲解如何用调节器呼吸、如何平衡耳压，以及如何在水下用手势交流。'],
+      ['装备', '我们为您挑选合身的面镜、脚蹼、潜水服和水肺装备，并一起调整。无需自带任何装备。'],
+      ['下水', '先在能站立的地方。在水面完成第一口呼吸，然后下潜。教练始终在您伸手可及之处。'],
+      [
+        '之后',
+        '喜欢的话，我们会告诉您如何获得自己的证书。不喜欢也没关系——您只是体验了一次，没有任何义务。',
+      ],
+    ],
+    fearsKicker: '常见顾虑',
+    fearsH: '紧张？这很正常。',
+    fearsLead: '几乎每个人在第一次潜水前都会问的五个问题。',
+    fears: [
+      [
+        '我游泳不太好',
+        '体验潜水只需要能在水中保持放松。我们从能站立的地方开始，教练全程在您身边。',
+      ],
+      [
+        '我害怕深水',
+        '我们从浅处开始——在泳池或开放水域的岸边。由您决定何时继续下潜，并且可以随时返回水面。',
+      ],
+      ['耳朵会疼', '那是压力，一分钟就能学会应对。我们会在水面教您平衡耳压，并且缓慢下潜。'],
+      ['万一没气了怎么办', '吸气时调节器就会供气，和在陆地上一样自然。教练会替您留意气瓶压力。'],
+      [
+        '新西伯利亚没有海',
+        '在家附近学习很方便：泳池、阿布拉希诺和捷米尔的开放水域、冰潜。大海则在与团队同行的探险中等着您。',
+      ],
+    ],
+    giftKicker: '礼品券',
+    giftH: '送出第一次水下呼吸。',
+    giftText: '体验潜水礼品券，送给梦想已久却一直没有迈出第一步的人。联系我们，我们来安排。',
+    giftBtn: '订购礼品券',
+    readyKicker: '准备好试一试了吗？',
+    readyH: '我们来安排日期和地点。',
+    readyText: '联系我们——我们会解答您的问题，并告诉您需要带什么。',
+  },
+}[locale];
+---
+
+<BaseLayout title={T.title} description={T.description} overlay>
+  <PageHero
+    imageId="TRY01"
+    kicker={T.kicker}
+    title={T.h1}
+    sub={T.sub}
+    actions={[
+      { label: T.book, href: p('/contact') },
+      { label: T.gift, href: p('/gift') },
+    ]}
+  />
+
+  <section class="wrap sec" aria-labelledby="try-facts">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.factsKicker}</p>
+        <h2 class="h2" id="try-facts">{T.factsH}</h2>
+      </div>
+      <dl class="spec-table">
+        {T.facts.map(([dt, dd]) => (
+          <div>
+            <dt>{dt}</dt>
+            <dd>{dd}</dd>
+          </div>
+        ))}
+        <div>
+          <dt>{T.priceLabel}</dt>
+          <dd class="mono">
+            <span class="ph">{T.price}</span> · {T.priceNote}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="wrap sec paper" aria-labelledby="try-how">
+    <p class="kicker">{T.howKicker}</p>
+    <h2 class="h2" id="try-how">{T.howH}</h2>
+    <ol class="step-list">
+      {T.how.map(([b, d]) => (
+        <li>
+          <b>{b}</b>
+          <p>{d}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="try-fears">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.fearsKicker}</p>
+        <h2 class="h2" id="try-fears">{T.fearsH}</h2>
+        <p class="lead sub-lead">{T.fearsLead}</p>
+      </div>
+      <Accordion items={T.fears.map(([q, a]) => ({ q, a }))} />
+    </div>
+  </section>
+
+  <section class="split">
+    <div class="panel navy">
+      <p class="kicker">{T.giftKicker}</p>
+      <h2>{T.giftH}</h2>
+      <p class="lead">{T.giftText}</p>
+      <a class="btn white" href={p('/gift')}>
+        {T.giftBtn}
+        <span class="ar" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="panel paper">
+      <p class="kicker">{T.readyKicker}</p>
+      <h2>{T.readyH}</h2>
+      <p class="lead">{T.readyText}</p>
+      <a class="btn" href={p('/contact')}>
+        {T.book}
+        <span class="ar" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

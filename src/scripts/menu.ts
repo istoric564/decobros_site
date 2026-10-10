@@ -4,25 +4,25 @@ const menu = document.getElementById('mobile-menu');
 function setOpen(open: boolean, restoreFocus = false) {
   if (!btn || !menu) return;
   btn.setAttribute('aria-expanded', String(open));
-  btn.setAttribute('aria-label', (open ? btn.dataset.labelClose : btn.dataset.labelOpen) ?? '');
   menu.hidden = !open;
   document.body.classList.toggle('menu-open', open);
-  if (open) menu.querySelector<HTMLAnchorElement>('a')?.focus();
+  if (open) menu.querySelector<HTMLAnchorElement>('nav a')?.focus();
   else if (restoreFocus) btn.focus();
 }
 
-btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+btn?.addEventListener('click', () => setOpen(true));
 
 menu?.addEventListener('click', (e) => {
-  if ((e.target as Element).closest('a')) setOpen(false);
+  const target = e.target as Element;
+  if (target.closest('[data-menu-close]')) setOpen(false, true);
+  else if (target.closest('a')) setOpen(false);
 });
 
 document.addEventListener('keydown', (e) => {
-  if (!btn || !menu) return;
-  const open = btn.getAttribute('aria-expanded') === 'true';
-  if (e.key === 'Escape' && open) setOpen(false, true);
-  if (e.key === 'Tab' && open) {
-    const items = [btn, ...menu.querySelectorAll<HTMLElement>('a')];
+  if (!menu || menu.hidden) return;
+  if (e.key === 'Escape') setOpen(false, true);
+  if (e.key === 'Tab') {
+    const items = [...menu.querySelectorAll<HTMLElement>('a, button')];
     const first = items[0];
     const last = items[items.length - 1];
     if (e.shiftKey && document.activeElement === first) {
@@ -35,6 +35,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-window.matchMedia('(min-width: 1200px)').addEventListener('change', (m) => {
+window.matchMedia('(min-width: 1180px)').addEventListener('change', (m) => {
   if (m.matches) setOpen(false);
 });

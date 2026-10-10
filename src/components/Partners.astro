@@ -1,0 +1,134 @@
+---
+/*
+  Two rows moving towards each other; they stop on hover and focus. A mark is grey at rest
+  and takes the partner's colour on hover. With reduced motion: a static grid, no copies.
+*/
+interface Partner {
+  mark: string;
+  name: string;
+  role: string;
+  color: string;
+}
+interface Props {
+  rows: [Partner[], Partner[]];
+}
+const { rows } = Astro.props;
+---
+
+{rows.map((row, r) => (
+  <div class:list={['marquee', { rev: r === 1 }]}>
+    <ul class="track">
+      {[...row, ...row].map((p, i) => (
+        <li
+          class="ptile"
+          style={`--c:${p.color}`}
+          aria-hidden={i >= row.length ? 'true' : undefined}
+        >
+          <span class="mark" aria-hidden="true">
+            {p.mark}
+          </span>
+          <span>
+            <b>{p.name}</b>
+            <span class="r">{p.role}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  </div>
+))}
+
+<style>
+  .marquee {
+    position: relative;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee + .marquee {
+    margin-top: 14px;
+  }
+  .track {
+    display: flex;
+    gap: 14px;
+    width: max-content;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    animation: slide 48s linear infinite;
+  }
+  .rev .track {
+    animation-direction: reverse;
+    animation-duration: 56s;
+  }
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
+  @keyframes slide {
+    to {
+      transform: translateX(calc(-50% - 7px));
+    }
+  }
+  .ptile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 300px;
+    padding: 18px 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    transition:
+      border-color 0.4s,
+      box-shadow 0.4s,
+      transform 0.4s var(--ease);
+  }
+  .ptile:hover {
+    border-color: var(--ink);
+    box-shadow: 0 10px 30px rgb(6 16 26 / 10%);
+    transform: translateY(-2px);
+  }
+  .mark {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    color: var(--muted);
+    font: 600 15px var(--sans);
+    letter-spacing: 0.02em;
+    transition:
+      color 0.4s,
+      background 0.4s;
+  }
+  .ptile:hover .mark {
+    color: var(--white);
+    background: var(--c, var(--blue));
+  }
+  b {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .r {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      mask-image: none;
+      padding-inline: var(--g);
+    }
+    .track {
+      flex-wrap: wrap;
+      width: auto;
+      animation: none;
+    }
+    .track [aria-hidden='true'] {
+      display: none;
+    }
+  }
+</style>

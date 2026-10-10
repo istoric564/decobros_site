@@ -8,6 +8,10 @@ export const brand = {
 
 const L = {
   home: { ru: 'Главная', en: 'Home', zh: '首页' },
+  try: { ru: 'Попробовать', en: 'Try diving', zh: '体验潜水' },
+  workshop: { ru: 'Мастерская', en: 'Workshop', zh: '装备维修' },
+  pro: { ru: 'Для профи', en: 'For pros', zh: '专业服务' },
+  gift: { ru: 'Подарочный сертификат', en: 'Gift certificate', zh: '礼品券' },
   training: { ru: 'Обучение', en: 'Training', zh: '培训' },
   expeditions: { ru: 'Экспедиции', en: 'Expeditions', zh: '探险' },
   crew: { ru: 'Команда', en: 'The Crew', zh: '团队' },
@@ -19,20 +23,17 @@ const L = {
 
 /** Hrefs have no language prefix. Add it with localePath(). */
 export const nav = [
-  { label: L.home, href: '/' },
+  { label: L.try, href: '/try' },
   { label: L.training, href: '/training' },
   { label: L.expeditions, href: '/expeditions' },
-  { label: L.crew, href: '/crew' },
-  { label: L.gallery, href: '/gallery' },
-] as const;
-
-export const footerNav = [
-  { label: L.training, href: '/training' },
-  { label: L.expeditions, href: '/expeditions' },
+  { label: L.workshop, href: '/service' },
+  { label: L.pro, href: '/pro' },
   { label: L.crew, href: '/crew' },
   { label: L.gallery, href: '/gallery' },
   { label: L.contact, href: '/contact' },
-] as const;
+];
+
+export const footerNav = [{ label: L.gift, href: '/gift' }];
 
 export const legalNav = [
   { label: L.privacy, href: '/privacy' },
@@ -78,6 +79,12 @@ export const address = {
     ru: 'Комсомольский пр., 1, Новосибирск, 630004',
     en: '1 Komsomolsky Ave, Novosibirsk, 630004, Russia',
     zh: '俄罗斯新西伯利亚共青团大街 1 号，630004',
+  } satisfies Loc,
+  /** Street only, for short mentions next to the opening hours. */
+  short: {
+    ru: 'Комсомольский пр., 1',
+    en: '1 Komsomolsky Ave',
+    zh: '共青团大街 1 号',
   } satisfies Loc,
   mapUrl:
     'https://yandex.ru/maps/org/decompression_brothers_crew/1075281059/?ll=82.900203%2C55.030482&z=14',

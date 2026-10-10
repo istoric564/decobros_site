@@ -34,7 +34,7 @@ const {
 } = Astro.props;
 
 const def = imageId ? slotById(imageId) : undefined;
-const key = name ?? def?.id ?? '';
+let key = name ?? def?.id ?? '';
 const ratio = ratioProp ?? def?.ratio ?? '3 / 2';
 const locale = localeFromUrl(Astro.url);
 const alt = t(altProp ?? def?.alt ?? '', locale);
@@ -42,7 +42,13 @@ const alt = t(altProp ?? def?.alt ?? '', locale);
 const files = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/photos/**/*.{jpg,jpeg,png,webp,avif}',
 );
-const found = Object.keys(files).find((p) => /\/photos\/(.+)\.[a-z]+$/.exec(p)?.[1] === key);
+const fileOf = (k: string) =>
+  Object.keys(files).find((p) => /\/photos\/(.+)\.[a-z]+$/.exec(p)?.[1] === k);
+let found = fileOf(key);
+if (!found && !name && def?.file) {
+  key = def.file;
+  found = fileOf(key);
+}
 const img = found ? (await files[found]()).default : undefined;
 ---
 
@@ -81,7 +87,7 @@ const img = found ? (await files[found]()).default : undefined;
     background: var(--navy);
   }
   .ei:not(.ei-fill) {
-    border-radius: var(--radius-card);
+    border-radius: var(--radius-photo);
   }
   .ei picture,
   .ei img {

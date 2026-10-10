@@ -40,9 +40,9 @@ const label = t({ ru: 'Наверх', en: 'Back to top', zh: '返回顶部' }, l
     cursor: pointer;
     box-shadow: 0 4px 16px rgb(6 16 26 / 12%);
     transition:
-      background var(--motion-fast),
-      border-color var(--motion-fast);
-    animation: appear var(--motion-fast) var(--motion-ease);
+      background 0.3s,
+      border-color 0.3s;
+    animation: appear 0.3s var(--ease);
   }
   .back-to-top[hidden] {
     display: none;
@@ -53,6 +53,12 @@ const label = t({ ru: 'Наверх', en: 'Back to top', zh: '返回顶部' }, l
   }
   .back-to-top:active {
     background: var(--navy);
+  }
+  /* Phones: above the chat button. */
+  @media (max-width: 899px) {
+    .back-to-top {
+      bottom: calc(76px + env(safe-area-inset-bottom));
+    }
   }
   :global(body.menu-open) .back-to-top {
     visibility: hidden;

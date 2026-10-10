@@ -1,78 +1,89 @@
 ---
-import BrandLockup from './BrandLockup.astro';
+import { Image } from 'astro:assets';
 import LangSwitch from './LangSwitch.astro';
-import { nav } from '../data/site';
+import SocialLinks from './SocialLinks.astro';
+import mark from '../assets/brand/logo-mark.png';
+import { brand, nav } from '../data/site';
 import { localeFromUrl, localePath, stripLocale, t } from '../i18n';
 import { ui } from '../i18n/ui';
 
+interface Props {
+  /** The header lies over a dark hero photograph: white text, no background. */
+  overlay?: boolean;
+}
+const { overlay = false } = Astro.props;
 const locale = localeFromUrl(Astro.url);
 const path = stripLocale(Astro.url.pathname).replace(/\/$/, '') || '/';
-const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
-const items = nav.map((i) => ({ label: t(i.label, locale), href: i.href }));
+const items = nav.map((i) => ({
+  label: t(i.label, locale),
+  href: localePath(locale, i.href),
+  current: path.startsWith(i.href),
+}));
 const contactHref = localePath(locale, '/contact');
 ---
 
-<header class="site-header">
-  <div class="container bar">
-    <a href={localePath(locale, '/')} class="brand" aria-label={t(ui.homeAria, locale)}>
-      <BrandLockup />
-    </a>
+<header class:list={['site-header', { overlay }]}>
+  <a href={localePath(locale, '/')} class="brand" aria-label={t(ui.homeAria, locale)}>
+    <Image src={mark} alt="" width={42} densities={[1, 2]} format="webp" loading="eager" />
+    <span>{brand.short}</span>
+  </a>
 
-    <nav class="desktop" aria-label={t(ui.navMain, locale)}>
-      <ul>
-        {items.map((i) => (
-          <li>
-            <a
-              href={localePath(locale, i.href)}
-              aria-current={isActive(i.href) ? 'page' : undefined}
-            >
-              {i.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-
-    <div class="end">
-      <LangSwitch class="lang-desktop" />
-      <a href={contactHref} class="btn cta">
-        {t(ui.getInTouch, locale)}
+  <nav class="desktop" aria-label={t(ui.navMain, locale)}>
+    {items.map((i) => (
+      <a href={i.href} aria-current={i.current ? 'page' : undefined}>
+        {i.label}
       </a>
+    ))}
+  </nav>
+  <LangSwitch class="lang-desktop" />
+  <a class="btn out sm cta" href={contactHref}>
+    {t(ui.getInTouch, locale)}
+  </a>
+
+  <button
+    type="button"
+    class="burger"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+    aria-label={t(ui.openMenu, locale)}
+  >
+    <span></span>
+  </button>
+
+  <div
+    id="mobile-menu"
+    class="mmenu"
+    role="dialog"
+    aria-modal="true"
+    aria-label={t(ui.navMobile, locale)}
+    hidden
+  >
+    <div class="top">
+      <span class="brand">
+        <Image src={mark} alt="" width={40} densities={[1, 2]} format="webp" loading="lazy" />
+        <span>{brand.short}</span>
+      </span>
+      <button type="button" class="x" data-menu-close aria-label={t(ui.closeMenu, locale)}>
+        ×
+      </button>
     </div>
-
-    <button
-      type="button"
-      class="burger"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      aria-label={t(ui.openMenu, locale)}
-      data-label-open={t(ui.openMenu, locale)}
-      data-label-close={t(ui.closeMenu, locale)}
-    >
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-
-  <div id="mobile-menu" class="mobile" hidden>
     <nav aria-label={t(ui.navMobile, locale)}>
-      <ul>
-        {items.map((i) => (
-          <li>
-            <a
-              href={localePath(locale, i.href)}
-              aria-current={isActive(i.href) ? 'page' : undefined}
-            >
-              {i.label}
-            </a>
-          </li>
-        ))}
-        <li>
-          <a href={contactHref}>{t(ui.getInTouch, locale)}</a>
-        </li>
-      </ul>
+      {items.map((i) => (
+        <a href={i.href} aria-current={i.current ? 'page' : undefined}>
+          {i.label}
+        </a>
+      ))}
     </nav>
-    <LangSwitch class="lang-mobile" />
+    <div class="bottom">
+      <a class="btn white" href={contactHref}>
+        {t(ui.getInTouch, locale)}{' '}
+        <span class="ar" aria-hidden="true">
+          →
+        </span>
+      </a>
+      <SocialLinks />
+      <LangSwitch />
+    </div>
   </div>
 </header>
 <script>
@@ -81,154 +92,189 @@ const contactHref = localePath(locale, '/contact');
 
 <style>
   .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: var(--paper);
-    border-bottom: 1px solid rgb(6 16 26 / 6%);
-    border-radius: 0;
-  }
-  .bar {
+    position: relative;
+    z-index: 5;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: var(--header-h);
-    gap: 16px;
+    gap: 24px;
+    min-height: var(--header-h);
+    padding-inline: var(--g);
+    color: var(--ink);
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    color: var(--white);
+    background: none;
+    border-bottom: 0;
   }
   .brand {
-    text-decoration: none;
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-  }
-  .desktop,
-  .cta,
-  .end,
-  .end :global(.lang-desktop) {
-    display: none;
-  }
-  .end {
     display: flex;
     align-items: center;
     gap: 12px;
+    min-height: 44px;
+    margin-right: auto;
+    text-decoration: none;
+    font: 600 14px var(--sans);
+    letter-spacing: 0.14em;
   }
-  .mobile :global(.lang-mobile) {
-    margin-top: 24px;
+  .brand img {
+    width: 42px;
+    height: auto;
   }
-  .desktop ul {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .overlay .brand img,
+  .mmenu .brand img {
+    filter: brightness(0) invert(1);
+  }
+  .desktop {
+    display: none;
+    gap: 22px;
+    font-size: 14px;
   }
   .desktop a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    font-size: 0.8125rem;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: border-color var(--motion-fast);
+    opacity: 0.82;
   }
   .desktop a:hover,
-  .desktop a[aria-current='page'] {
-    border-bottom-color: var(--ink);
+  .desktop a[aria-current] {
+    opacity: 1;
+  }
+  .desktop a[aria-current] {
+    text-decoration: underline;
+    text-underline-offset: 0.4em;
+  }
+  .site-header :global(.lang-desktop) {
+    display: none;
+  }
+  .site-header:not(.overlay) .cta {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .site-header:not(.overlay) .cta:hover {
+    background: var(--ink);
+    color: var(--white);
   }
   .burger {
     display: inline-flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    gap: 7px;
     width: 44px;
     height: 44px;
-    padding: 0 10px;
-    background: none;
-    border: 0;
-    border-radius: 50%;
+    border-radius: 4px;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
     cursor: pointer;
-    color: var(--ink);
-    flex-shrink: 0;
-    transition: background var(--motion-fast);
   }
-  .burger:hover {
-    background: var(--paper);
+  .overlay .burger {
+    border-color: rgb(255 255 255 / 70%);
   }
-  .burger span {
+  .burger span,
+  .burger span::before,
+  .burger span::after {
     display: block;
+    position: relative;
+    width: 18px;
     height: 1.5px;
     background: currentColor;
-    transition: transform 0.25s;
+    content: '';
   }
-  .burger[aria-expanded='true'] span:first-child {
-    transform: translateY(4.25px) rotate(45deg);
+  .burger span::before {
+    position: absolute;
+    top: -6px;
   }
-  .burger[aria-expanded='true'] span:last-child {
-    transform: translateY(-4.25px) rotate(-45deg);
+  .burger span::after {
+    position: absolute;
+    top: 6px;
   }
-  .mobile {
-    position: fixed;
-    inset: var(--header-h) 0 0;
-    background: var(--white);
-    padding: 24px var(--gutter);
-    overflow-y: auto;
-  }
-  .mobile:not([hidden]) {
-    animation: menu-enter var(--motion-fast) var(--motion-ease);
-  }
-  @keyframes menu-enter {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-  .mobile[hidden] {
-    display: none;
-  }
-  .mobile ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .mobile a {
-    display: flex;
-    align-items: center;
-    min-height: 56px;
-    font-size: 1.75rem;
-    letter-spacing: -0.03em;
-    text-decoration: none;
-    border-bottom: 1px solid var(--line);
-  }
-  @media (max-width: 767px) {
-    .site-header {
-      border-radius: 0;
-    }
-  }
-  @media (min-width: 1200px) {
-    .desktop,
-    .end :global(.lang-desktop) {
-      display: block;
-    }
+  @media (max-width: 1179px) {
     .cta {
-      display: inline-flex;
-      min-height: 44px;
-      padding: 0 24px;
+      display: none;
     }
-    .end {
+  }
+  @media (min-width: 1180px) {
+    .desktop,
+    .site-header :global(.lang-desktop) {
       display: flex;
     }
     .burger,
-    .mobile {
+    .mmenu {
       display: none !important;
     }
   }
-  @media (min-width: 1280px) {
-    .desktop ul {
-      gap: clamp(20px, 2vw, 32px);
-    }
+
+  .mmenu {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: calc(20px + env(safe-area-inset-top, 0px)) var(--g)
+      calc(24px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    background: var(--ink);
+    color: var(--white);
+  }
+  .mmenu[hidden] {
+    display: none;
+  }
+  .mmenu .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 56px;
+  }
+  .mmenu .brand {
+    margin-right: 0;
+  }
+  .mmenu .brand img {
+    width: 40px;
+  }
+  .x {
+    width: 44px;
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid rgb(255 255 255 / 60%);
+    background: transparent;
+    color: var(--white);
+    font: 300 26px/1 var(--sans);
+    cursor: pointer;
+  }
+  .mmenu nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    border-top: 1px solid var(--line-dark);
+  }
+  .mmenu nav a {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    font-size: 1.4rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .mmenu nav a[aria-current] {
+    color: var(--blue-soft);
+  }
+  .mmenu .bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 24px;
+  }
+  .mmenu .bottom :global(.soc) {
+    color: var(--on-dark-2);
   }
 </style>

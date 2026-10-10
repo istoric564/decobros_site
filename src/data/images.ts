@@ -12,6 +12,8 @@ export interface Slot {
   section: string;
   /** CSS aspect-ratio, for example "16 / 9". */
   ratio: string;
+  /** Existing photo (path under src/assets/photos/, no extension) shown until <ID> is supplied. */
+  file?: string;
   alt: Loc;
 }
 
@@ -113,6 +115,42 @@ export const slots: Slot[] = [
       ru: 'Дайвер плывёт через глубокую синюю подводную пещеру.',
       en: 'Diver swimming through a deep blue underwater cavern.',
       zh: '潜水员游过深蓝色的水下洞穴。',
+    },
+  },
+  {
+    id: 'TRY01',
+    page: 'Try diving',
+    section: 'Hero',
+    ratio: '3 / 2',
+    file: 'gallery/G-3',
+    alt: {
+      ru: 'Дайверы спускаются вдоль кораллового рифа с горгониями.',
+      en: 'Divers descending along a coral wall with sea fans.',
+      zh: '潜水员沿着长满海扇的珊瑚礁壁下潜。',
+    },
+  },
+  {
+    id: 'SRV01',
+    page: 'Workshop',
+    section: 'Hero',
+    ratio: '3 / 2',
+    file: 'gallery/G-2',
+    alt: {
+      ru: 'Дайверы готовят техническое снаряжение на палубе лодки.',
+      en: 'Divers preparing technical equipment on a boat deck.',
+      zh: '潜水员在船甲板上准备技术装备。',
+    },
+  },
+  {
+    id: 'PRO01',
+    page: 'For pros',
+    section: 'Hero',
+    ratio: '3 / 2',
+    file: 'gallery/G-4',
+    alt: {
+      ru: 'Технические дайверы с фонарями внутри освещённой солнцем пещеры.',
+      en: 'Technical divers with torches inside a sunlit cavern.',
+      zh: '手持潜水灯的技术潜水员在阳光照射的洞穴内。',
     },
   },
 ];

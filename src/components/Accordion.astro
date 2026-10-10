@@ -1,0 +1,19 @@
+---
+/* Questions and answers on native details/summary: works without scripts. The first is open. */
+interface Props {
+  items: { q: string; a: string | string[] }[];
+  class?: string;
+}
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={['acc', className]}>
+  {items.map((item, i) => (
+    <details open={i === 0}>
+      <summary>{item.q}</summary>
+      {(Array.isArray(item.a) ? item.a : [item.a]).map((p) => (
+        <p>{p}</p>
+      ))}
+    </details>
+  ))}
+</div>

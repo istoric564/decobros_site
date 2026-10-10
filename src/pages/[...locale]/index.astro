@@ -1,9 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import '../../styles/home.css';
-import Hero from '../../components/Hero.astro';
-import Band from '../../components/Band.astro';
-import DirectionCard from '../../components/DirectionCard.astro';
+import EditorialImage from '../../components/EditorialImage.astro';
+import DiveProfile from '../../components/DiveProfile.astro';
+import SafetyStop from '../../components/SafetyStop.astro';
+import DepthGauge from '../../components/DepthGauge.astro';
+import Partners from '../../components/Partners.astro';
+import Icon from '../../components/Icon.astro';
+import { DEMO_CONTENT, address, contacts } from '../../data/site';
 import { localeFromUrl, localePath, localeStaticPaths } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
@@ -14,132 +18,1290 @@ const p = (path: string) => localePath(locale, path);
 const T = {
   ru: {
     description:
-      'DECOBROSCREW (Decompression Brothers CREW) — дайвинг-клуб в Новосибирске. Обучение по программам SDI и TDI, технический дайвинг и экспедиции.',
-    hero: ['Ныряй', 'иначе.'],
-    heroCopy: ['Технический дайвинг.', 'Экспедиции.', 'Премиальное обучение.'],
-    discover: 'Узнать больше',
-    philosophyH: ['Чем глубже погружение,', 'тем важнее подготовка.'],
-    philosophy:
-      'Мы — DECOBROSCREW. Мы учимся, планируем и ныряем как команда. Наши направления — технический дайвинг, настоящие экспедиции и сильная клубная культура.',
-    philosophyLink: 'Наша философия',
-    cardsAria: 'Направления обучения',
-    sdi: 'От рекреационного до продвинутого и технического обучения. Настоящие навыки.',
-    tdi: 'Продвинутая подготовка для тех, кто хочет идти дальше. Глубже знания.',
-    crewH: 'Знакомьтесь с командой',
-    crew: 'Дайверы. Инструкторы. Исследователи. Команда, объединённая общей целью.',
-    crewCta: 'Наша команда',
+      'DECOBROSCREW — дайвинг-клуб в Новосибирске: пробные погружения, обучение SDI и TDI от Open Water до декомпрессии, экспедиции, мастерская снаряжения и аудит дайв-центров.',
+    hero: {
+      kicker: 'Новосибирск · SDI · TDI · технический дайвинг',
+      h1: 'Всё, что под водой, — к нам.',
+      sub: 'Пробные погружения, обучение от Open Water до декомпрессии, экспедиции, мастерская снаряжения и аудит дайв-центров.',
+      try: 'Попробовать впервые',
+      diver: 'Я уже ныряю',
+      reply: 'Отвечаем в Telegram за 15 минут',
+    },
+    facts: [
+      ['SDI · TDI', 'обучение по международным стандартам'],
+      ['13 программ', 'от первого погружения до трамикса'],
+      ['Apeks', 'сервисная сертификация мастерской'],
+      ['Пн–Пт 19–21', 'Комсомольский пр., 1, Новосибирск'],
+    ],
+    doors: {
+      kicker: 'С чего начать',
+      h2: 'Что вы хотите сделать под водой?',
+      price: 'от ··· ₽',
+      items: [
+        [
+          '0–5 м',
+          'Попробовать впервые',
+          'Бассейн или открытая вода, инструктор рядом, опыт не нужен.',
+          '/try',
+        ],
+        [
+          'до 18 м',
+          'Научиться и получить сертификат',
+          'Open Water с нуля: теория, бассейн, открытая вода.',
+          '/training#recreational',
+        ],
+        [
+          '40+ м',
+          'Нырять глубже',
+          'Рэки, пещеры, декомпрессия, подлёдные погружения.',
+          '/training#technical',
+        ],
+        [
+          'маршрут',
+          'Увидеть мант, рэки и сеноты',
+          'Экспедиции под ваш уровень — вместе с командой.',
+          '/expeditions',
+        ],
+        [
+          'мастерская',
+          'Починить снаряжение',
+          'Регуляторы, BCD, гидрокостюмы. Сертификация Apeks.',
+          '/service',
+        ],
+        [
+          'для профи',
+          'Задача для профи или дайв-центра',
+          'Аудит, оценка инструкторов, консультации.',
+          '/pro',
+        ],
+        [
+          'подарок',
+          'Подарить первое погружение',
+          'Сертификат на пробное погружение с инструктором.',
+          '/gift',
+        ],
+        ['клуб', 'Нырять с командой', 'Тренировки, планирование и выезды вместе.', '/crew'],
+      ],
+    },
+    descent: {
+      kicker: 'Путь с нуля',
+      h2: 'От первого вдоха до пещеры.',
+      lead: 'Никто не начинает с глубины. Каждый шаг — с инструктором и по международным стандартам SDI и TDI.',
+      unit: 'метров',
+      stations: [
+        [
+          '0–5',
+          'SDI Scuba Discovery',
+          'Первый вдох',
+          'Около двух часов с инструктором: в бассейне («Спартак», «Нептун») или в открытой воде — Абрашино, Темир. Опыт не нужен.',
+          'Как это проходит',
+          '/try',
+        ],
+        [
+          'до 18',
+          'SDI Open Water Scuba Diver',
+          'Свой сертификат',
+          'Теория, бассейн и открытая вода. Итог — международный сертификат: нырять с напарником до 18 метров.',
+          'Курс Open Water',
+          '/training#recreational',
+        ],
+        [
+          'до 30',
+          'SDI Advanced · специализации',
+          'Опыт и уверенность',
+          'Глубина, ночь, навигация, сухой костюм. Дальше — рэки и экспедиции.',
+          'Специализации',
+          '/training#specialties',
+        ],
+        [
+          '40+',
+          'TDI',
+          'Технический дайвинг',
+          'Декомпрессия, газовые смеси, пещеры — наша основная специализация.',
+          'Техническое обучение',
+          '/training#technical',
+        ],
+      ],
+    },
+    deep: {
+      kicker: 'Технический дайвинг',
+      h2: 'Декомпрессия, смеси и пещеры — наша основа.',
+      lead: 'Мы водим в пещеры. Это приучило нас к одному: к безопасности не бывает скидок. Ни в экспедиции, ни в бассейне. Поэтому новичок у нас получает тот же порядок, что и техдайвер.',
+      photoNote: 'демо-фото · нужно своё',
+      caption:
+        'Пример конфигурации на погружение до 45 м. Каждый баллон анализируется перед погружением.',
+      cols: ['Газ', 'O₂', 'He', 'Предел глубины', 'Где работает'],
+      rows: [
+        ['Trimix 18/45', '18 %', '45 %', '68 м · ppO₂ 1,4', 'дно'],
+        ['EAN50', '50 %', '—', '22 м · ppO₂ 1,6', 'декомпрессия с 21 м'],
+        ['Кислород', '100 %', '—', '6 м · ppO₂ 1,6', 'последние остановки'],
+      ],
+      craft: [
+        ['Газ', 'Анализ каждого баллона', 'Кислород и гелий — до погружения, а не после.'],
+        ['План', 'Декомпрессия по расчёту', 'План погружения и запасной план до входа в воду.'],
+        [
+          'Снаряжение',
+          'Своя мастерская',
+          'Регуляторы, BCD, гидрокостюмы. Сервисная сертификация Apeks.',
+        ],
+        ['Команда', 'Единая конфигурация', 'Все в группе знают, где у напарника каждый кран.'],
+      ],
+    },
+    plan: {
+      kicker: 'Как выглядит план',
+      h2: 'Двадцать минут на дне. Тридцать — обратно.',
+      lead: 'Так выглядит профиль технического погружения на 45 метров. Каждая ступенька — остановка, которую нельзя пропустить. Проведите по графику курсором.',
+      head: [
+        'Профиль погружения · Trimix 18/45 · дно 45 м · 19 мин',
+        'X — время, мин · Y — глубина, м',
+      ],
+      aria: 'Профиль технического погружения: спуск на 45 метров, 19 минут на дне, подъём с остановками на 21, 18, 15, 12, 9, 6 и 3 метрах, выход на 55-й минуте.',
+      caption:
+        'Иллюстрация, не план погружения: реальный профиль рассчитывается под дайвера, смеси и условия.',
+      units: { min: 'мин', m: 'м', bottom: 'дно' },
+    },
+    stop: {
+      kicker: 'Подъём · 5 метров',
+      heading: 'Остановка безопасности.',
+      lead: 'Три минуты на пяти метрах перед каждым выходом. Мы не сокращаем её под водой и не сокращаем здесь: пока идёт таймер, вот наш стандарт.',
+      waiting: 'Таймер начнётся, когда вы доберётесь сюда.',
+      running: 'Висим на пяти метрах. Каждые 30 секунд — один пункт нашего стандарта.',
+      done: 'Остановка завершена. Можно выходить на поверхность.',
+      cta: 'К поверхности ↑',
+      label: 'Стандарт клуба',
+      rules: [
+        ['Анализ газа', 'Каждый баллон проверяется перед погружением.'],
+        ['Брифинг', 'Перед каждым погружением, от пробного до трамикса.'],
+        ['Кислород и аптечка', 'На каждом выезде.', true],
+        ['Небольшие группы', 'Инструктор на расстоянии вытянутой руки.', true],
+        ['Обслуженное снаряжение', 'Своя мастерская, понятный график.'],
+        ['Право отмены', 'Любой в группе может отменить погружение без объяснений.', true],
+      ] as [string, string, boolean?][],
+    },
+    routes: {
+      kicker: 'Куда это ведёт',
+      h2: 'Видели это в кино? Мы знаем дорогу.',
+      lead: 'Каждая мечта — это конкретный маршрут: какой сертификат нужен, сколько погружений и где набраться опыта. Мы проложим его вместе с вами.',
+      needPhoto: 'нужно фото',
+      items: [
+        [
+          'EXP-maldives',
+          'Дайверы и манта под яхтой-сафари на закате.',
+          'Мальдивы · сафари',
+          'Манты',
+          'Нужен сертификат и немного опыта.',
+          'Нужно: Open Water + опыт',
+          '/expeditions',
+        ],
+        [
+          'EXP-red-sea',
+          'Дайвер с фонарём у корпуса большого затонувшего судна.',
+          'Красное море',
+          'Затонувшие корабли',
+          'Сначала Advanced — потом внутрь.',
+          'Нужно: Advanced → Wreck',
+          '/expeditions',
+        ],
+        [
+          'EXP-mexico-cenotes',
+          'Два дайвера в сеноте, освещённом солнечными лучами.',
+          'Мексика · сеноты',
+          'Сеноты и пещеры',
+          'Начинается с cavern, дальше — пещерная подготовка TDI.',
+          'Нужно: Cavern → TDI Cave',
+          '/expeditions',
+        ],
+        [
+          '',
+          '',
+          'Сибирь · Байкал',
+          'Подо льдом',
+          'Наша домашняя вода. Подлёдные погружения с командой.',
+          'Нужно: Ice Diver',
+          '/ice',
+        ],
+      ],
+    },
+    events: {
+      kicker: 'Ближайшее в клубе',
+      h2: 'Куда можно записаться сейчас.',
+      lead: 'Группы, пробные погружения и выезды на ближайшие месяцы.',
+      demo: 'Даты тестовые.',
+      items: [
+        ['25.10', '2026', 'Пробное', 'Пробное погружение', 'Бассейн «Нептун»', '/try'],
+        [
+          '03.11',
+          'старт',
+          'Курс',
+          'SDI Open Water Scuba Diver',
+          'Клуб и бассейн «Спартак»',
+          '/training#recreational',
+        ],
+        [
+          '15.11',
+          'старт',
+          'Курс',
+          'TDI Intro to Tech',
+          'Клуб и открытая вода',
+          '/training#technical',
+        ],
+        [
+          '14.03',
+          '2027',
+          'Экспедиция',
+          'Рэки Красного моря',
+          'Египет · набор открыт',
+          '/expeditions',
+        ],
+      ],
+    },
+    band: {
+      h2: 'Мы водим в пещеры. Ваш первый вдох — в надёжных руках.',
+      p: 'DECOBROSCREW — команда технических дайверов из Новосибирска. Тренируемся, планируем и ныряем вместе.',
+      link: 'Наша команда',
+    },
+    reviews: {
+      kicker: 'Отзывы',
+      h2: 'Что говорят те, кто нырял с нами.',
+      lead: 'Только настоящие отзывы с именем и курсом.',
+      demo: 'Тексты даёт владелец.',
+      items: [
+        [
+          'Здесь будет реальный отзыв: что человек боялся, что получилось, чем запомнилось.',
+          'Пробное погружение · месяц, год',
+        ],
+        [
+          'Отзыв выпускника Open Water: как проходило обучение и что дальше.',
+          'SDI Open Water · месяц, год',
+        ],
+        ['Отзыв участника экспедиции или технического курса.', 'TDI · экспедиция · месяц, год'],
+      ],
+      name: 'Имя Фамилия',
+      yandex: 'Отзывы на Яндекс Картах',
+      vk: 'Отзывы ВКонтакте',
+    },
+    partners: {
+      kicker: 'Партнёры и площадки',
+      h2: 'С кем мы работаем.',
+      lead: 'Учебные агентства, площадки для тренировок и сервисные партнёры. Наведите на карточку, чтобы остановить ленту.',
+      demo: 'Логотипы — после согласия партнёров.',
+      names: {
+        sdi: 'Учебные программы',
+        tdi: 'Технические программы',
+        apeks: 'Сервисная сертификация',
+        spartak: ['СП', 'Бассейн «Спартак»', 'Тренировки и пробные'],
+        neptun: ['НП', 'Бассейн «Нептун»', 'Тренировки и пробные'],
+        abrashino: ['АБ', 'Абрашино', 'Открытая вода, НСО'],
+        temir: ['ТМ', 'Темир', 'Открытая вода, Кузбасс'],
+        cylinders: ['БЛ', 'Баллоны', 'Освидетельствование'],
+        insurance: ['ДС', 'Дайверская страховка', 'Партнёр по страхованию'],
+      },
+    },
+    workshop: {
+      kicker: 'Мастерская',
+      h2: 'Чиним то, чем вы дышите.',
+      lead: 'Обслуживание и ремонт снаряжения всех типов. Сервисная сертификация Apeks.',
+      items: [
+        'Регуляторы',
+        'Компенсаторы и крылья (BCD)',
+        'Сухие, мокрые и полусухие гидрокостюмы',
+        'Баллоны — освидетельствование через партнёров',
+      ],
+      link: 'В мастерскую',
+    },
+    pro: {
+      kicker: 'Для профи и бизнеса',
+      h2: 'Независимый взгляд технических дайверов.',
+      lead: 'Для дайв-центров, клубов и профессиональных дайверов.',
+      items: [
+        'Аудит дайв-центра',
+        'Оценка навыков инструкторов',
+        'Консультации и внутренние процедуры',
+        'Сложные погружения и экспедиции под задачу',
+      ],
+      link: 'Подробнее',
+    },
+    gift: {
+      kicker: 'Подарочный сертификат',
+      h2: 'Подарите первый вдох под водой.',
+      p: 'Для того, кто давно мечтает, но не решается. Сертификат на пробное погружение с инструктором — напишите нам, и мы всё оформим.',
+      btn: 'Заказать сертификат',
+    },
+    gauge: {
+      unit: 'метров',
+      zones: [
+        [0, 'поверхность'],
+        [1, 'мелководье'],
+        [6, 'Open Water'],
+        [19, 'Advanced'],
+        [31, 'техника'],
+      ] as [number, string][],
+      colors: ['красный', 'оранжевый', 'жёлтый', 'зелёный', 'синий'],
+    },
   },
   en: {
     description:
-      'DECOBROSCREW (Decompression Brothers CREW) is a diving club in Novosibirsk. Training to SDI and TDI programs, technical diving and expeditions.',
-    hero: ['Dive', 'different.'],
-    heroCopy: ['Technical diving.', 'Expeditions.', 'Premium training.'],
-    discover: 'Discover',
-    philosophyH: ['The deeper you go,', 'the more preparation matters.'],
-    philosophy:
-      'We are DECOBROSCREW. We train, plan and dive as a team. We work on technical diving, real expeditions and a strong club culture.',
-    philosophyLink: 'Our Philosophy',
-    cardsAria: 'Training directions',
-    sdi: 'From recreational to advanced and technical training. Build real skills.',
-    tdi: 'Advanced training for divers who want to go further. Deeper knowledge.',
-    crewH: 'Meet the Crew',
-    crew: 'Divers. Instructors. Explorers. A team united by a deeper purpose.',
-    crewCta: 'Meet the Crew',
+      'DECOBROSCREW is a diving club in Novosibirsk: try dives, SDI and TDI training from Open Water to decompression, expeditions, an equipment workshop and dive centre audits.',
+    hero: {
+      kicker: 'Novosibirsk · SDI · TDI · technical diving',
+      h1: 'Anything underwater, bring it to us.',
+      sub: 'Try dives, training from Open Water to decompression, expeditions, an equipment workshop and dive centre audits.',
+      try: 'Try diving for the first time',
+      diver: 'I already dive',
+      reply: 'We reply on Telegram within 15 minutes',
+    },
+    facts: [
+      ['SDI · TDI', 'training to international standards'],
+      ['13 programs', 'from the first dive to trimix'],
+      ['Apeks', 'service certification of the workshop'],
+      ['Mon–Fri 19–21', '1 Komsomolsky Ave, Novosibirsk'],
+    ],
+    doors: {
+      kicker: 'Where to start',
+      h2: 'What do you want to do underwater?',
+      price: 'from ··· ₽',
+      items: [
+        [
+          '0–5 m',
+          'Try it for the first time',
+          'Pool or open water, an instructor at your side, no experience needed.',
+          '/try',
+        ],
+        [
+          'to 18 m',
+          'Learn and get certified',
+          'Open Water from scratch: theory, pool, open water.',
+          '/training#recreational',
+        ],
+        [
+          '40+ m',
+          'Dive deeper',
+          'Wrecks, caves, decompression, ice diving.',
+          '/training#technical',
+        ],
+        [
+          'route',
+          'See mantas, wrecks and cenotes',
+          'Expeditions matched to your level, with the crew.',
+          '/expeditions',
+        ],
+        [
+          'workshop',
+          'Get your gear serviced',
+          'Regulators, BCDs, wetsuits and drysuits. Apeks certified.',
+          '/service',
+        ],
+        [
+          'for pros',
+          'A task for a pro or a dive centre',
+          'Audits, instructor assessment, consulting.',
+          '/pro',
+        ],
+        ['gift', 'Give a first dive', 'A certificate for a try dive with an instructor.', '/gift'],
+        ['club', 'Dive with the crew', 'Training, planning and trips together.', '/crew'],
+      ],
+    },
+    descent: {
+      kicker: 'The path from zero',
+      h2: 'From the first breath to the cave.',
+      lead: 'Nobody starts deep. Every step is taken with an instructor and to the international SDI and TDI standards.',
+      unit: 'metres',
+      stations: [
+        [
+          '0–5',
+          'SDI Scuba Discovery',
+          'First breath',
+          'About two hours with an instructor: in a pool (Spartak, Neptun) or in open water at Abrashino or Temir. No experience needed.',
+          'How it goes',
+          '/try',
+        ],
+        [
+          'to 18',
+          'SDI Open Water Scuba Diver',
+          'Your own certificate',
+          'Theory, pool and open water. The result is an international certificate: dive with a buddy to 18 metres.',
+          'Open Water course',
+          '/training#recreational',
+        ],
+        [
+          'to 30',
+          'SDI Advanced · specialties',
+          'Experience and confidence',
+          'Depth, night, navigation, drysuit. Then wrecks and expeditions.',
+          'Specialties',
+          '/training#specialties',
+        ],
+        [
+          '40+',
+          'TDI',
+          'Technical diving',
+          'Decompression, gas mixes, caves: our main specialty.',
+          'Technical training',
+          '/training#technical',
+        ],
+      ],
+    },
+    deep: {
+      kicker: 'Technical diving',
+      h2: 'Decompression, mixes and caves are our core.',
+      lead: 'We take divers into caves. That taught us one thing: there are no discounts on safety. Not on an expedition, not in a pool. So a beginner here gets the same procedure as a tech diver.',
+      photoNote: 'demo photo · own photo needed',
+      caption:
+        'A sample configuration for a dive to 45 m. Every cylinder is analysed before the dive.',
+      cols: ['Gas', 'O₂', 'He', 'Depth limit', 'Where it works'],
+      rows: [
+        ['Trimix 18/45', '18 %', '45 %', '68 m · ppO₂ 1.4', 'bottom'],
+        ['EAN50', '50 %', '—', '22 m · ppO₂ 1.6', 'decompression from 21 m'],
+        ['Oxygen', '100 %', '—', '6 m · ppO₂ 1.6', 'last stops'],
+      ],
+      craft: [
+        [
+          'Gas',
+          'Every cylinder analysed',
+          'Oxygen and helium are checked before the dive, not after.',
+        ],
+        [
+          'Plan',
+          'Calculated decompression',
+          'A dive plan and a backup plan before entering the water.',
+        ],
+        [
+          'Gear',
+          'Our own workshop',
+          'Regulators, BCDs, exposure suits. Apeks service certification.',
+        ],
+        [
+          'Team',
+          'One configuration',
+          'Everyone in the group knows where every valve on a buddy is.',
+        ],
+      ],
+    },
+    plan: {
+      kicker: 'What a plan looks like',
+      h2: 'Twenty minutes on the bottom. Thirty to come back.',
+      lead: 'This is the profile of a technical dive to 45 metres. Every step is a stop you cannot skip. Move the pointer along the chart.',
+      head: ['Dive profile · Trimix 18/45 · bottom 45 m · 19 min', 'X: time, min · Y: depth, m'],
+      aria: 'Technical dive profile: descent to 45 metres, 19 minutes on the bottom, ascent with stops at 21, 18, 15, 12, 9, 6 and 3 metres, surfacing at minute 55.',
+      caption:
+        'An illustration, not a dive plan: a real profile is calculated for the diver, the mixes and the conditions.',
+      units: { min: 'min', m: 'm', bottom: 'bottom' },
+    },
+    stop: {
+      kicker: 'Ascent · 5 metres',
+      heading: 'Safety stop.',
+      lead: 'Three minutes at five metres before every exit. We do not cut it short underwater and we do not cut it short here: while the timer runs, here is our standard.',
+      waiting: 'The timer starts when you get here.',
+      running: 'Hanging at five metres. Every 30 seconds, one point of our standard.',
+      done: 'Stop complete. You can surface now.',
+      cta: 'To the surface ↑',
+      label: 'Club standard',
+      rules: [
+        ['Gas analysis', 'Every cylinder is checked before the dive.'],
+        ['Briefing', 'Before every dive, from a try dive to trimix.'],
+        ['Oxygen and first aid kit', 'On every trip.', true],
+        ['Small groups', 'The instructor within arm’s reach.', true],
+        ['Serviced gear', 'Our own workshop, a clear schedule.'],
+        [
+          'Right to call a dive',
+          'Anyone in the group can call off a dive without explaining why.',
+          true,
+        ],
+      ] as [string, string, boolean?][],
+    },
+    routes: {
+      kicker: 'Where it leads',
+      h2: 'Seen it in a film? We know the way.',
+      lead: 'Every dream is a concrete route: which certificate you need, how many dives and where to gain experience. We will plan it with you.',
+      needPhoto: 'photo needed',
+      items: [
+        [
+          'EXP-maldives',
+          'Divers and a manta ray beneath a liveaboard yacht at sunset.',
+          'Maldives · liveaboard',
+          'Manta rays',
+          'You need a certificate and a little experience.',
+          'Needed: Open Water + experience',
+          '/expeditions',
+        ],
+        [
+          'EXP-red-sea',
+          'Diver with a torch beside the hull of a large shipwreck.',
+          'Red Sea',
+          'Shipwrecks',
+          'Advanced first, then inside.',
+          'Needed: Advanced → Wreck',
+          '/expeditions',
+        ],
+        [
+          'EXP-mexico-cenotes',
+          'Two divers in a sunlit cenote.',
+          'Mexico · cenotes',
+          'Cenotes and caves',
+          'It starts with cavern, then TDI cave training.',
+          'Needed: Cavern → TDI Cave',
+          '/expeditions',
+        ],
+        [
+          '',
+          '',
+          'Siberia · Baikal',
+          'Under the ice',
+          'Our home water. Ice diving with the crew.',
+          'Needed: Ice Diver',
+          '/ice',
+        ],
+      ],
+    },
+    events: {
+      kicker: 'Coming up at the club',
+      h2: 'What you can sign up for now.',
+      lead: 'Groups, try dives and trips for the coming months.',
+      demo: 'Test dates.',
+      items: [
+        ['25.10', '2026', 'Try dive', 'Try dive', 'Neptun pool', '/try'],
+        [
+          '03.11',
+          'start',
+          'Course',
+          'SDI Open Water Scuba Diver',
+          'Club and Spartak pool',
+          '/training#recreational',
+        ],
+        [
+          '15.11',
+          'start',
+          'Course',
+          'TDI Intro to Tech',
+          'Club and open water',
+          '/training#technical',
+        ],
+        ['14.03', '2027', 'Expedition', 'Red Sea wrecks', 'Egypt · booking open', '/expeditions'],
+      ],
+    },
+    band: {
+      h2: 'We take divers into caves. Your first breath is in safe hands.',
+      p: 'DECOBROSCREW is a crew of technical divers from Novosibirsk. We train, plan and dive together.',
+      link: 'Meet the crew',
+    },
+    reviews: {
+      kicker: 'Reviews',
+      h2: 'What people who dived with us say.',
+      lead: 'Only real reviews with a name and a course.',
+      demo: 'The owner provides the texts.',
+      items: [
+        [
+          'A real review goes here: what the person feared, what worked out, what they remember.',
+          'Try dive · month, year',
+        ],
+        [
+          'A review from an Open Water graduate: how the training went and what comes next.',
+          'SDI Open Water · month, year',
+        ],
+        [
+          'A review from an expedition or technical course participant.',
+          'TDI · expedition · month, year',
+        ],
+      ],
+      name: 'First Last',
+      yandex: 'Reviews on Yandex Maps',
+      vk: 'Reviews on VK',
+    },
+    partners: {
+      kicker: 'Partners and venues',
+      h2: 'Who we work with.',
+      lead: 'Training agencies, training venues and service partners. Hover over a card to stop the row.',
+      demo: 'Logos after the partners agree.',
+      names: {
+        sdi: 'Training programs',
+        tdi: 'Technical programs',
+        apeks: 'Service certification',
+        spartak: ['SP', 'Spartak pool', 'Training and try dives'],
+        neptun: ['NP', 'Neptun pool', 'Training and try dives'],
+        abrashino: ['AB', 'Abrashino', 'Open water, Novosibirsk region'],
+        temir: ['TM', 'Temir', 'Open water, Kuzbass'],
+        cylinders: ['CY', 'Cylinders', 'Inspection and testing'],
+        insurance: ['DI', 'Dive insurance', 'Insurance partner'],
+      },
+    },
+    workshop: {
+      kicker: 'Workshop',
+      h2: 'We fix what you breathe from.',
+      lead: 'Service and repair of all kinds of gear. Apeks service certification.',
+      items: [
+        'Regulators',
+        'Buoyancy compensators and wings (BCD)',
+        'Drysuits, wetsuits and semi-drysuits',
+        'Cylinders: inspection through partners',
+      ],
+      link: 'To the workshop',
+    },
+    pro: {
+      kicker: 'For pros and business',
+      h2: 'An independent view from technical divers.',
+      lead: 'For dive centres, clubs and professional divers.',
+      items: [
+        'Dive centre audit',
+        'Instructor skills assessment',
+        'Consulting and internal procedures',
+        'Complex dives and expeditions for a task',
+      ],
+      link: 'Learn more',
+    },
+    gift: {
+      kicker: 'Gift certificate',
+      h2: 'Give a first breath underwater.',
+      p: 'For someone who has long dreamed of it but never dared. A certificate for a try dive with an instructor: write to us and we will arrange everything.',
+      btn: 'Order a certificate',
+    },
+    gauge: {
+      unit: 'metres',
+      zones: [
+        [0, 'surface'],
+        [1, 'shallows'],
+        [6, 'Open Water'],
+        [19, 'Advanced'],
+        [31, 'technical'],
+      ] as [number, string][],
+      colors: ['red', 'orange', 'yellow', 'green', 'blue'],
+    },
   },
   zh: {
     description:
-      'DECOBROSCREW（Decompression Brothers CREW）是新西伯利亚的潜水俱乐部，按照 SDI 和 TDI 课程进行培训，并开展技术潜水和探险。',
-    hero: ['潜得', '与众不同。'],
-    heroCopy: ['技术潜水。', '探险。', '高端培训。'],
-    discover: '探索',
-    philosophyH: ['潜得越深，', '准备就越重要。'],
-    philosophy:
-      '我们是 DECOBROSCREW。我们以团队的方式训练、计划和潜水，专注于技术潜水、真正的探险和深厚的俱乐部文化。',
-    philosophyLink: '我们的理念',
-    cardsAria: '培训方向',
-    sdi: '从休闲潜水到进阶和技术培训，打造真正的技能。',
-    tdi: '为想要走得更远的潜水员提供进阶培训，获取更深的知识。',
-    crewH: '认识我们的团队',
-    crew: '潜水员、教练、探险者——一支因共同目标而团结的团队。',
-    crewCta: '认识团队',
+      'DECOBROSCREW 是新西伯利亚的潜水俱乐部：体验潜水、从开放水域到减压的 SDI 和 TDI 培训、潜水探险、装备维修工坊以及潜水中心审核。',
+    hero: {
+      kicker: '新西伯利亚 · SDI · TDI · 技术潜水',
+      h1: '水下的一切，交给我们。',
+      sub: '体验潜水、从开放水域到减压的培训、潜水探险、装备维修工坊以及潜水中心审核。',
+      try: '第一次体验潜水',
+      diver: '我已经会潜水',
+      reply: 'Telegram 15 分钟内回复',
+    },
+    facts: [
+      ['SDI · TDI', '按国际标准培训'],
+      ['13 门课程', '从第一次下水到三混气'],
+      ['Apeks', '工坊的维修认证'],
+      ['周一至周五 19–21', '新西伯利亚共青团大街 1 号'],
+    ],
+    doors: {
+      kicker: '从哪里开始',
+      h2: '你想在水下做什么？',
+      price: '··· ₽ 起',
+      items: [
+        ['0–5 米', '第一次体验', '泳池或开放水域，教练在身边，无需经验。', '/try'],
+        [
+          '18 米以内',
+          '学习并获得证书',
+          '从零开始的开放水域课程：理论、泳池、开放水域。',
+          '/training#recreational',
+        ],
+        ['40+ 米', '潜得更深', '沉船、洞穴、减压、冰潜。', '/training#technical'],
+        ['路线', '去看蝠鲼、沉船和天然井', '按你的水平安排探险，与团队同行。', '/expeditions'],
+        ['工坊', '维修装备', '调节器、BCD、潜水服。Apeks 认证。', '/service'],
+        ['专业', '专业人士或潜水中心的需求', '审核、教练评估、咨询。', '/pro'],
+        ['礼物', '送一次潜水体验', '与教练一起体验潜水的礼品券。', '/gift'],
+        ['俱乐部', '与团队一起潜水', '一起训练、计划和出行。', '/crew'],
+      ],
+    },
+    descent: {
+      kicker: '从零开始',
+      h2: '从第一口呼吸到洞穴。',
+      lead: '没有人一开始就潜深。每一步都有教练陪同，并遵循 SDI 和 TDI 国际标准。',
+      unit: '米',
+      stations: [
+        [
+          '0–5',
+          'SDI Scuba Discovery',
+          '第一口呼吸',
+          '与教练一起约两小时：在泳池（Spartak、Neptun）或在 Abrashino、Temir 的开放水域。无需经验。',
+          '流程介绍',
+          '/try',
+        ],
+        [
+          '≤ 18',
+          'SDI Open Water Scuba Diver',
+          '属于你的证书',
+          '理论、泳池和开放水域。结果是国际证书：与潜伴一起下潜至 18 米。',
+          '开放水域课程',
+          '/training#recreational',
+        ],
+        [
+          '≤ 30',
+          'SDI Advanced · 专长课程',
+          '经验与自信',
+          '深潜、夜潜、导航、干衣。之后是沉船和探险。',
+          '专长课程',
+          '/training#specialties',
+        ],
+        [
+          '40+',
+          'TDI',
+          '技术潜水',
+          '减压、混合气体、洞穴——我们的核心专长。',
+          '技术潜水培训',
+          '/training#technical',
+        ],
+      ],
+    },
+    deep: {
+      kicker: '技术潜水',
+      h2: '减压、混合气和洞穴是我们的根本。',
+      lead: '我们带人潜入洞穴。这让我们明白一件事：安全没有折扣。无论是探险还是泳池。所以初学者在这里得到的流程与技术潜水员相同。',
+      photoNote: '演示照片 · 需要自己的照片',
+      caption: '下潜至 45 米的配置示例。每个气瓶在下水前都会分析。',
+      cols: ['气体', 'O₂', 'He', '深度上限', '用途'],
+      rows: [
+        ['Trimix 18/45', '18 %', '45 %', '68 米 · ppO₂ 1.4', '水底'],
+        ['EAN50', '50 %', '—', '22 米 · ppO₂ 1.6', '21 米起减压'],
+        ['氧气', '100 %', '—', '6 米 · ppO₂ 1.6', '最后几站'],
+      ],
+      craft: [
+        ['气体', '每个气瓶都分析', '氧气和氦气在下水前检查，而不是之后。'],
+        ['计划', '按计算减压', '下水前制定潜水计划和备用计划。'],
+        ['装备', '自己的工坊', '调节器、BCD、潜水服。Apeks 维修认证。'],
+        ['团队', '统一配置', '小组里每个人都知道潜伴每个阀门的位置。'],
+      ],
+    },
+    plan: {
+      kicker: '计划是什么样的',
+      h2: '水底二十分钟，返回三十分钟。',
+      lead: '这是一次 45 米技术潜水的剖面图。每一级台阶都是不能跳过的停留。用指针沿图表移动。',
+      head: ['潜水剖面 · Trimix 18/45 · 水底 45 米 · 19 分钟', 'X：时间，分钟 · Y：深度，米'],
+      aria: '技术潜水剖面：下潜至 45 米，水底停留 19 分钟，上升时在 21、18、15、12、9、6 和 3 米停留，第 55 分钟出水。',
+      caption: '仅为示意，不是潜水计划：真实剖面根据潜水员、混合气和条件计算。',
+      units: { min: '分钟', m: '米', bottom: '水底' },
+    },
+    stop: {
+      kicker: '上升 · 5 米',
+      heading: '安全停留。',
+      lead: '每次出水前在五米停留三分钟。我们在水下不缩短它，在这里也不缩短：计时进行时，这是我们的标准。',
+      waiting: '你到达这里时计时开始。',
+      running: '悬停在五米。每 30 秒一条我们的标准。',
+      done: '停留完成。可以上升出水了。',
+      cta: '回到水面 ↑',
+      label: '俱乐部标准',
+      rules: [
+        ['气体分析', '每个气瓶在下水前检查。'],
+        ['潜前简报', '每次下水前，从体验潜水到三混气。'],
+        ['氧气和急救包', '每次出行都携带。', true],
+        ['小团队', '教练就在伸手可及的距离。', true],
+        ['保养过的装备', '自己的工坊，清晰的保养计划。'],
+        ['取消权', '小组里任何人都可以无需解释取消潜水。', true],
+      ] as [string, string, boolean?][],
+    },
+    routes: {
+      kicker: '通往哪里',
+      h2: '在电影里见过？我们认得路。',
+      lead: '每个梦想都是一条具体的路线：需要什么证书、多少次潜水、在哪里积累经验。我们和你一起规划。',
+      needPhoto: '需要照片',
+      items: [
+        [
+          'EXP-maldives',
+          '日落时分，潜水员与蝠鲼在船宿游艇下方。',
+          '马尔代夫 · 船宿',
+          '蝠鲼',
+          '需要证书和一点经验。',
+          '需要：开放水域 + 经验',
+          '/expeditions',
+        ],
+        [
+          'EXP-red-sea',
+          '潜水员手持潜水灯在一艘大型沉船船体旁。',
+          '红海',
+          '沉船',
+          '先完成进阶课程，再进入内部。',
+          '需要：Advanced → Wreck',
+          '/expeditions',
+        ],
+        [
+          'EXP-mexico-cenotes',
+          '两名潜水员在阳光照射的天然井中。',
+          '墨西哥 · 天然井',
+          '天然井与洞穴',
+          '从 cavern 开始，然后是 TDI 洞穴培训。',
+          '需要：Cavern → TDI Cave',
+          '/expeditions',
+        ],
+        [
+          '',
+          '',
+          '西伯利亚 · 贝加尔湖',
+          '冰下',
+          '我们的主场水域。与团队一起冰潜。',
+          '需要：Ice Diver',
+          '/ice',
+        ],
+      ],
+    },
+    events: {
+      kicker: '俱乐部近期活动',
+      h2: '现在可以报名的项目。',
+      lead: '未来几个月的班组、体验潜水和出行。',
+      demo: '日期为测试数据。',
+      items: [
+        ['25.10', '2026', '体验', '体验潜水', 'Neptun 泳池', '/try'],
+        [
+          '03.11',
+          '开课',
+          '课程',
+          'SDI Open Water Scuba Diver',
+          '俱乐部和 Spartak 泳池',
+          '/training#recreational',
+        ],
+        ['15.11', '开课', '课程', 'TDI Intro to Tech', '俱乐部和开放水域', '/training#technical'],
+        ['14.03', '2027', '探险', '红海沉船', '埃及 · 报名中', '/expeditions'],
+      ],
+    },
+    band: {
+      h2: '我们带人潜入洞穴。你的第一口呼吸，交给可靠的人。',
+      p: 'DECOBROSCREW 是来自新西伯利亚的技术潜水团队。我们一起训练、计划和潜水。',
+      link: '认识团队',
+    },
+    reviews: {
+      kicker: '评价',
+      h2: '和我们一起潜过水的人怎么说。',
+      lead: '只发布带姓名和课程的真实评价。',
+      demo: '内容由俱乐部提供。',
+      items: [
+        ['这里将放一条真实评价：他担心什么，结果如何，记住了什么。', '体验潜水 · 月份，年份'],
+        ['开放水域学员的评价：培训过程以及下一步。', 'SDI Open Water · 月份，年份'],
+        ['探险或技术课程参与者的评价。', 'TDI · 探险 · 月份，年份'],
+      ],
+      name: '姓名',
+      yandex: 'Yandex 地图上的评价',
+      vk: 'VK 上的评价',
+    },
+    partners: {
+      kicker: '合作伙伴和场地',
+      h2: '我们的合作对象。',
+      lead: '培训机构、训练场地和服务合作伙伴。将指针悬停在卡片上可暂停滚动。',
+      demo: '标志需经合作伙伴同意后展示。',
+      names: {
+        sdi: '培训课程',
+        tdi: '技术课程',
+        apeks: '维修认证',
+        spartak: ['SP', 'Spartak 泳池', '训练和体验潜水'],
+        neptun: ['NP', 'Neptun 泳池', '训练和体验潜水'],
+        abrashino: ['AB', 'Abrashino', '开放水域，新西伯利亚州'],
+        temir: ['TM', 'Temir', '开放水域，库兹巴斯'],
+        cylinders: ['CY', '气瓶', '检验'],
+        insurance: ['DI', '潜水保险', '保险合作伙伴'],
+      },
+    },
+    workshop: {
+      kicker: '工坊',
+      h2: '我们维修你赖以呼吸的装备。',
+      lead: '各类装备的保养和维修。Apeks 维修认证。',
+      items: [
+        '调节器',
+        '浮力补偿器和背飞（BCD）',
+        '干式、湿式和半干式潜水服',
+        '气瓶：通过合作伙伴检验',
+      ],
+      link: '前往工坊',
+    },
+    pro: {
+      kicker: '面向专业人士和企业',
+      h2: '来自技术潜水员的独立视角。',
+      lead: '面向潜水中心、俱乐部和职业潜水员。',
+      items: ['潜水中心审核', '教练技能评估', '咨询和内部流程', '按需求安排的复杂潜水和探险'],
+      link: '了解更多',
+    },
+    gift: {
+      kicker: '礼品券',
+      h2: '送出水下的第一口呼吸。',
+      p: '送给那个梦想已久却一直没敢尝试的人。与教练一起体验潜水的礼品券：给我们留言，我们来安排一切。',
+      btn: '订购礼品券',
+    },
+    gauge: {
+      unit: '米',
+      zones: [
+        [0, '水面'],
+        [1, '浅水'],
+        [6, 'Open Water'],
+        [19, 'Advanced'],
+        [31, '技术'],
+      ] as [number, string][],
+      colors: ['红', '橙', '黄', '绿', '蓝'],
+    },
   },
 }[locale];
+
+const depthOf = [5, 18, 30, 45];
+const N = T.partners.names;
+const partnerRows: [
+  { mark: string; name: string; role: string; color: string }[],
+  { mark: string; name: string; role: string; color: string }[],
+] = [
+  [
+    { mark: 'SDI', name: 'SDI', role: N.sdi, color: '#1f5f86' },
+    { mark: 'TDI', name: 'TDI', role: N.tdi, color: '#0b1f33' },
+    { mark: 'AP', name: 'Apeks', role: N.apeks, color: '#2c7aa6' },
+    { mark: N.spartak[0], name: N.spartak[1], role: N.spartak[2], color: '#134a6d' },
+    { mark: N.neptun[0], name: N.neptun[1], role: N.neptun[2], color: '#1d5f86' },
+  ],
+  [
+    { mark: N.abrashino[0], name: N.abrashino[1], role: N.abrashino[2], color: '#11744a' },
+    { mark: N.temir[0], name: N.temir[1], role: N.temir[2], color: '#3b5b2e' },
+    { mark: N.cylinders[0], name: N.cylinders[1], role: N.cylinders[2], color: '#9a3412' },
+    { mark: N.insurance[0], name: N.insurance[1], role: N.insurance[2], color: '#55606b' },
+    { mark: 'SDI', name: 'SDI', role: N.sdi, color: '#1f5f86' },
+  ],
+];
+const spectrum: [number, string, string][] = [
+  [5, T.gauge.colors[0], '#e53935'],
+  [10, T.gauge.colors[1], '#fb8c00'],
+  [20, T.gauge.colors[2], '#fdd835'],
+  [40, T.gauge.colors[3], '#43a047'],
+  [999, T.gauge.colors[4], '#1e88e5'],
+];
 ---
 
-<BaseLayout title="DECOBROSCREW" description={T.description} home>
-  <Hero
-    imageId="H01"
-    compact
-    lines={T.hero}
-    copy={T.heroCopy}
-    cta={{ label: T.discover, href: '#philosophy' }}
-  />
+<BaseLayout title="DECOBROSCREW" description={T.description} home overlay>
+  <section class="hero" data-depth="0">
+    <EditorialImage imageId="H01" fill priority position="62% center" />
+    <div class="copy">
+      <p class="kicker">{T.hero.kicker}</p>
+      <h1>{T.hero.h1}</h1>
+      <p class="sub">{T.hero.sub}</p>
+      <div class="acts">
+        <a class="btn white" href={p('/try')}>
+          {T.hero.try}{' '}
+          <span class="ar" aria-hidden="true">
+            →
+          </span>
+        </a>
+        <a class="btn out" href="#doors">
+          {T.hero.diver}
+        </a>
+      </div>
+      <p class="reply">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="ph">{T.hero.reply}</span>
+        <span aria-hidden="true">·</span>
+        <span class="mono">{T.facts[3][0]}</span>
+      </p>
+    </div>
+  </section>
 
-  <Band
-    class="home-philosophy"
-    id="philosophy"
-    imageId="H02"
-    position="center 22%"
-    height="380px"
-    mobileRatio="2 / 1"
-  >
-    <h2>
-      {T.philosophyH[0]}
-      <br />
-      {T.philosophyH[1]}
+  <div class="facts">
+    {T.facts.map(([b, s]) => (
+      <div>
+        <b>{b}</b>
+        <span>{s}</span>
+      </div>
+    ))}
+  </div>
+
+  <section class="doors wrap" id="doors" data-depth="0" aria-labelledby="doors-h">
+    <p class="kicker">{T.doors.kicker}</p>
+    <h2 class="h2" id="doors-h">
+      {T.doors.h2}
     </h2>
-    <span class="rule"></span>
-    <p class="lead">{T.philosophy}</p>
-    <a class="link-arrow" href={p('/crew')}>
-      {T.philosophyLink} <span aria-hidden="true">→</span>
-    </a>
-  </Band>
+    <ol class="door-list">
+      {T.doors.items.map(([n, title, d, href], i) => (
+        <li>
+          <a href={p(href)}>
+            <span class="n">{n}</span>
+            <span class="t">{title}</span>
+            <span class="d">
+              {d} {i === 0 && <span class="mono ph">{T.doors.price}</span>}
+            </span>
+            <span class="a" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
 
-  <section class="cards" aria-label={T.cardsAria}>
-    <DirectionCard
-      title="SDI"
-      agency="Scuba Diving International"
-      copy={T.sdi}
-      href={p('/training#recreational')}
-      imageId="H03"
-    />
-    <DirectionCard
-      title="TDI"
-      agency="Technical Diving International"
-      copy={T.tdi}
-      href={p('/training#technical')}
-      imageId="H04"
+  <section class="descent wrap" data-depth="0" aria-labelledby="descent-h">
+    <p class="kicker">{T.descent.kicker}</p>
+    <h2 class="h2" id="descent-h">
+      {T.descent.h2}
+    </h2>
+    <p class="lead">{T.descent.lead}</p>
+    <ol class="stations">
+      {T.descent.stations.map(([depth, meta, title, copy, link, href], i) => (
+        <li class:list={['station', { dark: i >= 2 }]} data-depth={depthOf[i]}>
+          <p class="dp">
+            <b>{depth}</b>
+            {T.descent.unit}
+          </p>
+          <div>
+            <p class="meta">{meta}</p>
+            <h3>{title}</h3>
+          </div>
+          <div>
+            <p class="copy">{copy}</p>
+            <a class="link" href={i === 3 ? '#deep' : p(href)}>
+              {link}{' '}
+              <span class="ar" aria-hidden="true">
+                →
+              </span>
+            </a>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="deep dk" id="deep" data-depth="45" aria-labelledby="deep-h">
+    <canvas class="sea" data-mode="deep" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="deep-top">
+        <div>
+          <p class="kicker">{T.deep.kicker}</p>
+          <h2 id="deep-h">{T.deep.h2}</h2>
+          <p class="lead">{T.deep.lead}</p>
+        </div>
+        <div class="photo">
+          <EditorialImage imageId="H04" sizes="(min-width: 1000px) 50vw, 100vw" />
+          {DEMO_CONTENT && <span class="note">{T.deep.photoNote}</span>}
+        </div>
+      </div>
+      <div class="gas">
+        <table>
+          <caption>{T.deep.caption}</caption>
+          <thead>
+            <tr>
+              {T.deep.cols.map((c) => (
+                <th scope="col">{c}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {T.deep.rows.map(([gas, ...cells]) => (
+              <tr>
+                <th scope="row">{gas}</th>
+                {cells.map((c) => (
+                  <td>{c}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <ul class="craft">
+        {T.deep.craft.map(([k, b, s]) => (
+          <li>
+            <span class="k">{k}</span>
+            <p>
+              <b>{b}</b>
+              <span>{s}</span>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="plan wrap" data-depth="45" aria-labelledby="plan-h">
+    <div class="plan-top">
+      <div>
+        <p class="kicker">{T.plan.kicker}</p>
+        <h2 class="h2" id="plan-h">
+          {T.plan.h2}
+        </h2>
+      </div>
+      <p class="lead">{T.plan.lead}</p>
+    </div>
+    <DiveProfile
+      head={T.plan.head as [string, string]}
+      aria={T.plan.aria}
+      caption={T.plan.caption}
+      units={T.plan.units}
+      comma={locale === 'ru'}
     />
   </section>
 
-  <Band class="home-crew" imageId="H05" position="center 45%" height="300px" mobileRatio="5 / 2">
-    <h2>{T.crewH}</h2>
-    <span class="rule"></span>
-    <p class="lead">{T.crew}</p>
-    <a class="link-arrow" href={p('/crew')}>
-      {T.crewCta} <span aria-hidden="true">→</span>
-    </a>
-  </Band>
+  <SafetyStop
+    kicker={T.stop.kicker}
+    heading={T.stop.heading}
+    lead={T.stop.lead}
+    waiting={T.stop.waiting}
+    running={T.stop.running}
+    done={T.stop.done}
+    cta={{ label: T.stop.cta, href: '#routes' }}
+    label={T.stop.label}
+    rules={T.stop.rules}
+  />
+
+  <section class="routes wrap" id="routes" data-depth="0" data-depth-end aria-labelledby="routes-h">
+    <p class="kicker">{T.routes.kicker}</p>
+    <h2 class="h2" id="routes-h">
+      {T.routes.h2}
+    </h2>
+    <p class="lead">{T.routes.lead}</p>
+    <ul class="route-grid">
+      {T.routes.items.map(([img, alt, where, title, copy, need, href]) => (
+        <li>
+          <a class="route" href={p(href)}>
+            {img ? (
+              <EditorialImage
+                name={img}
+                alt={alt}
+                ratio="4 / 5"
+                sizes="(min-width: 1100px) 25vw, (min-width: 640px) 50vw, 100vw"
+              />
+            ) : (
+              <span class="need-photo">{T.routes.needPhoto}</span>
+            )}
+            <span class="where">{where}</span>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+            <span class="need">{need}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="events wrap" aria-labelledby="ev-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.events.kicker}</p>
+        <h2 class="h2" id="ev-h">
+          {T.events.h2}
+        </h2>
+      </div>
+      <p class="lead">
+        {T.events.lead} {DEMO_CONTENT && <span class="ph">{T.events.demo}</span>}
+      </p>
+    </div>
+    <ol class="ev-list">
+      {T.events.items.map(([dt, small, ty, title, place, href]) => (
+        <li>
+          <a href={p(href)}>
+            <span class="dt">
+              {dt}
+              <small>{small}</small>
+            </span>
+            <span class="ty">{ty}</span>
+            <b>{title}</b>
+            <span class="pl">{place}</span>
+            <span class="a" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="band-photo" aria-labelledby="crew-h">
+    <EditorialImage imageId="H05" fill position="center 30%" />
+    <div class="in">
+      <h2 id="crew-h">{T.band.h2}</h2>
+      <p>{T.band.p}</p>
+      <a class="link" href={p('/crew')}>
+        {T.band.link}{' '}
+        <span class="ar" aria-hidden="true">
+          →
+        </span>
+      </a>
+    </div>
+  </section>
+
+  {DEMO_CONTENT && (
+    <section class="reviews wrap" aria-labelledby="rv-h">
+      <div class="two">
+        <div>
+          <p class="kicker">{T.reviews.kicker}</p>
+          <h2 class="h2" id="rv-h">
+            {T.reviews.h2}
+          </h2>
+        </div>
+        <p class="lead">
+          {T.reviews.lead} <span class="ph">{T.reviews.demo}</span>
+        </p>
+      </div>
+      <ul class="rv-grid">
+        {T.reviews.items.map(([q, what]) => (
+          <li class="rv">
+            <q>{q}</q>
+            <div class="who">
+              <i></i>
+              <p>
+                <b>{T.reviews.name}</b>
+                <span>{what}</span>
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div class="rv-src">
+        <a class="chip-link" href={address.mapUrl} target="_blank" rel="noopener noreferrer">
+          <Icon name="map" />
+          {T.reviews.yandex}
+        </a>
+        {contacts.vk && (
+          <a class="chip-link" href={contacts.vk} target="_blank" rel="noopener noreferrer">
+            <Icon name="vk" />
+            {T.reviews.vk}
+          </a>
+        )}
+      </div>
+    </section>
+  )}
+
+  <section class="partners sec" aria-labelledby="pt-h">
+    <div class="wrap two">
+      <div>
+        <p class="kicker">{T.partners.kicker}</p>
+        <h2 class="h2" id="pt-h">
+          {T.partners.h2}
+        </h2>
+      </div>
+      <p class="lead">
+        {T.partners.lead} {DEMO_CONTENT && <span class="ph">{T.partners.demo}</span>}
+      </p>
+    </div>
+    <Partners rows={partnerRows} />
+  </section>
+
+  <section class="split" aria-label={`${T.workshop.kicker} · ${T.pro.kicker}`}>
+    {[
+      { ...T.workshop, tone: 'navy', href: '/service' },
+      { ...T.pro, tone: 'paper', href: '/pro' },
+    ].map((s) => (
+      <div class:list={['panel', s.tone]}>
+        <p class="kicker">{s.kicker}</p>
+        <h2>{s.h2}</h2>
+        <p class="lead">{s.lead}</p>
+        <ul>
+          {s.items.map((i) => (
+            <li>{i}</li>
+          ))}
+        </ul>
+        <a class="link" href={p(s.href)}>
+          {s.link}{' '}
+          <span class="ar" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </div>
+    ))}
+  </section>
+
+  <section class="closing wrap" aria-labelledby="gift-h">
+    <p class="kicker">{T.gift.kicker}</p>
+    <h2 id="gift-h">{T.gift.h2}</h2>
+    <div class="row">
+      <p>{T.gift.p}</p>
+      <a class="btn white" href={p('/gift')}>
+        {T.gift.btn}{' '}
+        <span class="ar" aria-hidden="true">
+          →
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <DepthGauge unit={T.gauge.unit} zones={T.gauge.zones} spectrum={spectrum} />
 </BaseLayout>
 
-<style>
-  h2 {
-    font-size: var(--fs-h2);
-  }
-  .lead {
-    margin-bottom: 20px;
-  }
-  .cards {
-    display: grid;
-    gap: 12px;
-    padding: 12px var(--gutter);
-    background: var(--white);
-  }
-  @media (min-width: 960px) {
-    .cards {
-      grid-template-columns: 1fr 1fr;
-      padding: 12px;
-      gap: 12px;
-    }
-  }
-</style>
+<script>
+  import '../../scripts/sea';
+</script>

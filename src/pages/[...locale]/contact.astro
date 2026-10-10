@@ -1,207 +1,269 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ContactStrip from '../../components/ContactStrip.astro';
-import Faq from '../../components/Faq.astro';
-import DemoBadge from '../../components/DemoBadge.astro';
-import { location, address, hours } from '../../data/site';
-import { localeFromUrl, localeStaticPaths, t } from '../../i18n';
+import Icon, { type IconName } from '../../components/Icon.astro';
+import { address, contacts, contactHref, hours } from '../../data/site';
+import { localeFromUrl, localeStaticPaths, translator } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
 
 const locale = localeFromUrl(Astro.url);
+const tr = translator(locale);
 
 const T = {
   ru: {
     title: 'Контакты',
-    description: 'Свяжитесь с DECOBROSCREW: телефон, Telegram, ВКонтакте или почта. Новосибирск, Комсомольский пр., 1.',
-    addressH: 'Адрес',
-    hoursH: 'Часы работы',
+    description:
+      'Свяжитесь с DECOBROSCREW: телефон, Telegram, ВКонтакте или почта. Новосибирск, Комсомольский пр., 1, Пн–Пт 19:00–21:00.',
+    kicker: 'Контакты',
+    h1: 'Погрузимся глубже вместе.',
+    lead: 'Позвоните, напишите в Telegram, ВКонтакте или на почту. Запись и вопросы — офлайн, без форм на сайте.',
+    reply: 'Отвечаем в Telegram за 15 минут',
+    channels: 'Каналы связи',
+    tg: ['Telegram', 'Отвечаем за 15 минут в рабочее время', 'Написать'],
+    vk: ['ВКонтакте', 'Сообщество клуба и новости', 'Открыть'],
+    wa: ['WhatsApp', 'Скоро', ''],
+    phone: ['Позвонить'],
+    email: ['Почта', 'Адрес скрыт за кнопками', 'Написать письмо', 'Скопировать адрес', 'Адрес скопирован'],
+    addressLabel: 'Адрес',
     mapTitle: 'Карта: DECOBROSCREW на Яндекс.Картах',
-    mapShow: 'Показать карту',
     mapNote: 'Карта загружается с Яндекса — он может установить свои cookie.',
-    eyebrow: 'Контакты',
-    h1: ['Погрузимся', 'глубже вместе.'],
-    lead: 'Позвоните, напишите в Telegram, ВКонтакте или на почту.',
+    mapShow: 'Показать карту',
   },
   en: {
     title: 'Contact',
-    description: 'Contact DECOBROSCREW by phone, Telegram, VK or email. 1 Komsomolsky Ave, Novosibirsk.',
-    addressH: 'Address',
-    hoursH: 'Opening hours',
+    description:
+      'Contact DECOBROSCREW by phone, Telegram, VK or email. 1 Komsomolsky Ave, Novosibirsk, Mon–Fri 19:00–21:00.',
+    kicker: 'Contact',
+    h1: 'Let’s dive deeper together.',
+    lead: 'Call us or write via Telegram, VK or email. Bookings and questions go offline, with no forms on the site.',
+    reply: 'We reply in Telegram within 15 minutes',
+    channels: 'Ways to reach us',
+    tg: ['Telegram', 'We reply within 15 minutes during opening hours', 'Message us'],
+    vk: ['VK', 'Club community and news', 'Open'],
+    wa: ['WhatsApp', 'Coming soon', ''],
+    phone: ['Call'],
+    email: ['Email', 'The address is behind the buttons', 'Write an email', 'Copy address', 'Address copied'],
+    addressLabel: 'Address',
     mapTitle: 'Map: DECOBROSCREW on Yandex Maps',
-    mapShow: 'Show map',
     mapNote: 'The map loads from Yandex, which may set its own cookies.',
-    eyebrow: 'Contact',
-    h1: ["Let's dive", 'deeper together.'],
-    lead: 'Call us or write via Telegram, VK or email.',
+    mapShow: 'Show map',
   },
   zh: {
     title: '联系我们',
-    description: '通过电话、Telegram、VK 或电子邮件联系 DECOBROSCREW。新西伯利亚共青团大街 1 号。',
-    addressH: '地址',
-    hoursH: '营业时间',
+    description:
+      '通过电话、Telegram、VK 或电子邮件联系 DECOBROSCREW。新西伯利亚共青团大街 1 号，周一至周五 19:00–21:00。',
+    kicker: '联系',
+    h1: '让我们一起潜得更深。',
+    lead: '欢迎致电，或通过 Telegram、VK、电子邮件联系我们。预约和咨询均在线下进行，网站不设表单。',
+    reply: '在 Telegram 上 15 分钟内回复',
+    channels: '联系方式',
+    tg: ['Telegram', '营业时间内 15 分钟内回复', '留言'],
+    vk: ['VK', '俱乐部社群与新闻', '打开'],
+    wa: ['WhatsApp', '即将开通', ''],
+    phone: ['拨打'],
+    email: ['电子邮件', '地址隐藏在按钮后', '写邮件', '复制地址', '地址已复制'],
+    addressLabel: '地址',
     mapTitle: '地图：DECOBROSCREW 位置',
-    mapShow: '显示地图',
     mapNote: '地图由 Yandex 加载，Yandex 可能会设置自己的 cookie。',
-    eyebrow: '联系',
-    h1: ['让我们一起', '潜得更深。'],
-    lead: '欢迎致电，或通过 Telegram、VK、电子邮件联系我们。',
+    mapShow: '显示地图',
   },
 }[locale];
+
+const open = hours[0];
+const channels: {
+  icon: IconName;
+  name: string;
+  note: string;
+  act: string;
+  href: string | null;
+  color?: string;
+  mono?: boolean;
+  external?: boolean;
+}[] = [
+  {
+    icon: 'telegram',
+    name: T.tg[0],
+    note: T.tg[1],
+    act: T.tg[2],
+    href: contactHref('telegram'),
+    color: '#229ed9',
+    external: true,
+  },
+  {
+    icon: 'vk',
+    name: T.vk[0],
+    note: T.vk[1],
+    act: T.vk[2],
+    href: contactHref('vk'),
+    color: '#0077ff',
+    external: true,
+  },
+  {
+    icon: 'whatsapp',
+    name: T.wa[0],
+    note: T.wa[1],
+    act: T.wa[2],
+    href: contactHref('whatsapp'),
+    color: '#25d366',
+    external: true,
+  },
+  {
+    icon: 'phone',
+    name: contacts.phone ?? '',
+    note: `${tr(open.days)} ${tr(open.time)}`,
+    act: T.phone[0],
+    href: contactHref('phone'),
+    mono: true,
+  },
+];
+const mail = contactHref('email');
 ---
 
 <BaseLayout title={T.title} description={T.description}>
-  <section class="section">
-    <div class="container">
-      <p class="eyebrow">{T.eyebrow}</p>
-      <h1>
-        {T.h1[0]}
-        <br />
-        {T.h1[1]}
-      </h1>
-      <span class="rule"></span>
-      <p class="lead">{T.lead}</p>
-      <div class="strip">
-        <ContactStrip />
-      </div>
-      <div class="info">
-        <div>
-          <h2 class="h">{T.addressH}</h2>
-          <a href={address.mapUrl} target="_blank" rel="noopener noreferrer">
-            {t(address.text, locale)}
-          </a>
-          <p class="loc">{t(location, locale)}</p>
-        </div>
-        <div>
-          <h2 class="h">{T.hoursH}</h2>
-          <dl>
-            {hours.map((h) => (
-              <div class="row">
-                <dt>{t(h.days, locale)}</dt>
-                <dd>{t(h.time, locale)}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-      <div class="map" data-src={address.embedUrl} data-title={T.mapTitle}>
-        <div class="map-facade">
-          <button type="button" class="map-btn">{T.mapShow}</button>
-          <p class="map-note">{T.mapNote}</p>
-        </div>
-      </div>
-    </div>
+  <section class="wrap plain-hero">
+    <p class="kicker">{T.kicker}</p>
+    <h1>{T.h1}</h1>
+    <p class="lead">{T.lead}</p>
+    <p class="reply">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="ph">{T.reply}</span>
+      <span aria-hidden="true">·</span>
+      <span class="mono">{tr(open.days)} {tr(open.time)}</span>
+    </p>
   </section>
-  <section class="section" id="faq">
-    <div class="container">
-      <DemoBadge />
-      <Faq />
+
+  <section class="wrap sec flush" aria-label={T.channels}>
+    <ul class="channels">
+      {channels.map((c) => (
+        <li>
+          {c.href ? (
+            <a
+              class="ch"
+              href={c.href}
+              style={c.color ? `--c:${c.color}` : undefined}
+              target={c.external ? '_blank' : undefined}
+              rel={c.external ? 'noopener noreferrer' : undefined}
+            >
+              <span class="ic">
+                <Icon name={c.icon} />
+              </span>
+              <b class:list={{ mono: c.mono }}>{c.name}</b>
+              <span class="d">{c.note}</span>
+              <span class="act">
+                {c.act} <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          ) : (
+            <div class="ch off">
+              <span class="ic">
+                <Icon name={c.icon} />
+              </span>
+              <b>{c.name}</b>
+              <span class="d ph">{c.note}</span>
+            </div>
+          )}
+        </li>
+      ))}
+      {mail && (
+        <li>
+          <div class="ch">
+            <span class="ic">
+              <Icon name="email" />
+            </span>
+            <b>{T.email[0]}</b>
+            <span class="d ph">{T.email[1]}</span>
+            <a class="act" href={mail}>
+              {T.email[2]} <span aria-hidden="true">→</span>
+            </a>
+            <button
+              type="button"
+              class="copy-btn"
+              data-copy={contacts.email}
+              data-done={T.email[4]}
+            >
+              {T.email[3]}
+            </button>
+          </div>
+        </li>
+      )}
+    </ul>
+
+    <div class="visit">
+      <dl class="spec-table">
+        <div>
+          <dt>{T.addressLabel}</dt>
+          <dd>
+            <a href={address.mapUrl} target="_blank" rel="noopener noreferrer">
+              {tr(address.text)}
+            </a>
+          </dd>
+        </div>
+        {hours.map((h) => (
+          <div>
+            <dt>{tr(h.days)}</dt>
+            <dd class="mono">{tr(h.time)}</dd>
+          </div>
+        ))}
+      </dl>
+      <div class="map" data-src={address.embedUrl} data-title={T.mapTitle}>
+        <div>
+          <b>{T.mapTitle}</b>
+          <p>{T.mapNote}</p>
+          <button type="button" class="btn">{T.mapShow}</button>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <script>
-  document.querySelectorAll<HTMLElement>(".map[data-src]").forEach((map) => {
-    map.querySelector("button")?.addEventListener("click", () => {
-      const frame = document.createElement("iframe");
+  document.querySelectorAll<HTMLElement>('.map[data-src]').forEach((map) => {
+    map.querySelector('button')?.addEventListener('click', () => {
+      const frame = document.createElement('iframe');
       frame.src = map.dataset.src!;
-      frame.title = map.dataset.title ?? "";
+      frame.title = map.dataset.title ?? '';
       frame.allowFullscreen = true;
-      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      frame.referrerPolicy = 'strict-origin-when-cross-origin';
+      map.classList.add('on');
       map.replaceChildren(frame);
       frame.focus();
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => {
+    const label = b.textContent;
+    b.addEventListener('click', () => {
+      const value = b.dataset.copy!;
+      const show = () => {
+        b.textContent = b.dataset.done ?? value;
+        setTimeout(() => (b.textContent = label), 2000);
+      };
+      navigator.clipboard?.writeText(value).then(show, () => (b.textContent = value)) ??
+        (b.textContent = value);
     });
   });
 </script>
 
 <style>
-  #faq {
-    padding-top: 0;
-  }
-  h1 {
-    font-size: var(--fs-h1);
-    margin-top: 16px;
-  }
-  .strip {
-    margin-top: 32px;
-  }
-  .info {
-    display: grid;
-    gap: 32px;
-    margin-top: 32px;
-  }
-  .h {
-    font-size: 1.125rem;
-    margin-bottom: 8px;
-  }
-  .info a:hover {
-    text-underline-offset: 4px;
-  }
-  .loc {
-    margin-top: 8px;
-    color: var(--muted);
-    font-size: 0.9375rem;
-  }
-  .map {
-    margin-top: 32px;
-    height: clamp(320px, 50vw, 480px);
-    border-radius: var(--radius-card);
-    overflow: hidden;
-    border: 1px solid var(--line);
+  .ch.off .ic {
     background: var(--paper);
-  }
-  .map-facade {
-    display: grid;
-    place-content: center;
-    justify-items: center;
-    gap: 12px;
-    height: 100%;
-    padding: 16px;
-    text-align: center;
-  }
-  .map-btn {
-    font: inherit;
-    min-height: 48px;
-    padding: 0 28px;
-    border: 1px solid var(--ink);
-    border-radius: 999px;
-    background: var(--ink);
-    color: var(--white);
-    font-weight: 500;
-    cursor: pointer;
-    transition: background var(--motion-fast);
-  }
-  .map-btn:hover {
-    background: var(--navy);
-  }
-  .map-note {
-    max-width: 32em;
     color: var(--muted);
-    font-size: 0.875rem;
+  }
+  .ch.off b {
+    color: var(--muted);
+  }
+  .map.on {
+    padding: 0;
+    overflow: hidden;
   }
   .map :global(iframe) {
     display: block;
     width: 100%;
     height: 100%;
+    min-height: 300px;
     border: 0;
   }
-  dl {
-    margin: 0;
-  }
-  .row {
-    display: flex;
-    gap: 16px;
-  }
-  dt {
-    min-width: 7em;
-    color: var(--muted);
-  }
-  dd {
-    margin: 0;
-  }
-  @media (min-width: 768px) {
-    .info {
-      grid-template-columns: 1fr 1fr;
-    }
+  .map b {
+    display: block;
   }
 </style>

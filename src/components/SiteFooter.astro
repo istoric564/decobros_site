@@ -1,122 +1,63 @@
 ---
-import BrandLockup from './BrandLockup.astro';
+import SocialLinks from './SocialLinks.astro';
 import {
   brand,
   footerNav,
   legalNav,
-  contactItems,
-  contactHref,
-  contactFallback,
+  address,
+  hours,
   legalEntity,
   analyticsEnabled,
 } from '../data/site';
-import { localeFromUrl, localePath, stripLocale, t } from '../i18n';
+import { localeFromUrl, localePath, t } from '../i18n';
 import { ui } from '../i18n/ui';
 
 const locale = localeFromUrl(Astro.url);
-// The contact page already lists every channel; the footer does not repeat them there.
-const onContactPage = stripLocale(Astro.url.pathname).replace(/\/$/, '') === '/contact';
 const year = new Date().getFullYear();
-
-const icons = {
-  phone:
-    '<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
-  vk: '<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M7 9c.4 3.6 2.4 6 5.3 6v-2.7c1.1.2 2 1.2 2.5 2.7H17c-.6-2-1.8-3-2.4-3.3.7-.5 1.7-1.6 2-2.7h-1.7c-.4 1.2-1.3 2.2-2.2 2.4V9h-1.6v4.5C9.9 13.1 9 11.3 8.7 9z"/>',
-  telegram:
-    '<path d="M21.5 3.5 2.5 10.8l6.2 2.3 2.3 6.4 3.1-4 4.8 3.6z"/><path d="m8.7 13.1 9.3-6.6"/>',
-  whatsapp:
-    '<path d="M3 21l1.6-4.6A8.5 8.5 0 1 1 8 19.6z"/><path d="M9 8.5c.5 3 2.5 5 5.5 6l1.2-1.4-2-1-1 .8c-1-.4-1.8-1.2-2.2-2.2l.8-1-1-2z"/>',
-  email: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
-} as const;
+const city = t({ ru: 'Новосибирск', en: 'Novosibirsk', zh: '新西伯利亚' }, locale);
+const street = t(address.short, locale);
+const open = hours[0];
 ---
 
 <footer class="footer">
-  <div class="container top">
-    <a href={localePath(locale, '/')} class="brand" aria-label={t(ui.homeAria, locale)}>
-      <BrandLockup dark />
+  <div class="row">
+    <span>
+      <b>{brand.short}</b> · {city}
+    </span>
+    <a href={address.mapUrl} target="_blank" rel="noopener noreferrer">
+      {street}
     </a>
-    {!onContactPage && (
-      <ul class="contacts">
-        {contactItems.map((c) => {
-          const href = contactHref(c.key);
-          const Tag = href ? 'a' : 'span';
-          const external = href && c.key !== 'email' && c.key !== 'phone';
-          return (
-            <li data-contact={c.key}>
-              <Tag
-                href={href ?? undefined}
-                target={external ? '_blank' : undefined}
-                rel={external ? 'noopener noreferrer' : undefined}
-                class="contact"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                  set:html={icons[c.key]}
-                />
-                <span class="t">
-                  <span class="label">{t(c.label, locale)}</span>
-                  <span class="note">
-                    {href
-                      ? t(c.note, locale)
-                      : (contactFallback[c.key] ?? t(ui.contentRequired, locale))}
-                  </span>
-                </span>
-              </Tag>
-            </li>
-          );
-        })}
-      </ul>
-    )}
-  </div>
-  <div class="container bottom">
+    <span>
+      {t(open.days, locale)} {t(open.time, locale)}
+    </span>
     <nav aria-label={t(ui.navFooter, locale)}>
-      <ul>
-        {footerNav.map((i) => (
-          <li>
-            <a href={localePath(locale, i.href)}>{t(i.label, locale)}</a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-    <nav aria-label={t(ui.navLegal, locale)}>
-      <ul>
-        {legalNav.map((i) => (
-          <li>
-            <a href={localePath(locale, i.href)}>{t(i.label, locale)}</a>
-          </li>
-        ))}
-      </ul>
+      {footerNav.map((i) => (
+        <a href={localePath(locale, i.href)}>{t(i.label, locale)}</a>
+      ))}
+      {legalNav.map((i) => (
+        <a href={localePath(locale, i.href)}>{t(i.label, locale)}</a>
+      ))}
     </nav>
     {analyticsEnabled && (
       <button type="button" class="cookie-btn" data-cookie-settings>
         {t(ui.cookieSettings, locale)}
       </button>
     )}
+    <span class="age" role="img" aria-label={t(ui.ageMark, locale)} title={t(ui.ageMark, locale)}>
+      18+
+    </span>
+    <SocialLinks class="footer-soc" />
   </div>
-  <div class="container legal">
+  <div class="legal">
+    <p>{t(ui.trademarks, locale)}</p>
     <p>
       {t(ui.operator, locale)}: {t(legalEntity.operatorName, locale)} ·{' '}
       {t(legalEntity.operatorType, locale)} · {t(legalEntity.registrationData, locale)} ·{' '}
-      {t(legalEntity.address, locale)} ·{' '}
       <a href={`mailto:${legalEntity.privacyEmail}`}>{legalEntity.privacyEmail}</a>
     </p>
     <p>{t(ui.notOffer, locale)}</p>
-    <p>{t(ui.trademarks, locale)}</p>
-    <p class="copy">
-      <span>
-        © {year} {brand.full}. {t(ui.rights, locale)}
-      </span>
-      <span class="age" role="img" aria-label={t(ui.ageMark, locale)} title={t(ui.ageMark, locale)}>
-        18+
-      </span>
+    <p>
+      © {year} {brand.full}. {t(ui.rights, locale)}
     </p>
   </div>
 </footer>
@@ -124,80 +65,39 @@ const icons = {
 <style>
   .footer {
     background: var(--ink);
+    color: var(--on-dark-3);
+    border-top: 1px solid var(--line-dark);
+    padding: 28px var(--g) 32px;
+    font-size: 13px;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 32px;
+  }
+  b {
+    color: var(--on-dark);
+    font-weight: 600;
+  }
+  a {
+    text-decoration: none;
+  }
+  a:hover {
     color: var(--white);
-    padding-block: 48px 28px;
-    border-radius: 0 0 var(--radius-frame) var(--radius-frame);
-  }
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .top {
-    display: grid;
-    gap: 28px;
-    padding-bottom: 24px;
-  }
-  .brand {
-    text-decoration: none;
-    justify-self: start;
-  }
-  .contacts {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 16px;
-  }
-  .contact {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    min-height: 44px;
-    text-align: left;
-    text-decoration: none;
-  }
-  .t {
-    display: flex;
-    flex-direction: column;
-    overflow-wrap: anywhere;
-  }
-  .label {
-    font-size: 0.8125rem;
-    font-weight: 500;
-  }
-  .note {
-    font-size: 0.75rem;
-    color: #9fb0bf;
-  }
-  a.contact:hover .label {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
-  .bottom {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 4px 24px;
-    padding-top: 12px;
-    border-top: 1px solid var(--line-dark);
-  }
-  .bottom ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 20px;
-  }
-  .bottom a {
+  .row > a,
+  nav a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    font-size: 0.8125rem;
-    color: #c4cfd9;
-    text-decoration: none;
   }
-  .bottom a:hover {
-    color: var(--white);
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 32px;
   }
   .cookie-btn {
     min-height: 44px;
@@ -205,8 +105,7 @@ const icons = {
     border: 0;
     background: none;
     font: inherit;
-    font-size: 0.8125rem;
-    color: #c4cfd9;
+    color: inherit;
     cursor: pointer;
   }
   .cookie-btn:hover {
@@ -214,63 +113,27 @@ const icons = {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
-  .legal {
-    display: grid;
-    gap: 6px;
-    padding-top: 12px;
-    font-size: 0.75rem;
-    line-height: 1.5;
-    color: #9fb0bf;
-  }
-  .legal p {
-    margin: 0;
-  }
-  .legal a {
-    color: inherit;
-  }
-  .copy {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
   .age {
     padding: 2px 6px;
     border: 1px solid currentColor;
     border-radius: 4px;
     font-weight: 600;
   }
-  @media (max-width: 767px) {
-    .footer {
-      border-radius: 0;
-    }
+  .footer :global(.footer-soc) {
+    margin-left: auto;
+    color: var(--on-dark-2);
   }
-  @media (min-width: 768px) {
-    .contacts {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-    }
+  .legal {
+    display: grid;
+    gap: 4px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-dark);
+    font-size: 12px;
+    line-height: 1.5;
   }
-  @media (min-width: 1200px) {
-    .footer {
-      padding-block: 40px 16px;
-    }
-    .top {
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      padding-bottom: 28px;
-    }
-    .contacts {
-      grid-template-columns: repeat(5, auto);
-      gap: 32px;
-    }
-    .contact {
-      flex-direction: row;
-      text-align: left;
-      gap: 14px;
-    }
-    .label {
-      font-size: 0.9375rem;
-    }
+  .legal a {
+    color: inherit;
+    text-decoration: underline;
   }
 </style>

@@ -1,0 +1,68 @@
+---
+/* Photo hero of an inner page. The header lies over it, so the page uses BaseLayout overlay. */
+import EditorialImage from './EditorialImage.astro';
+import Crumbs, { type Crumb } from './Crumbs.astro';
+
+export interface HeroAction {
+  label: string;
+  href: string;
+  /** white: main action on the photo, out: outlined secondary. */
+  tone?: 'white' | 'out';
+  external?: boolean;
+}
+
+interface Props {
+  /** Image slot id from data/images.ts. Without it the hero shows the ice drawing slot. */
+  imageId?: string;
+  position?: string;
+  kicker: string;
+  title: string;
+  sub?: string;
+  actions?: HeroAction[];
+  crumbs?: Crumb[];
+  short?: boolean;
+  class?: string;
+}
+const {
+  imageId,
+  position = 'center',
+  kicker,
+  title,
+  sub,
+  actions = [],
+  crumbs,
+  short = false,
+  class: className,
+} = Astro.props;
+---
+
+<section class:list={['hero', { short }, className]}>
+  {imageId && <EditorialImage imageId={imageId} fill priority position={position} />}
+  <slot name="art" />
+  <div class="copy">
+    {crumbs && <Crumbs items={crumbs} dark />}
+    <p class="kicker">{kicker}</p>
+    <h1>{title}</h1>
+    {sub && <p class="sub">{sub}</p>}
+    {actions.length > 0 && (
+      <div class="acts">
+        {actions.map((a, i) => (
+          <a
+            class:list={['btn', a.tone ?? (i === 0 ? 'white' : 'out')]}
+            href={a.href}
+            target={a.external ? '_blank' : undefined}
+            rel={a.external ? 'noopener noreferrer' : undefined}
+          >
+            {a.label}
+            {i === 0 && (
+              <span class="ar" aria-hidden="true">
+                →
+              </span>
+            )}
+          </a>
+        ))}
+      </div>
+    )}
+    <slot />
+  </div>
+</section>
