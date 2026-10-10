@@ -1,12 +1,21 @@
 ---
-import '@fontsource-variable/inter';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/300.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
+import '../styles/blocks.css';
+import '../styles/pages.css';
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import Analytics from '../components/Analytics.astro';
 import BackToTop from '../components/BackToTop.astro';
+import Fab from '../components/Fab.astro';
+import { DEMO_CONTENT } from '../data/site';
 import {
   locales,
   defaultLocale,
@@ -25,8 +34,10 @@ interface Props {
   description: string;
   noindex?: boolean;
   home?: boolean;
+  /** The page opens with a dark hero photograph and the header lies over it. */
+  overlay?: boolean;
 }
-const { title, description, noindex = false, home = false } = Astro.props;
+const { title, description, noindex = false, home = false, overlay = false } = Astro.props;
 const locale = localeFromUrl(Astro.url);
 
 // OG image: OG01 if the owner supplies it. Otherwise a crop of H01 (demo).
@@ -58,7 +69,7 @@ const fullTitle =
 ---
 
 <!doctype html>
-<html lang={htmlLang[locale]}>
+<html lang={htmlLang[locale]} data-demo={DEMO_CONTENT ? '' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -92,13 +103,14 @@ const fullTitle =
       {t(ui.skip, locale)}
     </a>
     <div class:list={['site-shell', { 'home-page': home }]}>
-      <SiteHeader />
+      <SiteHeader overlay={overlay} />
       <main id="main">
         <slot />
       </main>
       <SiteFooter />
     </div>
     <BackToTop />
+    <Fab />
     <Analytics />
     <script>
       import '../scripts/reveal';

@@ -1,104 +1,300 @@
-/* The homepage opens on one photograph, then turns into an index of entry points. */
-.home-page main .home-hero h1 {
-  font-size: var(--fs-display);
+/* Home: from the surface down through training into dark technical water, back up through
+   the safety stop, and out to the routes, the club and the people. */
+
+/* ---------- facts ---------- */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  border-bottom: 1px solid var(--line);
 }
-.home-page .hero-caption,
-.home-page .hero-agencies {
-  display: none;
+.facts div {
+  padding: 22px var(--g) 24px;
+  border-right: 1px solid var(--line);
 }
-.home-page main h2 {
-  font-size: clamp(1.75rem, 3.4cqw, 3rem);
-  font-weight: 400;
-  line-height: 1.08;
+.facts b {
+  display: block;
+  font: 500 1.35rem/1.1 var(--mono);
+  letter-spacing: -0.01em;
 }
-.home-page main .lead {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 10px;
-  text-wrap: pretty;
+.facts span {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--muted);
 }
-.home-page main .home-philosophy .text {
-  padding-block: 36px 28px;
+
+/* ---------- doors ---------- */
+.doors {
+  padding-block: var(--sec);
 }
-.home-page main .home-philosophy .bg {
-  aspect-ratio: 2 / 1;
+.door-list {
+  list-style: none;
+  margin: 34px 0 0;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+.door-list li {
+  border-bottom: 1px solid var(--line);
+}
+.door-list a {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr) auto;
+  grid-template-areas: 'n t a' 'n d a';
+  gap: 4px 14px;
+  align-items: center;
+  min-height: 76px;
+  padding-block: 18px;
+  text-decoration: none;
+}
+.door-list .n {
+  grid-area: n;
+  align-self: start;
+  padding-top: 0.4em;
+  font: 400 12px var(--mono);
+  color: var(--blue-deep);
+}
+.door-list .t {
+  grid-area: t;
+  font-size: clamp(1.3rem, 1vw + 1rem, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.door-list .d {
+  grid-area: d;
+  font-size: 15px;
+  color: var(--muted);
+}
+.door-list .d .mono {
+  white-space: nowrap;
+}
+.door-list .a {
+  grid-area: a;
+  font-size: 20px;
+  transition: transform 0.3s var(--ease);
+}
+.door-list a:hover .t {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+.door-list a:hover .a {
+  transform: translateX(4px);
 }
 @media (min-width: 960px) {
-  .home-page main .home-hero .bg {
-    left: 27%;
-  }
-  .home-page main .home-hero .bg::after {
-    background: linear-gradient(
-      90deg,
-      var(--white),
-      rgb(255 255 255 / 88%) 10%,
-      rgb(255 255 255 / 28%) 29%,
-      transparent 48%
-    );
-  }
-  .home-page .hero-caption {
-    display: flex;
-    flex-direction: column;
+  .door-list a {
+    grid-template-columns: 8rem minmax(0, 1fr) minmax(0, 1fr) auto;
+    grid-template-areas: 'n t d a';
     gap: 24px;
-    position: absolute;
-    z-index: 2;
-    right: 32px;
-    top: 80px;
-    color: var(--white);
-    font-size: 10px;
-    line-height: 1.8;
-    letter-spacing: 0.12em;
+    min-height: 88px;
   }
-  .home-page .caption-rule {
-    width: 30px;
-    height: 1px;
-    background: currentColor;
+  .door-list .n {
+    align-self: center;
+    padding-top: 0;
   }
-  .home-page .hero-agencies {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-    position: absolute;
-    z-index: 2;
-    right: 40px;
-    bottom: 32px;
-    color: var(--white);
+}
+
+/* ---------- descent: the path from zero gets darker as it gets deeper ---------- */
+.descent {
+  padding-block: var(--sec) clamp(90px, 12vw, 170px);
+  background: linear-gradient(
+    180deg,
+    var(--paper) 0%,
+    var(--foam) 14%,
+    var(--blue-soft) 38%,
+    var(--blue) 60%,
+    var(--navy) 82%,
+    var(--abyss) 100%
+  );
+}
+.descent .lead {
+  margin-top: 18px;
+  color: #26333e;
+}
+.stations {
+  list-style: none;
+  margin: clamp(32px, 5vw, 56px) 0 0;
+  padding: 0;
+}
+.station {
+  display: grid;
+  gap: 10px 40px;
+  padding-block: clamp(32px, 5vw, 72px);
+  border-top: 1px solid rgb(6 16 26 / 22%);
+}
+@media (min-width: 860px) {
+  .station {
+    grid-template-columns: 11rem minmax(0, 1fr) minmax(0, 1fr);
+    align-items: baseline;
   }
-  .home-page .hero-agencies strong {
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.035em;
+}
+.station .dp {
+  font: 400 13px/1.5 var(--mono);
+}
+.station .dp b {
+  display: block;
+  font: 300 clamp(2rem, 3.4vw, 2.8rem)/1.05 var(--mono);
+  letter-spacing: -0.04em;
+}
+.station .meta {
+  margin-bottom: 8px;
+  font: 500 12px/1.5 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.station h3 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+}
+.station .copy {
+  max-width: 30rem;
+  font-size: 15.5px;
+}
+.station.dark {
+  color: var(--white);
+  border-top-color: rgb(255 255 255 / 20%);
+}
+.station.dark .copy {
+  color: var(--on-dark-2);
+}
+
+/* ---------- plan ---------- */
+.plan {
+  padding-block: clamp(64px, 8vw, 120px);
+}
+.plan-top {
+  display: grid;
+  gap: 18px 48px;
+  align-items: end;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+@media (min-width: 960px) {
+  .plan-top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
   }
-  .home-page .hero-agencies strong span {
-    padding-inline: 8px;
-    font-weight: 400;
+}
+
+/* ---------- routes ---------- */
+.routes {
+  padding-block: clamp(64px, 8vw, 120px);
+}
+.routes .lead {
+  margin-top: 18px;
+}
+.route-grid {
+  display: grid;
+  gap: 28px 20px;
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+}
+@media (min-width: 640px) {
+  .route-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .home-page .hero-agencies > span {
-    font-size: 10px;
-    letter-spacing: 0.12em;
+}
+@media (min-width: 1100px) {
+  .route-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  .home-page main .home-philosophy {
-    min-height: clamp(340px, 27cqw, 460px);
-  }
-  .home-page main .home-philosophy .bg {
-    left: 28%;
-    aspect-ratio: auto;
-  }
-  .home-page main .home-philosophy .bg::after {
-    background: linear-gradient(
-      90deg,
-      var(--white),
-      rgb(255 255 255 / 96%) 18%,
-      rgb(255 255 255 / 40%) 42%,
-      transparent 65%
-    );
-  }
-  .home-page main .home-philosophy .text {
-    max-width: min(49%, 760px);
-    padding-block: 40px;
-  }
-  .home-page main .lead {
-    font-size: 1.0625rem;
-  }
+}
+.route {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+}
+.route .ei img {
+  transition: transform 0.9s var(--ease);
+}
+.route:hover .ei img {
+  transform: scale(1.04);
+}
+.need-photo {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-photo);
+  border: 1px dashed var(--line-dark);
+  background: var(--navy);
+  color: var(--on-dark-3);
+  font: 500 12px var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.route .where {
+  margin-top: 16px;
+  font: 500 12px var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.route h3 {
+  margin-top: 6px;
+  font-size: clamp(1.5rem, 1.8vw, 1.9rem);
+}
+.route p {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--muted);
+}
+.route .need {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font: 400 12px/1.5 var(--mono);
+}
+
+/* ---------- reviews ---------- */
+.reviews {
+  padding-block: var(--sec);
+}
+.rv-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rv {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 240px;
+  padding: 24px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-card);
+}
+.rv q {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.rv .who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+.rv .who i {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px dashed var(--line);
+  background: var(--paper);
+}
+.rv .who span {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+}
+.rv-src {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
 }

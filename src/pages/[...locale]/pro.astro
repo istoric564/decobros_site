@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Hero from '../../components/Hero.astro';
-import Steps from '../../components/Steps.astro';
-import ClosingCta from '../../components/ClosingCta.astro';
+import PageHero from '../../components/PageHero.astro';
+import Closing from '../../components/Closing.astro';
 import { localeFromUrl, localePath, localeStaticPaths } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
@@ -12,20 +11,17 @@ const p = (path: string) => localePath(locale, path);
 
 const T = {
   ru: {
-    title: 'Для профи и бизнеса',
+    title: 'Аудит дайв-центров и оценка инструкторов',
     description:
       'Аудит дайв-центров, независимая оценка навыков инструкторов, консультации и сложные погружения под задачу от команды технических дайверов DECOBROSCREW.',
-    eyebrow: 'Для профессионалов и дайв-центров',
-    hero: ['Независимая', 'экспертиза.'],
-    heroCopy: [
-      'Аудит дайв-центров, оценка инструкторов и консультации',
-      'от команды технических дайверов.',
-    ],
+    kicker: 'Для профессионалов и дайв-центров',
+    h1: 'Независимая экспертиза.',
+    sub: 'Аудит дайв-центров, оценка инструкторов и консультации от команды технических дайверов.',
     cta: 'Обсудить задачу',
     secondary: 'Техническое обучение',
-    servicesEyebrow: 'Что мы делаем',
+    servicesKicker: 'Что мы делаем',
     servicesH: 'Четыре задачи, с которыми к нам приходят.',
-    resultLabel: 'Результат',
+    result: 'Результат',
     services: [
       [
         'Аудит дайв-центра',
@@ -49,7 +45,7 @@ const T = {
       ],
     ],
     note: 'Аудит и оценка навыков — независимое экспертное заключение команды DECOBROSCREW. Они не заменяют аттестацию, сертификацию или контроль качества учебных агентств.',
-    howEyebrow: 'Как мы работаем',
+    howKicker: 'Как мы работаем',
     howH: 'От задачи до заключения.',
     how: [
       ['Задача', 'Рассказываете, что нужно проверить или решить и почему это важно сейчас.'],
@@ -60,26 +56,23 @@ const T = {
         'Выводы и рекомендации по приоритету; при необходимости — повторная проверка.',
       ],
     ],
-    closeH: ['Опишите', 'задачу.'],
-    close:
-      'Для дайв-центров, клубов и профессиональных дайверов. Напишите, что нужно, — ответим, как можем помочь и кто из команды возьмётся.',
-    closeCta: 'Связаться',
+    closeKicker: 'Для дайв-центров, клубов и профи',
+    closeH: 'Опишите задачу.',
+    close: 'Напишите, что нужно, — ответим, как можем помочь и кто из команды возьмётся.',
+    closeBtn: 'Связаться',
   },
   en: {
-    title: 'For Pros and Business',
+    title: 'Dive Center Audits and Instructor Assessment',
     description:
       'Dive center audits, independent instructor skills assessment, consulting and demanding dives to order from the DECOBROSCREW crew of technical divers.',
-    eyebrow: 'For professionals and dive centers',
-    hero: ['Independent', 'expertise.'],
-    heroCopy: [
-      'Dive center audits, instructor assessment and consulting',
-      'from a crew of technical divers.',
-    ],
+    kicker: 'For professionals and dive centers',
+    h1: 'Independent expertise.',
+    sub: 'Dive center audits, instructor assessment and consulting from a crew of technical divers.',
     cta: 'Discuss your task',
     secondary: 'Technical training',
-    servicesEyebrow: 'What we do',
+    servicesKicker: 'What we do',
     servicesH: 'Four jobs people bring to us.',
-    resultLabel: 'Outcome',
+    result: 'Outcome',
     services: [
       [
         'Dive center audit',
@@ -103,7 +96,7 @@ const T = {
       ],
     ],
     note: 'Audits and skills assessments are an independent expert opinion of the DECOBROSCREW crew. They do not replace the certification, accreditation or quality control of training agencies.',
-    howEyebrow: 'How we work',
+    howKicker: 'How we work',
     howH: 'From task to findings.',
     how: [
       ['Task', 'You tell us what needs checking or solving and why it matters now.'],
@@ -111,23 +104,24 @@ const T = {
       ['On site', 'We work at your center: in the water, on shore and with the paperwork.'],
       ['Findings', 'Prioritized conclusions and recommendations; a follow-up check if needed.'],
     ],
-    closeH: ['Tell us', 'the task.'],
+    closeKicker: 'For dive centers, clubs and pros',
+    closeH: 'Tell us the task.',
     close:
-      'For dive centers, clubs and professional divers. Write what you need, and we will tell you how we can help and who on the crew will take it on.',
-    closeCta: 'Get in touch',
+      'Write what you need, and we will tell you how we can help and who on the crew will take it on.',
+    closeBtn: 'Get in touch',
   },
   zh: {
-    title: '专业与企业服务',
+    title: '潜水中心审核与教练评估',
     description:
       'DECOBROSCREW 技术潜水团队提供潜水中心审核、独立的教练技能评估、咨询以及按需定制的高难度潜水。',
-    eyebrow: '面向专业潜水员和潜水中心',
-    hero: ['独立的', '专业评估。'],
-    heroCopy: ['潜水中心审核、教练评估与咨询，', '由技术潜水团队提供。'],
+    kicker: '面向专业潜水员和潜水中心',
+    h1: '独立的专业评估。',
+    sub: '潜水中心审核、教练评估与咨询，由技术潜水团队提供。',
     cta: '讨论您的需求',
     secondary: '技术潜水培训',
-    servicesEyebrow: '我们做什么',
+    servicesKicker: '我们做什么',
     servicesH: '客户找我们解决的四类问题。',
-    resultLabel: '成果',
+    result: '成果',
     services: [
       [
         '潜水中心审核',
@@ -151,7 +145,7 @@ const T = {
       ],
     ],
     note: '审核和技能评估是 DECOBROSCREW 团队的独立专家意见，不能替代培训机构的认证、资质评定或质量管控。',
-    howEyebrow: '工作方式',
+    howKicker: '工作方式',
     howH: '从需求到结论。',
     how: [
       ['需求', '告诉我们需要检查或解决什么，以及为什么现在很重要。'],
@@ -159,121 +153,64 @@ const T = {
       ['现场工作', '在您的中心开展工作：水中、岸上以及文件资料。'],
       ['结论', '按优先级给出结论和建议；如有需要，进行复查。'],
     ],
-    closeH: ['告诉我们', '您的需求。'],
-    close:
-      '面向潜水中心、俱乐部和专业潜水员。写下您的需求，我们会告诉您能提供哪些帮助，以及由团队中的哪位负责。',
-    closeCta: '联系我们',
+    closeKicker: '面向潜水中心、俱乐部和专业潜水员',
+    closeH: '告诉我们您的需求。',
+    close: '写下您的需求，我们会告诉您能提供哪些帮助，以及由团队中的哪位负责。',
+    closeBtn: '联系我们',
   },
 }[locale];
 ---
 
-<BaseLayout title={T.title} description={T.description}>
-  <Hero
+<BaseLayout title={T.title} description={T.description} overlay>
+  <PageHero
     imageId="PRO01"
-    eyebrow={T.eyebrow}
-    lines={T.hero}
-    copy={T.heroCopy}
-    cta={{ label: T.cta, href: p('/contact') }}
-    secondary={{ label: T.secondary, href: p('/training#technical') }}
+    kicker={T.kicker}
+    title={T.h1}
+    sub={T.sub}
+    actions={[
+      { label: T.cta, href: p('/contact') },
+      { label: T.secondary, href: p('/training#technical') },
+    ]}
   />
 
-  <section class="section" aria-labelledby="services-h">
-    <div class="container">
-      <p class="eyebrow">{T.servicesEyebrow}</p>
-      <h2 id="services-h">{T.servicesH}</h2>
-      <span class="rule"></span>
-      <ol class="services" data-stagger>
-        {T.services.map(([title, copy, result], i) => (
-          <li>
-            <span class="n" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <h3>{title}</h3>
-            <p class="copy">{copy}</p>
-            <p class="result">
-              <span class="eyebrow">{T.resultLabel}</span>
-              {result}
-            </p>
-          </li>
-        ))}
-      </ol>
-      <p class="notice">{T.note}</p>
-    </div>
+  <section class="wrap sec" aria-labelledby="pro-svc-h">
+    <p class="kicker">{T.servicesKicker}</p>
+    <h2 class="h2" id="pro-svc-h">{T.servicesH}</h2>
+    <ul class="svc-list">
+      {T.services.map(([h, d, r], i) => (
+        <li>
+          <span class="mono n">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>{h}</h3>
+            <p>{d}</p>
+          </div>
+          <div class="res">
+            <span class="kicker">{T.result}</span>
+            <p>{r}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <p class="notice">{T.note}</p>
   </section>
 
-  <section class="section paper" aria-labelledby="how-h">
-    <div class="container">
-      <p class="eyebrow">{T.howEyebrow}</p>
-      <h2 id="how-h">{T.howH}</h2>
-      <span class="rule"></span>
-      <Steps items={T.how.map(([title, copy]) => ({ title, copy }))} />
-    </div>
+  <section class="wrap sec paper" aria-labelledby="pro-how-h">
+    <p class="kicker">{T.howKicker}</p>
+    <h2 class="h2" id="pro-how-h">{T.howH}</h2>
+    <ol class="step-list">
+      {T.how.map(([b, d]) => (
+        <li>
+          <b>{b}</b>
+          <p>{d}</p>
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <ClosingCta
-    id="close-h"
+  <Closing
+    kicker={T.closeKicker}
     heading={T.closeH}
-    lead={T.close}
-    cta={{ label: T.closeCta, href: p('/contact') }}
+    text={T.close}
+    action={{ label: T.closeBtn, href: p('/contact') }}
   />
 </BaseLayout>
-
-<style>
-  h2 {
-    font-size: var(--fs-h2);
-  }
-  .eyebrow {
-    margin-bottom: 16px;
-  }
-  .services {
-    list-style: none;
-    margin: 0 0 32px;
-    padding: 0;
-    border-top: 1px solid var(--line);
-  }
-  .services li {
-    display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-    gap: 8px 12px;
-    padding-block: 28px;
-    border-bottom: 1px solid var(--line);
-  }
-  .services .n {
-    grid-row: span 3;
-    padding-top: 0.5em;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    /* Deep blue keeps AA contrast on paper as well as white. */
-    color: #1f5f86;
-    font-variant-numeric: tabular-nums;
-  }
-  .services h3 {
-    font-size: var(--fs-h3);
-  }
-  .copy {
-    max-width: 38rem;
-    color: var(--muted);
-    text-wrap: pretty;
-  }
-  .result {
-    max-width: 38rem;
-    text-wrap: pretty;
-  }
-  .result .eyebrow {
-    display: block;
-    margin-bottom: 4px;
-  }
-  @media (min-width: 960px) {
-    .services li {
-      grid-template-columns: 3.5rem minmax(0, 0.9fr) minmax(0, 1.1fr) minmax(0, 0.8fr);
-      gap: 32px;
-      align-items: start;
-    }
-    .services .n {
-      grid-row: auto;
-    }
-    .result .eyebrow {
-      margin-bottom: 8px;
-    }
-  }
-</style>

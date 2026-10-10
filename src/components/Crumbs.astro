@@ -1,0 +1,26 @@
+---
+import { localeFromUrl, t } from '../i18n';
+
+export interface Crumb {
+  label: string;
+  /** No href = the current page. */
+  href?: string;
+}
+interface Props {
+  items: Crumb[];
+  /** On a dark photo. */
+  dark?: boolean;
+}
+const { items, dark = false } = Astro.props;
+const locale = localeFromUrl(Astro.url);
+const aria = t({ ru: 'Хлебные крошки', en: 'Breadcrumbs', zh: '面包屑导航' }, locale);
+---
+
+<nav class:list={['crumbs', { 'on-dark': dark }]} aria-label={aria}>
+  {items.map((c, i) => (
+    <>
+      {i > 0 && <span aria-hidden="true">/</span>}
+      {c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
+    </>
+  ))}
+</nav>

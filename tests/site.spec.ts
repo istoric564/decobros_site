@@ -5,12 +5,16 @@ const paths = [
   '/',
   '/try',
   '/training',
+  '/training/open-water-scuba-diver',
+  '/training/intro-to-tech',
+  '/ice',
   '/expeditions',
   '/service',
   '/pro',
   '/crew',
   '/gallery',
   '/contact',
+  '/gift',
   '/privacy',
   '/legal',
 ];
@@ -35,8 +39,14 @@ for (const r of routes) {
       expect(over, `horizontal scroll at ${w}px`).toBe(false);
     }
     // Reveal animations start mid-opacity; measure contrast on the settled page.
+    // Endless loops (partner rows, the online dot) never settle and are skipped.
     await page.evaluate(() =>
-      Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))),
+      Promise.all(
+        document
+          .getAnimations()
+          .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+          .map((a) => a.finished.catch(() => undefined)),
+      ),
     );
     const res = await new AxeBuilder({ page }).analyze();
     expect(res.violations.map((v) => `${v.id}: ${v.nodes[0].html}`)).toEqual([]);
@@ -51,10 +61,9 @@ test('404 page works', async ({ page }) => {
 
 test('brand names are exact', async ({ page }) => {
   await page.goto('/');
-  const header = page.locator('header');
-  await expect(header).toContainText('DECOBROSCREW');
-  await expect(header).toContainText('Decompression Brothers CREW');
-  await expect(header).toContainText('SDI-TDI DIVING CLUB');
+  await expect(page.locator('header')).toContainText('DECOBROSCREW');
+  await expect(page.locator('footer')).toContainText('Decompression Brothers CREW');
+  await expect(page).toHaveTitle(/SDI-TDI DIVING CLUB/);
   const html = await page.content();
   expect(html).not.toMatch(/DecobroCrew|DecoBroCrew|DECOBROCREW/);
 });
@@ -69,6 +78,7 @@ test('desktop navigation reaches every page', async ({ page }) => {
     ['Workshop', '/en/service'],
     ['For pros', '/en/pro'],
     ['The Crew', '/en/crew'],
+    ['Gallery', '/en/gallery'],
   ]) {
     await page.locator('header nav[aria-label="Main"]').getByRole('link', { name }).click();
     await expect(page).toHaveURL(path);
@@ -160,12 +170,15 @@ test('page navigation preserves frame, header and hero sizes on wide screens', a
           1,
         );
       }
-      if (width === 2560) expect(frame!.width / width).toBeGreaterThan(0.82);
-      const hero = page.locator('.band.first');
-      if (width >= 960 && (await hero.count())) {
+      if (width === 2560) expect(frame!.width).toBe(1680);
+      const hero = page.locator('main > .hero:not(.short):not(:has(.crumbs))');
+      if (width >= 960 && (await hero.count()) && !route.endsWith('/')) {
         const box = await hero.boundingBox();
         heroHeight ??= box!.height;
         expect(Math.abs(box!.height - heroHeight), route + ' hero height').toBeLessThan(1);
+      }
+      if (await hero.count()) {
+        const box = await hero.boundingBox();
         const title = await hero.locator('h1').boundingBox();
         expect(title!.y).toBeGreaterThanOrEqual(box!.y);
         expect(title!.y + title!.height).toBeLessThanOrEqual(box!.y + box!.height);
@@ -174,18 +187,19 @@ test('page navigation preserves frame, header and hero sizes on wide screens', a
   }
 });
 
-test('header stays pinned and anchored sections are not covered by it', async ({ page }) => {
+test('anchored sections land at the top of the screen', async ({ page }) => {
   for (const width of [390, 1280]) {
     await page.setViewportSize({ width, height: 800 });
-    await page.goto('/training');
-    const header = page.locator('.site-header');
-    expect((await header.boundingBox())!.y).toBe(0);
-    await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'instant' }));
-    const pinned = await header.boundingBox();
-    expect(pinned!.y).toBe(0);
+    await page.goto('about:blank');
     await page.goto('/training#technical');
-    const heading = await page.locator('#tech-h').boundingBox();
-    expect(heading!.y).toBeGreaterThanOrEqual(pinned!.height);
+    // Smooth scrolling may still be under way.
+    const top = () => page.locator('#tech-h').evaluate((el) => el.getBoundingClientRect().top);
+    await expect
+      .poll(async () => {
+        const y = await top();
+        return y >= 0 && y < 400;
+      })
+      .toBe(true);
   }
 });
 
@@ -201,60 +215,45 @@ test('back to top is available after scrolling a long page and restores keyboard
   await expect(control).toBeVisible();
   await control.click();
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
-  await expect(page.locator('.site-header .brand')).toBeFocused();
+  await expect(page.locator('.site-header > .brand')).toBeFocused();
 });
 
-test('training outline follows sections in both scroll directions and links to them', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
+test('training lists every program and each opens its own page', async ({ page }) => {
   await page.goto('/training');
-  const outline = page.locator('.training-outline nav');
-  for (const id of ['recreational', 'specialties', 'professional', 'technical', 'specialties']) {
-    await page.locator(`#${id}`).evaluate((el) =>
-      window.scrollTo({
-        top: el.getBoundingClientRect().top + window.scrollY + 40,
-        behavior: 'instant',
-      }),
-    );
-    await expect(outline.locator(`a[href='#${id}']`)).toHaveAttribute('aria-current', 'location');
-    const navBox = await outline.boundingBox();
-    const sectionBox = await page.locator(`#${id}`).boundingBox();
-    expect(navBox!.x + navBox!.width).toBeLessThanOrEqual(sectionBox!.x);
-  }
-  await outline.locator("a[href='#technical']").click();
-  await expect(page).toHaveURL(/#technical$/);
-  await expect(outline.locator("a[href='#technical']")).toHaveAttribute('aria-current', 'location');
+  await page.locator('.course-list').getByRole('link', { name: /Rescue Diver/ }).click();
+  await expect(page).toHaveURL('/training/rescue-diver');
+  await expect(page.locator('h1')).toContainText('Rescue Diver');
+  await expect(page.locator('.crumbs a').nth(1)).toHaveAttribute('href', '/training');
+  await page.goto('/en/training/nitrox');
+  await expect(page.locator('h1')).toContainText('Nitrox');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 });
 
-test('mobile training outline closes after choosing a section and clears its heading', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/training');
-  await page.locator('#recreational').scrollIntoViewIfNeeded();
-  const outline = page.locator('.training-mobile-outline');
-  await outline.locator('summary').click();
-  await outline.locator("a[href='#technical']").click();
-  await expect(outline).not.toHaveAttribute('open');
-  await expect(outline.locator('[data-toc-current]')).toHaveText('Технический фундамент');
-  await expect
-    .poll(async () => {
-      const nav = await outline.boundingBox();
-      const heading = await page.locator('#tech-h').boundingBox();
-      return heading!.y >= nav!.y + nav!.height;
-    })
-    .toBe(true);
+test('gallery filter hides other categories and the viewer opens and closes', async ({ page }) => {
+  await page.goto('/gallery');
+  const all = await page.locator('#grid li').count();
+  await page.locator('.filters button').nth(2).click();
+  await expect(page.locator('.filters button').nth(2)).toHaveAttribute('aria-pressed', 'true');
+  expect(await page.locator('#grid li:visible').count()).toBeLessThan(all);
+  await page.locator('.filters button').first().click();
+  await page.locator('#grid .open').first().click();
+  await expect(page.locator('#viewer')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#viewer')).toBeHidden();
 });
 
-test('training outline labels are localized', async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  for (const [route, label] of [
-    ['/training', 'Специализации'],
-    ['/en/training', 'Specialties'],
-    ['/zh/training', '专项课程'],
-  ]) {
-    await page.goto(route);
-    await expect(page.locator('.training-outline a').nth(1)).toHaveText(label);
-  }
+test('the map loads only after a click', async ({ page }) => {
+  await page.goto('/contact');
+  await expect(page.locator('.map iframe')).toHaveCount(0);
+  await page.route('https://yandex.ru/**', (r) => r.fulfill({ body: '' }));
+  await page.locator('.map button').click();
+  await expect(page.locator('.map iframe')).toHaveCount(1);
+});
+
+test('documents get a table of contents from their sections', async ({ page }) => {
+  await page.goto('/privacy');
+  const toc = page.locator('.toc a');
+  expect(await toc.count()).toBeGreaterThan(2);
+  const href = await toc.nth(1).getAttribute('href');
+  await expect(page.locator(`.prose h2${href}`)).toHaveCount(1);
 });

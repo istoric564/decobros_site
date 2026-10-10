@@ -39,6 +39,10 @@ export interface Course {
   headline?: Loc;
   /** Primary CTA label. */
   cta?: Loc;
+  /** Short tag for lists: depth limit, gas or time. */
+  metric?: Loc;
+  /** Youngest age the agency allows, with parental consent below 18. */
+  minAge?: number;
 }
 
 const none: Loc<string[]> = { ru: [], en: [], zh: [] };
@@ -96,6 +100,8 @@ const allCourses: Course[] = [
     available: true,
     details: trainingDetails['scuba-discovery'],
     standardsUrl: trainingStandards['scuba-discovery'],
+    metric: { ru: '≈ 2 ч', en: '≈ 2 h', zh: '约 2 小时' },
+    minAge: 10,
   },
   {
     slug: 'open-water-scuba-diver',
@@ -154,6 +160,8 @@ const allCourses: Course[] = [
     cta: { ru: 'Подробнее о программе', en: 'Program details', zh: '课程详情' },
     details: trainingDetails['open-water-scuba-diver'],
     standardsUrl: trainingStandards['open-water-scuba-diver'],
+    metric: { ru: 'до 18 м', en: 'to 18 m', zh: '最深 18 米' },
+    minAge: 10,
   },
   {
     slug: 'advanced-adventure-diver',
@@ -196,6 +204,8 @@ const allCourses: Course[] = [
     available: true,
     details: trainingDetails['advanced-adventure-diver'],
     standardsUrl: trainingStandards['advanced-adventure-diver'],
+    metric: { ru: 'до 30 м', en: 'to 30 m', zh: '最深 30 米' },
+    minAge: 10,
   },
   {
     slug: 'deep-diver',
@@ -219,6 +229,8 @@ const allCourses: Course[] = [
     available: true,
     details: trainingDetails['deep-diver'],
     standardsUrl: trainingStandards['deep-diver'],
+    metric: { ru: 'до 40 м', en: 'to 40 m', zh: '最深 40 米' },
+    minAge: 10,
   },
   {
     slug: 'underwater-navigation-diver',
@@ -242,6 +254,8 @@ const allCourses: Course[] = [
     available: true,
     details: trainingDetails['underwater-navigation-diver'],
     standardsUrl: trainingStandards['underwater-navigation-diver'],
+    metric: { ru: 'компас', en: 'compass', zh: '指北针' },
+    minAge: 10,
   },
   {
     slug: 'night-limited-visibility-diver',
@@ -265,6 +279,8 @@ const allCourses: Course[] = [
     available: true,
     details: trainingDetails['night-limited-visibility-diver'],
     standardsUrl: trainingStandards['night-limited-visibility-diver'],
+    metric: { ru: 'ночь', en: 'night', zh: '夜潜' },
+    minAge: 10,
   },
   {
     slug: 'rescue-diver',
@@ -317,6 +333,7 @@ const allCourses: Course[] = [
     available: true,
     details: trainingDetails['rescue-diver'],
     standardsUrl: trainingStandards['rescue-diver'],
+    minAge: 10,
   },
   {
     slug: 'dry-suit-diver',
@@ -340,6 +357,8 @@ const allCourses: Course[] = [
     available: true,
     details: trainingDetails['dry-suit-diver'],
     standardsUrl: trainingStandards['dry-suit-diver'],
+    metric: { ru: 'холодная вода', en: 'cold water', zh: '冷水' },
+    minAge: 12,
   },
   {
     slug: 'refresher',
@@ -456,6 +475,8 @@ const allCourses: Course[] = [
     cta: { ru: 'Стать Divemaster', en: 'Become a Divemaster', zh: '成为潜水长' },
     details: trainingDetails['divemaster'],
     standardsUrl: trainingStandards['divemaster'],
+    metric: { ru: 'проф. уровень', en: 'professional', zh: '专业级' },
+    minAge: 18,
   },
   {
     slug: 'intro-to-tech',
@@ -530,6 +551,8 @@ const allCourses: Course[] = [
     },
     details: trainingDetails['intro-to-tech'],
     standardsUrl: trainingStandards['intro-to-tech'],
+    metric: { ru: 'воздух · EANx', en: 'air · EANx', zh: '空气 · EANx' },
+    minAge: 15,
   },
   {
     slug: 'nitrox',
@@ -580,6 +603,8 @@ const allCourses: Course[] = [
     available: true,
     details: trainingDetails['nitrox'],
     standardsUrl: trainingStandards['nitrox'],
+    metric: { ru: 'EAN22–40', en: 'EAN22–40', zh: 'EAN22–40' },
+    minAge: 15,
   },
   {
     slug: 'advanced-nitrox',
@@ -633,6 +658,8 @@ const allCourses: Course[] = [
     cta: { ru: 'Обсудить программу', en: 'Discuss the program', zh: '咨询课程' },
     details: trainingDetails['advanced-nitrox'],
     standardsUrl: trainingStandards['advanced-nitrox'],
+    metric: { ru: 'EAN50 · O₂', en: 'EAN50 · O₂', zh: 'EAN50 · O₂' },
+    minAge: 15,
   },
 ];
 

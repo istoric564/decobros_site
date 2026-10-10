@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Closing from '../../components/Closing.astro';
+import { DEMO_CONTENT, contactHref } from '../../data/site';
+import { localeFromUrl, localePath, localeStaticPaths } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const p = (path: string) => localePath(locale, path);
+const telegram = contactHref('telegram');
+
+const T = {
+  ru: {
+    title: 'Подлёдный дайвинг в Новосибирске и на Байкале',
+    description:
+      'Подлёдный дайвинг в Новосибирске и на Байкале: курс SDI Ice Diver, тренировочные выезды и экспедиции с командой технических дайверов. Страховка, сухие костюмы, тёплая палатка.',
+    home: 'Главная',
+    training: 'Обучение',
+    crumb: 'Подлёдный дайвинг',
+    kicker: 'Сибирь · Байкал · сезон',
+    season: 'январь–март',
+    h1: 'Подлёдный дайвинг в Новосибирске и на Байкале.',
+    sub: 'Наша домашняя вода. Курс Ice Diver, тренировочные выезды и экспедиции на Байкал с командой технических дайверов.',
+    cta: 'Записаться на сезон',
+    needPhoto: 'нужно фото: подо льдом · сейчас рисунок кодом',
+    keys: [
+      ['Курс', 'SDI Ice Diver', false, false],
+      ['Нужно', 'Open Water + Dry Suit', false, false],
+      ['Вода', '≈ +2…+4 °C', true, false],
+      ['Группа', 'до 4 человек', false, true],
+      ['Стоимость', 'от ··· ₽', true, true],
+    ] as [string, string, boolean, boolean][],
+    discuss: 'Обсудить',
+    whyKicker: 'Почему подо льдом — это серьёзно',
+    whyH: 'Над головой потолок. Выход — одна прорубь.',
+    whyLead:
+      'Подлёдное погружение — это погружение с потолком, как в пещере. Поэтому у нас оно устроено как техническое: страховочный конец, сигналы, запасной регулятор, тёплая палатка и план выхода.',
+    craft: [
+      ['Страховка', 'Ходовой конец на каждого', 'Сигнальщик на поверхности держит связь всё погружение.'],
+      [
+        'Снаряжение',
+        'Регуляторы для холодной воды',
+        'Два независимых регулятора, обслуженные в нашей мастерской.',
+      ],
+      ['Тепло', 'Сухой костюм и палатка', 'Обогреваемая палатка у проруби, горячий чай между погружениями.'],
+      ['План', 'Короткие погружения', 'Время и маршрут считаем заранее, выход всегда в поле зрения.'],
+    ],
+    pathKicker: 'Путь подо лёд',
+    pathH: 'Три шага до первого подлёдного погружения.',
+    path: [
+      ['Open Water', 'Базовый сертификат — можно получить у нас.', '/training/open-water-scuba-diver'],
+      ['Dry Suit Diver', 'Сухой костюм: плавучесть и безопасность в холодной воде.', '/training/dry-suit-diver'],
+      ['Ice Diver', 'Курс подлёдного дайвинга: в Новосибирской области, затем Байкал.', ''],
+    ],
+    closeKicker: 'Сезон подо льдом',
+    closeH: 'Места в сезоне ограничены.',
+    close:
+      'Напишите заранее — подготовим к сезону: сухой костюм, тренировки в бассейне, обслуживание регуляторов.',
+    closeBtn: 'Написать в Telegram',
+  },
+  en: {
+    title: 'Ice Diving in Novosibirsk and at Lake Baikal',
+    description:
+      'Ice diving in Novosibirsk and at Lake Baikal: the SDI Ice Diver course, training trips and expeditions with a crew of technical divers. Safety lines, dry suits, a heated tent.',
+    home: 'Home',
+    training: 'Training',
+    crumb: 'Ice diving',
+    kicker: 'Siberia · Baikal · season',
+    season: 'January–March',
+    h1: 'Ice diving in Novosibirsk and at Lake Baikal.',
+    sub: 'Our home water. The Ice Diver course, training trips and Baikal expeditions with a crew of technical divers.',
+    cta: 'Book for the season',
+    needPhoto: 'photo needed: under the ice · drawn in code for now',
+    keys: [
+      ['Course', 'SDI Ice Diver', false, false],
+      ['You need', 'Open Water + Dry Suit', false, false],
+      ['Water', '≈ +2…+4 °C', true, false],
+      ['Group', 'up to 4 people', false, true],
+      ['Price', 'from ··· ₽', true, true],
+    ] as [string, string, boolean, boolean][],
+    discuss: 'Discuss',
+    whyKicker: 'Why under the ice is serious',
+    whyH: 'A ceiling overhead. One hole for the exit.',
+    whyLead:
+      'An ice dive is a dive with a ceiling, like a cave. So we run it as a technical dive: a safety line, signals, a spare regulator, a warm tent and an exit plan.',
+    craft: [
+      ['Safety', 'A line on every diver', 'A tender at the surface keeps contact for the whole dive.'],
+      [
+        'Gear',
+        'Cold-water regulators',
+        'Two independent regulators, serviced in our own workshop.',
+      ],
+      ['Warmth', 'Dry suit and a tent', 'A heated tent by the hole, hot tea between dives.'],
+      ['Plan', 'Short dives', 'Time and route are planned ahead, the exit always in sight.'],
+    ],
+    pathKicker: 'The way under the ice',
+    pathH: 'Three steps to your first ice dive.',
+    path: [
+      ['Open Water', 'The entry certification — you can get it with us.', '/training/open-water-scuba-diver'],
+      ['Dry Suit Diver', 'Dry suit: buoyancy and safety in cold water.', '/training/dry-suit-diver'],
+      ['Ice Diver', 'The ice diving course: in the Novosibirsk region, then Baikal.', ''],
+    ],
+    closeKicker: 'Ice season',
+    closeH: 'Places in the season are limited.',
+    close:
+      'Write early and we will get you ready for the season: dry suit, pool training, regulator service.',
+    closeBtn: 'Message us in Telegram',
+  },
+  zh: {
+    title: '新西伯利亚与贝加尔湖冰潜',
+    description:
+      '新西伯利亚与贝加尔湖冰潜：SDI 冰潜课程、训练出行以及与技术潜水团队同行的探险。安全绳、干式潜水服、取暖帐篷。',
+    home: '首页',
+    training: '培训',
+    crumb: '冰潜',
+    kicker: '西伯利亚 · 贝加尔湖 · 季节',
+    season: '一月至三月',
+    h1: '新西伯利亚与贝加尔湖冰潜。',
+    sub: '我们的主场水域。冰潜课程、训练出行，以及与技术潜水团队同行的贝加尔湖探险。',
+    cta: '预约本季',
+    needPhoto: '需要照片：冰下 · 目前为代码绘制',
+    keys: [
+      ['课程', 'SDI Ice Diver', false, false],
+      ['要求', 'Open Water + Dry Suit', false, false],
+      ['水温', '≈ +2…+4 °C', true, false],
+      ['小组', '最多 4 人', false, true],
+      ['费用', '··· ₽ 起', true, true],
+    ] as [string, string, boolean, boolean][],
+    discuss: '咨询',
+    whyKicker: '为什么冰潜很严肃',
+    whyH: '头顶是冰盖，出口只有一个冰洞。',
+    whyLead:
+      '冰潜是有顶部封闭的潜水，就像洞穴一样。因此我们按技术潜水来组织：安全绳、信号、备用调节器、取暖帐篷和出水计划。',
+    craft: [
+      ['安全', '每人一根安全绳', '水面信号员在整个潜水过程中保持联系。'],
+      ['装备', '冷水调节器', '两套独立调节器，在我们自己的工坊保养。'],
+      ['保暖', '干式潜水服和帐篷', '冰洞旁的取暖帐篷，潜水间隙有热茶。'],
+      ['计划', '短时潜水', '提前规划时间和路线，出口始终在视线内。'],
+    ],
+    pathKicker: '通往冰下之路',
+    pathH: '三步完成第一次冰潜。',
+    path: [
+      ['Open Water', '入门认证——可以在我们这里获得。', '/training/open-water-scuba-diver'],
+      ['Dry Suit Diver', '干式潜水服：冷水中的浮力与安全。', '/training/dry-suit-diver'],
+      ['Ice Diver', '冰潜课程：先在新西伯利亚州，然后去贝加尔湖。', ''],
+    ],
+    closeKicker: '冰潜季',
+    closeH: '本季名额有限。',
+    close: '请提前联系我们，我们会帮您为本季做好准备：干式潜水服、泳池训练、调节器保养。',
+    closeBtn: '在 Telegram 留言',
+  },
+}[locale];
+---
+
+<BaseLayout title={T.title} description={T.description} overlay>
+  <PageHero
+    class="ice-hero"
+    crumbs={[
+      { label: T.home, href: p('/') },
+      { label: T.training, href: p('/training') },
+      { label: T.crumb },
+    ]}
+    kicker={`${T.kicker} ${T.season}`}
+    title={T.h1}
+    sub={T.sub}
+    actions={[{ label: T.cta, href: p('/contact') }]}
+  >
+    <div class="ice-hole" slot="art" aria-hidden="true"></div>
+    {DEMO_CONTENT && <p class="need-ph">{T.needPhoto}</p>}
+  </PageHero>
+
+  <div class="keybar">
+    {T.keys.map(([label, value, mono, ph]) => (
+      <div>
+        <span>{label}</span>
+        <b class:list={{ mono, ph }}>{value}</b>
+      </div>
+    ))}
+    <div class="cta">
+      <a class="btn" href={p('/contact')}>
+        {T.discuss}
+        <span class="ar" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+
+  <section class="wrap sec" aria-labelledby="ice-why-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.whyKicker}</p>
+        <h2 class="h2" id="ice-why-h">{T.whyH}</h2>
+      </div>
+      <p class="lead">{T.whyLead}</p>
+    </div>
+    <ul class="craft light">
+      {T.craft.map(([k, b, s]) => (
+        <li>
+          <span class="k">{k}</span>
+          <p>
+            <b>{b}</b>
+            <span>{s}</span>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap sec paper" aria-labelledby="ice-path-h">
+    <p class="kicker">{T.pathKicker}</p>
+    <h2 class="h2" id="ice-path-h">{T.pathH}</h2>
+    <ol class="step-list three">
+      {T.path.map(([b, d, href]) => (
+        <li>
+          <b>{href ? <a href={p(href)}>{b}</a> : b}</b>
+          <p>{d}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <Closing
+    kicker={T.closeKicker}
+    heading={T.closeH}
+    text={T.close}
+    action={{
+      label: T.closeBtn,
+      href: telegram ?? p('/contact'),
+      external: !!telegram,
+      telegram: !!telegram,
+    }}
+  />
+</BaseLayout>

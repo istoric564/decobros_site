@@ -1,0 +1,329 @@
+---
+/* One page per program: requirements come from the agency standards in data/training-details.ts. */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Accordion from '../../../components/Accordion.astro';
+import Closing from '../../../components/Closing.astro';
+import EditorialImage from '../../../components/EditorialImage.astro';
+import {
+  courses,
+  courseBySlug,
+  detailLabels,
+  trainingDisclaimer,
+  type CourseCategory,
+} from '../../../data/training';
+import { people } from '../../../data/crew';
+import { faq } from '../../../data/faq';
+import { contactHref } from '../../../data/site';
+import { localeFromUrl, localePath, localeStaticPaths, translator } from '../../../i18n';
+
+export const getStaticPaths = () =>
+  localeStaticPaths().flatMap(({ params }) =>
+    courses.map((c) => ({ params: { ...params, slug: c.slug } })),
+  );
+
+const locale = localeFromUrl(Astro.url);
+const tr = translator(locale);
+const p = (path: string) => localePath(locale, path);
+const c = courseBySlug(Astro.params.slug!);
+
+/** Where a diver usually goes after this program. */
+const nextOf: Record<string, string[]> = {
+  'scuba-discovery': ['open-water-scuba-diver'],
+  'open-water-scuba-diver': ['advanced-adventure-diver', 'nitrox', 'dry-suit-diver'],
+  'advanced-adventure-diver': ['deep-diver', 'rescue-diver', 'nitrox'],
+  'deep-diver': ['rescue-diver', 'intro-to-tech'],
+  'underwater-navigation-diver': ['advanced-adventure-diver', 'night-limited-visibility-diver'],
+  'night-limited-visibility-diver': ['advanced-adventure-diver', 'underwater-navigation-diver'],
+  'dry-suit-diver': ['deep-diver', 'advanced-adventure-diver'],
+  'rescue-diver': ['divemaster', 'intro-to-tech'],
+  refresher: ['advanced-adventure-diver', 'nitrox'],
+  divemaster: ['intro-to-tech', 'advanced-nitrox'],
+  'intro-to-tech': ['nitrox', 'advanced-nitrox'],
+  nitrox: ['advanced-nitrox', 'intro-to-tech'],
+  'advanced-nitrox': ['intro-to-tech'],
+};
+const next = (nextOf[c.slug] ?? [])
+  .filter((s) => courses.some((x) => x.slug === s))
+  .map(courseBySlug);
+const showIce = ['open-water-scuba-diver', 'dry-suit-diver'].includes(c.slug);
+
+const heroOf: Record<CourseCategory, string> = {
+  recreational: 'T01',
+  specialty: 'T01',
+  professional: 'C01',
+  technical: 'H04',
+};
+const teacher = people.find((x) =>
+  x.qualifications.en.some((q) => q.includes(`${c.agency} Instructor`)),
+);
+const telegram = contactHref('telegram');
+
+const T = {
+  ru: {
+    home: 'Главная',
+    training: 'Обучение',
+    category: {
+      recreational: 'рекреационный курс',
+      specialty: 'специализация',
+      professional: 'профессиональный уровень',
+      technical: 'технический курс',
+    },
+    h1: `Курс ${c.title} в Новосибирске`,
+    title: `Курс ${c.title} в Новосибирске`,
+    agency: 'Агентство',
+    level: 'Уровень',
+    age: 'Возраст',
+    ageValue: (n: number) => (n >= 18 ? 'от 18 лет' : `от ${n} лет`),
+    glance: 'Ориентир',
+    priceLabel: 'Стоимость',
+    price: 'от ··· ₽',
+    book: 'Записаться',
+    progKicker: 'Программа',
+    progH: 'Из чего состоит курс.',
+    reqKicker: 'Требования и условия',
+    reqH: 'Что нужно знать до записи.',
+    focus: 'Чему научитесь',
+    teacherKicker: 'Инструкторы курса',
+    teacherH: 'Кто будет вас учить.',
+    crew: 'Вся команда',
+    faqKicker: 'Вопросы о курсе',
+    faqH: 'Частые вопросы.',
+    nextH: 'Что дальше',
+    ice: 'подо льдом',
+    standard: `Стандарт ${c.agency} (PDF, англ.)`,
+    closeH: 'Запишитесь на курс.',
+    close: 'Напишите — ответим, подберём даты и расскажем, с чего начать теорию.',
+    closeBtn: 'Записаться в Telegram',
+  },
+  en: {
+    home: 'Home',
+    training: 'Training',
+    category: {
+      recreational: 'recreational course',
+      specialty: 'specialty',
+      professional: 'professional level',
+      technical: 'technical course',
+    },
+    h1: `${c.title} course in Novosibirsk`,
+    title: `${c.title} Course in Novosibirsk`,
+    agency: 'Agency',
+    level: 'Level',
+    age: 'Age',
+    ageValue: (n: number) => `${n}+`,
+    glance: 'At a glance',
+    priceLabel: 'Price',
+    price: 'from ··· ₽',
+    book: 'Book',
+    progKicker: 'Program',
+    progH: 'What the course is made of.',
+    reqKicker: 'Requirements and terms',
+    reqH: 'What to know before you book.',
+    focus: 'What you will learn',
+    teacherKicker: 'Course instructors',
+    teacherH: 'Who will teach you.',
+    crew: 'The whole crew',
+    faqKicker: 'Course questions',
+    faqH: 'Common questions.',
+    nextH: 'What comes next',
+    ice: 'under the ice',
+    standard: `${c.agency} standard (PDF)`,
+    closeH: 'Book the course.',
+    close: 'Write to us — we will reply, find dates and tell you how to start the theory.',
+    closeBtn: 'Book in Telegram',
+  },
+  zh: {
+    home: '首页',
+    training: '培训',
+    category: {
+      recreational: '休闲潜水课程',
+      specialty: '专项课程',
+      professional: '专业级别',
+      technical: '技术潜水课程',
+    },
+    h1: `新西伯利亚 ${c.title} 课程`,
+    title: `新西伯利亚 ${c.title} 课程`,
+    agency: '培训机构',
+    level: '级别',
+    age: '年龄',
+    ageValue: (n: number) => `${n} 岁起`,
+    glance: '概要',
+    priceLabel: '费用',
+    price: '··· ₽ 起',
+    book: '报名',
+    progKicker: '课程内容',
+    progH: '课程由哪些部分组成。',
+    reqKicker: '要求与条件',
+    reqH: '报名前需要了解的内容。',
+    focus: '您将学到',
+    teacherKicker: '课程教练',
+    teacherH: '谁来教您。',
+    crew: '整个团队',
+    faqKicker: '课程问题',
+    faqH: '常见问题。',
+    nextH: '下一步',
+    ice: '冰下',
+    standard: `${c.agency} 标准（PDF，英文）`,
+    closeH: '报名参加课程。',
+    close: '联系我们——我们会回复，安排日期，并告诉您如何开始理论学习。',
+    closeBtn: '在 Telegram 报名',
+  },
+}[locale];
+
+const sub = tr(c.subtitle) || (c.headline ? tr(c.headline) : tr(c.description)[0]);
+const progRows = (['theory', 'confinedWater', 'openWater', 'duration'] as const).map((k) => ({
+  label: tr(detailLabels[k]),
+  text: tr(c.details[k]),
+}));
+const reqRows = (['minimumAge', 'prerequisites', 'loggedDives', 'maxDepth', 'location'] as const).map(
+  (k) => ({ label: tr(detailLabels[k]), text: tr(c.details[k]) }),
+);
+const bookHref = telegram ?? p('/contact');
+---
+
+<BaseLayout title={T.title} description={`${sub} ${tr(c.description)[0]}`.slice(0, 160)} overlay>
+  <PageHero
+    imageId={heroOf[c.category]}
+    short
+    crumbs={[
+      { label: T.home, href: p('/') },
+      { label: T.training, href: p('/training') },
+      { label: c.shortTitle },
+    ]}
+    kicker={`${c.agency} · ${T.category[c.category]}`}
+    title={T.h1}
+    sub={sub}
+  />
+
+  <div class="keybar">
+    <div><span>{T.agency}</span><b>{c.agency}</b></div>
+    <div><span>{T.level}</span><b>{T.category[c.category]}</b></div>
+    {c.minAge && <div><span>{T.age}</span><b class="mono">{T.ageValue(c.minAge)}</b></div>}
+    {c.metric && <div><span>{T.glance}</span><b class="mono">{tr(c.metric)}</b></div>}
+    <div><span>{T.priceLabel}</span><b class="mono ph">{T.price}</b></div>
+    <div class="cta">
+      <a class="btn" href={p('/contact')}>
+        {T.book}
+        <span class="ar" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+
+  <section class="wrap sec" aria-labelledby="prog-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.progKicker}</p>
+        <h2 class="h2" id="prog-h">{T.progH}</h2>
+        {tr(c.description).map((d) => (
+          <p class="lead sub-lead">{d}</p>
+        ))}
+      </div>
+      <ol class="prog">
+        {progRows.map((r, i) => (
+          <li>
+            <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <b>{r.label}</b>
+              <p>{r.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap sec paper" aria-labelledby="req-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.reqKicker}</p>
+        <h2 class="h2" id="req-h">{T.reqH}</h2>
+        <h3 class="sub-h">{T.focus}</h3>
+        <ul class="chips">
+          {tr(c.focus).map((f) => (
+            <li>{f}</li>
+          ))}
+        </ul>
+      </div>
+      <dl class="spec-table">
+        {reqRows.map((r) => (
+          <div>
+            <dt>{r.label}</dt>
+            <dd>{r.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  {teacher && (
+    <section class="wrap sec" aria-labelledby="teacher-h">
+      <div class="two">
+        <div>
+          <p class="kicker">{T.teacherKicker}</p>
+          <h2 class="h2" id="teacher-h">{T.teacherH}</h2>
+        </div>
+        <div class="teacher">
+          <div class="img">
+            {teacher.portrait && (
+              <EditorialImage name={teacher.portrait} alt={teacher.name} fill sizes="140px" />
+            )}
+          </div>
+          <div>
+            <b>{tr(teacher.name)}</b>
+            <p class="role ph">{tr(teacher.qualifications).join(' · ')}</p>
+            {teacher.bio && <p>{tr(teacher.bio)}</p>}
+            <a class="link" href={p('/crew')}>
+              {T.crew} <span class="ar" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class:list={['wrap sec', { paper: teacher }]} aria-labelledby="cfaq-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.faqKicker}</p>
+        <h2 class="h2" id="cfaq-h">{T.faqH}</h2>
+      </div>
+      <Accordion items={faq.map((f) => ({ q: tr(f.question), a: tr(f.answer) }))} />
+    </div>
+    {(next.length > 0 || showIce) && (
+      <>
+        <h3 class="sub-h">{T.nextH}</h3>
+        <ul class="spec-grid">
+          {next.map((n) => (
+            <li>
+              <a href={p(`/training/${n.slug}`)}>
+                <b>{n.title}</b>
+                {n.metric && <span class="mono">{tr(n.metric)}</span>}
+              </a>
+            </li>
+          ))}
+          {showIce && (
+            <li>
+              <a href={p('/ice')}>
+                <b>Ice Diver</b>
+                <span class="mono">{T.ice}</span>
+              </a>
+            </li>
+          )}
+        </ul>
+      </>
+    )}
+    <p class="fine">
+      {tr(trainingDisclaimer)}{' '}
+      <a href={c.standardsUrl} target="_blank" rel="noopener noreferrer">
+        {T.standard}
+      </a>
+    </p>
+  </section>
+
+  <Closing
+    kicker={c.title}
+    heading={T.closeH}
+    text={T.close}
+    action={{ label: T.closeBtn, href: bookHref, external: !!telegram, telegram: !!telegram }}
+  />
+</BaseLayout>

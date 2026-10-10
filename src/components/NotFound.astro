@@ -3,58 +3,53 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { localeFromUrl, localePath } from '../i18n';
 
 const locale = localeFromUrl(Astro.url);
+const p = (path: string) => localePath(locale, path);
 const T = {
   ru: {
     title: 'Страница не найдена',
     description: 'Такой страницы нет.',
-    h1: ['Кажется, вы ушли', 'слишком глубоко.'],
+    code: '404 · страница не найдена',
+    h1: 'Здесь ничего нет.',
+    lead: 'Возможно, ссылка устарела. Вот куда можно пойти:',
     home: 'На главную',
+    try: 'Попробовать дайвинг',
+    contact: 'Контакты',
   },
   en: {
     title: 'Page not found',
     description: 'This page does not exist.',
-    h1: ['Looks like you went', 'a bit too deep.'],
+    code: '404 · page not found',
+    h1: 'Nothing down here.',
+    lead: 'The link may be out of date. Here is where you can go:',
     home: 'Go Home',
+    try: 'Try diving',
+    contact: 'Contact',
   },
   zh: {
     title: '页面未找到',
     description: '该页面不存在。',
-    h1: ['看来您', '潜得太深了。'],
+    code: '404 · 页面未找到',
+    h1: '这里什么也没有。',
+    lead: '链接可能已失效。您可以前往：',
     home: '返回首页',
+    try: '体验潜水',
+    contact: '联系我们',
   },
 }[locale];
 ---
 
 <BaseLayout title={T.title} description={T.description} noindex>
-  <section class="section dark">
-    <div class="container">
-      <p class="eyebrow">404</p>
-      <h1>
-        {T.h1[0]}
-        <br />
-        {T.h1[1]}
-      </h1>
-      <span class="rule"></span>
-      <p class="more">
-        <a class="btn light" href={localePath(locale, '/')}>
-          {T.home}
-        </a>
-      </p>
+  <section class="wrap plain-hero nf">
+    <p class="mono nf-code">{T.code}</p>
+    <h1>{T.h1}</h1>
+    <p class="lead">{T.lead}</p>
+    <div class="acts">
+      <a class="btn" href={p('/')}>
+        {T.home}
+        <span class="ar" aria-hidden="true">→</span>
+      </a>
+      <a class="btn ghost" href={p('/try')}>{T.try}</a>
+      <a class="btn ghost" href={p('/contact')}>{T.contact}</a>
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  h1 {
-    font-size: var(--fs-h1);
-    margin-top: 16px;
-  }
-  .more {
-    margin-top: 32px;
-  }
-  .section {
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
-  }
-</style>

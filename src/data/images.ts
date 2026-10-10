@@ -12,9 +12,9 @@ export interface Slot {
   section: string;
   /** CSS aspect-ratio, for example "16 / 9". */
   ratio: string;
-  alt: Loc;
   /** Existing photo (path under src/assets/photos/, no extension) shown until <ID> is supplied. */
   file?: string;
+  alt: Loc;
 }
 
 export const slots: Slot[] = [
@@ -118,53 +118,6 @@ export const slots: Slot[] = [
     },
   },
   {
-    id: 'D01',
-    page: 'Home',
-    section: 'Where it leads: mantas',
-    ratio: '4 / 3',
-    file: 'gallery/G-7',
-    alt: {
-      ru: 'Дайверы и манта под яхтой-сафари на закате.',
-      en: 'Divers and a manta ray under a liveaboard yacht at sunset.',
-      zh: '日落时分，潜水员和蝠鲼在船宿游艇下方。',
-    },
-  },
-  {
-    id: 'D02',
-    page: 'Home',
-    section: 'Where it leads: wrecks',
-    ratio: '4 / 3',
-    file: 'gallery/G-9',
-    alt: {
-      ru: 'Дайвер с фонарём у корпуса большого затонувшего судна.',
-      en: 'Diver with a torch beside the hull of a large shipwreck.',
-      zh: '手持潜水灯的潜水员在一艘大型沉船的船体旁。',
-    },
-  },
-  {
-    id: 'D03',
-    page: 'Home',
-    section: 'Where it leads: caves',
-    ratio: '4 / 3',
-    file: 'gallery/G-8',
-    alt: {
-      ru: 'Два дайвера в сеноте, освещённом солнечными лучами.',
-      en: 'Two divers in a cenote lit by sunbeams.',
-      zh: '两名潜水员在阳光照耀的天然井中。',
-    },
-  },
-  {
-    id: 'D04',
-    page: 'Home',
-    section: 'Where it leads: under the ice',
-    ratio: '4 / 3',
-    alt: {
-      ru: 'Дайвер подо льдом в сибирском водоёме.',
-      en: 'Diver under the ice in Siberian water.',
-      zh: '潜水员在西伯利亚水域的冰层下潜水。',
-    },
-  },
-  {
     id: 'TRY01',
     page: 'Try diving',
     section: 'Hero',
@@ -183,9 +136,9 @@ export const slots: Slot[] = [
     ratio: '3 / 2',
     file: 'gallery/G-2',
     alt: {
-      ru: 'Дайверы готовят техническое снаряжение на палубе лодки на рассвете.',
-      en: 'Divers preparing technical equipment on a boat deck at sunrise.',
-      zh: '日出时分，潜水员在船甲板上准备技术装备。',
+      ru: 'Дайверы готовят техническое снаряжение на палубе лодки.',
+      en: 'Divers preparing technical equipment on a boat deck.',
+      zh: '潜水员在船甲板上准备技术装备。',
     },
   },
   {

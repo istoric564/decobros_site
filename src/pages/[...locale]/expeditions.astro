@@ -1,182 +1,158 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Hero from '../../components/Hero.astro';
+import PageHero from '../../components/PageHero.astro';
 import EditorialImage from '../../components/EditorialImage.astro';
-import DemoBadge from '../../components/DemoBadge.astro';
 import { expeditions, expeditionStatusLabels } from '../../data/expeditions';
-import { galleryItems } from '../../data/gallery';
-import { localeFromUrl, localePath, localeStaticPaths, t } from '../../i18n';
+import { DEMO_CONTENT } from '../../data/site';
+import { localeFromUrl, localePath, localeStaticPaths, translator } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
 
 const locale = localeFromUrl(Astro.url);
-// Preparation on deck: the photo behind "built for the dive" and the call to action.
-const prep = galleryItems.find((g) => g.file === 'G-2');
+const tr = translator(locale);
+const p = (path: string) => localePath(locale, path);
 
 const T = {
   ru: {
-    title: 'Экспедиции',
+    title: 'Дайв-туры и экспедиции из Новосибирска',
     description:
-      'Дайвинг-экспедиции с DECOBROSCREW. Настоящие экспедиции, опытная команда и тщательное планирование.',
-    hero: ['Туда, где', 'стоит нырять.'],
-    h2: 'Экспедиции',
-    empty: '[НУЖЕН КОНТЕНТ: реальные экспедиции с направлением, датами, уровнем и фото]',
-    explore: 'Подробнее об экспедиции',
-    philH: ['Создано для погружения,', 'а не для буклета.'],
-    phil: 'Настоящие экспедиции. Опытная команда. Тщательное планирование. Места, которые того стоят.',
+      'Дайвинг-экспедиции с DECOBROSCREW: рэки Красного моря, сеноты Мексики, сафари на Мальдивах. Опытная команда и подготовка к поездке в Новосибирске.',
+    kicker: 'Экспедиции',
+    h1: 'Туда, где стоит нырять.',
+    sub: 'Настоящие экспедиции. Опытная команда. Тщательное планирование. Места, которые того стоят.',
+    upcoming: 'Ближайшие поездки',
+    listKicker: 'Расписание',
+    listH: 'Ближайшие экспедиции.',
+    listLead: 'Расскажите о своём опыте и квалификации — подберём поездку и подготовку к ней.',
+    demo: 'Даты тестовые.',
+    empty: 'Расписание экспедиций появится здесь. Напишите нам — расскажем о ближайших планах.',
+    format: 'Формат',
+    level: 'Уровень',
     discuss: 'Обсудить экспедицию',
-    discussNote: 'Расскажите о своём опыте и квалификации — подберём поездку и подготовку к ней.',
+    bandBtn: 'Обсудить экспедицию',
+    bandH: 'Создано для погружения, а не для буклета.',
+    band: 'Каждая поездка — с подготовкой: какой сертификат нужен, сколько погружений и что потренировать заранее в Новосибирске.',
   },
   en: {
-    title: 'Expeditions',
+    title: 'Dive Trips and Expeditions from Novosibirsk',
     description:
-      'Diving expeditions with DECOBROSCREW. Real expeditions, an experienced crew and careful planning.',
-    hero: ['Go somewhere', 'worth diving.'],
-    h2: 'Expeditions',
-    empty: '[CONTENT REQUIRED: real expeditions with destination, dates, level and photos]',
-    explore: 'Explore expedition',
-    philH: ['Built for the dive,', 'not the brochure.'],
-    phil: 'Real expeditions. Experienced crew. Careful planning. Places that matter.',
-    discuss: 'Discuss an expedition',
-    discussNote:
+      'Diving expeditions with DECOBROSCREW: Red Sea wrecks, Mexican cenotes, Maldives liveaboards. An experienced crew and trip preparation in Novosibirsk.',
+    kicker: 'Expeditions',
+    h1: 'Go somewhere worth diving.',
+    sub: 'Real expeditions. Experienced crew. Careful planning. Places that matter.',
+    upcoming: 'Upcoming trips',
+    listKicker: 'Schedule',
+    listH: 'Upcoming expeditions.',
+    listLead:
       'Tell us about your experience and certification, and we will match a trip and the preparation for it.',
+    demo: 'Dates are test data.',
+    empty: 'The expedition schedule will appear here. Write to us to hear about upcoming plans.',
+    format: 'Format',
+    level: 'Level',
+    discuss: 'Discuss this expedition',
+    bandBtn: 'Discuss an expedition',
+    bandH: 'Built for the dive, not the brochure.',
+    band: 'Every trip comes with preparation: which certification you need, how many dives and what to practise in Novosibirsk beforehand.',
   },
   zh: {
-    title: '探险',
-    description: '与 DECOBROSCREW 一起潜水探险。真正的探险、经验丰富的团队和周密的计划。',
-    hero: ['去往', '值得一潜的地方。'],
-    h2: '探险',
-    empty: '[需要内容：真实的探险行程，包括目的地、日期、级别和照片]',
-    explore: '了解探险详情',
-    philH: ['为潜水而生，', '而非为宣传册。'],
-    phil: '真正的探险。经验丰富的团队。周密的计划。值得前往的地方。',
-    discuss: '咨询探险行程',
-    discussNote: '告诉我们您的潜水经验和资质，我们会为您匹配合适的行程和行前准备。',
+    title: '从新西伯利亚出发的潜水之旅与探险',
+    description:
+      '与 DECOBROSCREW 一起潜水探险：红海沉船、墨西哥天然井、马尔代夫船宿。经验丰富的团队，并在新西伯利亚做好行前准备。',
+    kicker: '探险',
+    h1: '去往值得一潜的地方。',
+    sub: '真正的探险。经验丰富的团队。周密的计划。值得前往的地方。',
+    upcoming: '近期行程',
+    listKicker: '日程',
+    listH: '近期探险。',
+    listLead: '告诉我们您的潜水经验和资质，我们会为您匹配合适的行程和行前准备。',
+    demo: '日期为测试数据。',
+    empty: '探险日程将在此公布。联系我们，了解近期计划。',
+    format: '形式',
+    level: '级别',
+    discuss: '咨询此次探险',
+    bandBtn: '咨询探险行程',
+    bandH: '为潜水而生，而非为宣传册。',
+    band: '每次出行都有行前准备：需要什么认证、多少次潜水，以及出发前在新西伯利亚练习什么。',
   },
 }[locale];
 ---
 
-<BaseLayout title={T.title} description={T.description}>
-  <Hero imageId="E01" lines={T.hero} />
+<BaseLayout title={T.title} description={T.description} overlay>
+  <PageHero
+    imageId="E01"
+    kicker={T.kicker}
+    title={T.h1}
+    sub={T.sub}
+    actions={[{ label: T.upcoming, href: '#exp-list' }]}
+  />
 
-  <section class="section" aria-labelledby="list-h">
-    <div class="container">
-      <DemoBadge />
-      <h2 id="list-h">{T.h2}</h2>
-      <span class="rule"></span>
-      {expeditions.length === 0 ? (
-        <p class="notice">{T.empty}</p>
-      ) : (
-        <ul class="list" data-stagger>
-          {expeditions.map((e) => (
-            <li id={e.slug} class="zoom-media">
+  <section class="wrap sec" id="exp-list" aria-labelledby="exp-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.listKicker}</p>
+        <h2 class="h2" id="exp-h">{T.listH}</h2>
+      </div>
+      <p class="lead">
+        {T.listLead} {DEMO_CONTENT && <span class="ph">{T.demo}</span>}
+      </p>
+    </div>
+    {expeditions.length === 0 ? (
+      <p class="notice">{T.empty}</p>
+    ) : (
+      <ul class="exp-list">
+        {expeditions.map((e) => (
+          <li class="exp" id={e.slug}>
+            <div class="img">
               {e.image && (
                 <EditorialImage
                   name={e.image}
-                  ratio="4 / 3"
-                  alt=""
-                  sizes="(min-width: 960px) 33vw, 100vw"
+                  alt={e.title}
+                  fill
+                  sizes="(min-width: 1000px) 22vw, (min-width: 640px) 45vw, 100vw"
                 />
               )}
-              <p class="eyebrow">{t(e.type, locale)}</p>
-              <h3>{t(e.title, locale)}</h3>
-              <p class="meta">
-                {t(e.destination, locale)}, {t(e.country, locale)}
+            </div>
+            <div class="body">
+              <div class="row1">
+                <span class:list={['pill', e.status === 'completed' ? 'done' : e.status]}>
+                  {tr(expeditionStatusLabels[e.status])}
+                </span>
+                <span class="mono date">{tr(e.dates)}</span>
+              </div>
+              <h3>{tr(e.title)}</h3>
+              <p class="where">
+                {tr(e.destination)} · {tr(e.country)}
               </p>
-              <p class="meta">
-                {t(e.dates, locale)} · {t(e.level, locale)}
-              </p>
-              <p class="status">{t(expeditionStatusLabels[e.status], locale)}</p>
-              <p>{t(e.description, locale)}</p>
-              <a class="link-arrow" href={localePath(locale, '/contact')}>
-                {T.explore} <span aria-hidden="true">→</span>
+              <p>{tr(e.description)}</p>
+              <dl class="mini">
+                <div>
+                  <dt>{T.format}</dt>
+                  <dd>{tr(e.type)}</dd>
+                </div>
+                <div>
+                  <dt>{T.level}</dt>
+                  <dd>{tr(e.level)}</dd>
+                </div>
+              </dl>
+              <a class="link" href={p('/contact')}>
+                {T.discuss} <span class="ar" aria-hidden="true">→</span>
               </a>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    )}
   </section>
 
-  <section class="section dark closing" aria-labelledby="phil-h">
-    <div class="container split">
-      <div class="split-text">
-        <h2 id="phil-h">
-          {T.philH[0]}
-          <br />
-          {T.philH[1]}
-        </h2>
-        <span class="rule"></span>
-        <p class="lead">{T.phil}</p>
-        <p class="lead note">{T.discussNote}</p>
-        <a class="btn light" href={localePath(locale, '/contact')}>
-          {T.discuss} <span aria-hidden="true">→</span>
-        </a>
-      </div>
-      {prep && (
-        <EditorialImage
-          name={`gallery/${prep.file}`}
-          ratio="4 / 3"
-          alt={prep.alt}
-          sizes="(min-width: 960px) 45vw, 100vw"
-        />
-      )}
+  <section class="band-photo" aria-labelledby="exp-band-h">
+    <EditorialImage imageId="H02" fill position="center 40%" />
+    <div class="in">
+      <h2 id="exp-band-h">{T.bandH}</h2>
+      <p>{T.band}</p>
+      <a class="btn white band-btn" href={p('/contact')}>
+        {T.bandBtn}
+        <span class="ar" aria-hidden="true">→</span>
+      </a>
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  h2 {
-    font-size: var(--fs-h2);
-  }
-  .list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 32px;
-  }
-  .list :global(.ei) {
-    margin-bottom: 16px;
-  }
-  h3 {
-    font-size: var(--fs-h3);
-    margin-block: 8px;
-  }
-  .meta {
-    color: var(--muted);
-    font-size: 0.9375rem;
-  }
-  .status {
-    margin-block: 10px 12px;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--blue);
-  }
-  /* The closing block sits on the ink footer; a deep hairline keeps them apart. */
-  .closing {
-    border-bottom: 1px solid var(--line-dark);
-  }
-  .split {
-    display: grid;
-    gap: 32px;
-  }
-  .note {
-    margin-block: 16px 28px;
-  }
-  @media (min-width: 960px) {
-    .split {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-      align-items: center;
-      gap: clamp(40px, 5vw, 96px);
-    }
-  }
-  @media (min-width: 768px) {
-    .list {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 40px 24px;
-    }
-  }
-</style>

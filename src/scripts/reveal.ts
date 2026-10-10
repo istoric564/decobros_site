@@ -1,6 +1,8 @@
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const running = new Set<Animation>();
-const easing = getComputedStyle(document.documentElement).getPropertyValue('--motion-ease').trim();
+const easing =
+  getComputedStyle(document.documentElement).getPropertyValue('--ease').trim() ||
+  'cubic-bezier(0.16, 1, 0.3, 1)';
 
 function play(element: Element, keyframes: Keyframe[], options: KeyframeAnimationOptions) {
   if (reducedMotion.matches || !('animate' in element)) return;

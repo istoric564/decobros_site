@@ -1,204 +1,144 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Hero from '../../components/Hero.astro';
+import PageHero from '../../components/PageHero.astro';
 import EditorialImage from '../../components/EditorialImage.astro';
-import DemoBadge from '../../components/DemoBadge.astro';
 import { people, values } from '../../data/crew';
-import { localeFromUrl, localeStaticPaths, t } from '../../i18n';
+import { DEMO_CONTENT } from '../../data/site';
+import { localeFromUrl, localeStaticPaths, translator } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
 
 const locale = localeFromUrl(Astro.url);
+const tr = translator(locale);
 
 const T = {
   ru: {
     title: 'Команда',
     description:
       'Инструкторы и дайверы DECOBROSCREW. Реальные люди, реальные квалификации, одна команда.',
-    hero: ['Важно,', 'с кем', 'ты ныряешь.'],
-    h2: 'Команда',
-    empty: '[НУЖЕН КОНТЕНТ: реальные участники команды и портреты от владельца]',
-    portrait: 'Портрет',
+    kicker: 'Команда',
+    h1: 'Важно, с кем ты ныряешь.',
+    sub: 'Инструкторы и дайверы DECOBROSCREW. Реальные люди, реальные квалификации, одна команда.',
+    listKicker: 'Инструкторы',
+    listH: 'Кто будет рядом под водой.',
+    demo: 'Все имена и цифры пока тестовые.',
+    lead: 'Портреты, квалификации и опыт каждого — до запуска сайта.',
+    empty: 'Здесь появятся инструкторы и дайверы команды.',
     qualifications: 'Квалификация',
+    experience: 'Опыт',
     specialties: 'Специализация',
     languages: 'Языки',
-    experience: 'Опыт',
-    city: 'Город',
-    values: 'Наши ценности',
+    valuesKicker: 'Наши ценности',
+    valuesH: 'Как мы работаем вместе.',
     sep: ', ',
   },
   en: {
     title: 'The Crew',
     description:
       'Meet the DECOBROSCREW instructors and divers. Real people, real qualifications, one team.',
-    hero: ['The people', 'you dive with', 'matter.'],
-    h2: 'The Crew',
-    empty: '[CONTENT REQUIRED: real crew members and owner-supplied portraits]',
-    portrait: 'Portrait',
+    kicker: 'The Crew',
+    h1: 'The people you dive with matter.',
+    sub: 'DECOBROSCREW instructors and divers. Real people, real qualifications, one team.',
+    listKicker: 'Instructors',
+    listH: 'Who will be beside you underwater.',
+    demo: 'All names and numbers are test data for now.',
+    lead: 'Portraits, qualifications and experience for everyone — before launch.',
+    empty: 'Crew instructors and divers will appear here.',
     qualifications: 'Qualifications',
+    experience: 'Experience',
     specialties: 'Specialties',
     languages: 'Languages',
-    experience: 'Experience',
-    city: 'City',
-    values: 'Our values',
+    valuesKicker: 'Our values',
+    valuesH: 'How we work together.',
     sep: ', ',
   },
   zh: {
     title: '团队',
     description: '认识 DECOBROSCREW 的教练和潜水员。真实的人，真实的资质，一个团队。',
-    hero: ['与谁同潜，', '至关重要。'],
-    h2: '团队',
-    empty: '[需要内容：真实的团队成员及由所有者提供的肖像照]',
-    portrait: '肖像',
+    kicker: '团队',
+    h1: '与谁同潜，至关重要。',
+    sub: 'DECOBROSCREW 的教练和潜水员。真实的人，真实的资质，一个团队。',
+    listKicker: '教练',
+    listH: '谁会在水下陪伴您。',
+    demo: '所有姓名和数字目前均为测试数据。',
+    lead: '每个人的肖像、资质和经验将在网站上线前提供。',
+    empty: '团队的教练和潜水员将在此展示。',
     qualifications: '资质',
+    experience: '经验',
     specialties: '专长',
     languages: '语言',
-    experience: '经验',
-    city: '城市',
-    values: '我们的价值观',
+    valuesKicker: '我们的价值观',
+    valuesH: '我们如何合作。',
     sep: '、',
   },
 }[locale];
 ---
 
-<BaseLayout title={T.title} description={T.description}>
-  <Hero imageId="C01" lines={T.hero} />
+<BaseLayout title={T.title} description={T.description} overlay>
+  <PageHero imageId="C01" kicker={T.kicker} title={T.h1} sub={T.sub} />
 
-  <section class="section" aria-labelledby="people-h">
-    <div class="container">
-      <DemoBadge />
-      <h2 id="people-h">{T.h2}</h2>
-      <span class="rule"></span>
-      {people.length === 0 ? (
-        <p class="notice">{T.empty}</p>
-      ) : (
-        <ul class="people" data-stagger>
-          {people.map((p) => {
-            const name = t(p.name, locale);
-            const role = t(p.role, locale);
-            return (
-              <li id={p.slug}>
-                {p.portrait && (
-                  <EditorialImage
-                    name={p.portrait}
-                    ratio="4 / 5"
-                    alt={`${T.portrait}: ${name}, ${role}`}
-                    sizes="(min-width: 960px) 25vw, 50vw"
-                  />
-                )}
-                <h3>{name}</h3>
-                <p class="eyebrow">{role}</p>
-                <dl>
-                  <dt>{T.qualifications}</dt>
-                  <dd>{t(p.qualifications, locale).join('; ')}</dd>
-                  <dt>{T.specialties}</dt>
-                  <dd>{t(p.specialties, locale).join(T.sep)}</dd>
-                  <dt>{T.languages}</dt>
-                  <dd>{t(p.languages, locale).join(T.sep)}</dd>
-                  <dt>{T.experience}</dt>
-                  <dd>{t(p.experience, locale)}</dd>
-                  {p.city && (
-                    <>
-                      <dt>{T.city}</dt>
-                      <dd>{t(p.city, locale)}</dd>
-                    </>
-                  )}
-                </dl>
-                {p.bio && <p>{t(p.bio, locale)}</p>}
-              </li>
-            );
-          })}
-        </ul>
-      )}
+  <section class="wrap sec" aria-labelledby="crew-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.listKicker}</p>
+        <h2 class="h2" id="crew-h">{T.listH}</h2>
+      </div>
+      <p class="lead">
+        {DEMO_CONTENT && <span class="ph">{T.demo}</span>} {T.lead}
+      </p>
     </div>
-  </section>
-
-  <section class="section paper" aria-labelledby="values-h">
-    <div class="container">
-      <h2 id="values-h">{T.values}</h2>
-      <span class="rule"></span>
-      <ul class="values" data-stagger>
-        {values.map((v) => (
-          <li>
-            <h3>{t(v.name, locale)}</h3>
-            <p>{t(v.text, locale)}</p>
+    {people.length === 0 ? (
+      <p class="notice">{T.empty}</p>
+    ) : (
+      <ul class="crew-grid">
+        {people.map((m) => (
+          <li class="person" id={m.slug}>
+            <div class="img">
+              {m.portrait && (
+                <EditorialImage
+                  name={m.portrait}
+                  alt={m.name}
+                  fill
+                  sizes="(min-width: 1100px) 25vw, (min-width: 560px) 50vw, 100vw"
+                />
+              )}
+            </div>
+            <h3>{tr(m.name)}</h3>
+            <p class="role">{tr(m.role)}</p>
+            <dl class="mini">
+              <div>
+                <dt>{T.qualifications}</dt>
+                <dd>{tr(m.qualifications).join(T.sep)}</dd>
+              </div>
+              <div>
+                <dt>{T.experience}</dt>
+                <dd>{tr(m.experience)}</dd>
+              </div>
+              <div>
+                <dt>{T.specialties}</dt>
+                <dd>{tr(m.specialties).join(T.sep)}</dd>
+              </div>
+              <div>
+                <dt>{T.languages}</dt>
+                <dd>{tr(m.languages).join(T.sep)}</dd>
+              </div>
+            </dl>
           </li>
         ))}
       </ul>
-    </div>
+    )}
+  </section>
+
+  <section class="wrap sec paper" aria-labelledby="values-h">
+    <p class="kicker">{T.valuesKicker}</p>
+    <h2 class="h2" id="values-h">{T.valuesH}</h2>
+    <ul class="values">
+      {values.map((v) => (
+        <li>
+          <b>{tr(v.name)}</b>
+          <p>{tr(v.text)}</p>
+        </li>
+      ))}
+    </ul>
   </section>
 </BaseLayout>
-
-<style>
-  h2 {
-    font-size: var(--fs-h2);
-  }
-  .people,
-  .values {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .people {
-    display: grid;
-    gap: 32px;
-  }
-  h3 {
-    font-size: 1.5rem;
-    margin-top: 16px;
-  }
-  .eyebrow {
-    margin-top: 4px;
-  }
-  dl {
-    display: grid;
-    grid-template-columns: 1fr;
-    margin-block: 14px;
-    font-size: 0.875rem;
-  }
-  dt {
-    color: var(--muted);
-    font-size: 0.75rem;
-    margin-top: 8px;
-  }
-  dd {
-    margin: 0;
-  }
-  .people p {
-    font-size: 0.9375rem;
-  }
-  .values li {
-    padding: 20px 0 24px;
-    border-top: 1px solid var(--line);
-  }
-  .values h3 {
-    margin: 0 0 10px;
-    font-size: clamp(1.5rem, 2vw + 0.75rem, 2rem);
-    letter-spacing: -0.03em;
-  }
-  .values p {
-    max-width: 34ch;
-    color: var(--muted);
-    font-size: 0.9375rem;
-    text-wrap: pretty;
-  }
-  @media (min-width: 768px) {
-    .people {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 40px 24px;
-    }
-  }
-  @media (min-width: 1100px) {
-    .people {
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .values {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 24px;
-    }
-    .values h3 {
-      font-size: 1.5rem;
-    }
-  }
-</style>

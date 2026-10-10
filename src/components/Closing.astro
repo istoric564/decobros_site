@@ -1,0 +1,34 @@
+---
+/* Dark closing call at the end of a page: one heading, one sentence, one action. */
+import Icon from './Icon.astro';
+
+interface Props {
+  kicker: string;
+  heading: string;
+  text: string;
+  action: { label: string; href: string; external?: boolean; telegram?: boolean };
+}
+const { kicker, heading, text, action } = Astro.props;
+---
+
+<section class="closing wrap">
+  <p class="kicker">{kicker}</p>
+  <h2>{heading}</h2>
+  <div class="row">
+    <p>{text}</p>
+    <a
+      class="btn white"
+      href={action.href}
+      target={action.external ? '_blank' : undefined}
+      rel={action.external ? 'noopener noreferrer' : undefined}
+    >
+      {action.telegram && <Icon name="telegram" />}
+      {action.label}
+      {!action.telegram && (
+        <span class="ar" aria-hidden="true">
+          →
+        </span>
+      )}
+    </a>
+  </div>
+</section>

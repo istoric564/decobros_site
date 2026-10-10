@@ -1,0 +1,393 @@
+---
+import '@fontsource/russo-one/400.css';
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import Accordion from '../../components/Accordion.astro';
+import Icon from '../../components/Icon.astro';
+import mark from '../../assets/brand/logo-mark.png';
+import { contactHref, hours } from '../../data/site';
+import { localeFromUrl, localePath, localeStaticPaths, translator } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+const locale = localeFromUrl(Astro.url);
+const tr = translator(locale);
+const p = (path: string) => localePath(locale, path);
+const telegram = contactHref('telegram');
+const logo = await getImage({ src: mark, width: 240, format: 'webp' });
+const open = hours[0];
+
+const T = {
+  ru: {
+    title: 'Подарочный сертификат на дайвинг в Новосибирске',
+    description:
+      'Подарочный сертификат на пробное погружение, курс Open Water или любую сумму в DECOBROSCREW, Новосибирск. PDF в тот же день или печатный в конверте.',
+    home: 'Главная',
+    kicker: 'Подарочный сертификат',
+    h1: 'Подарите первый вдох под водой.',
+    lead: 'Для того, кто давно мечтает, но не решается. Пробное погружение или курс с инструктором — с красивым сертификатом, который можно вручить.',
+    order: 'Заказать в Telegram',
+    orderAlt: 'Заказать',
+    how: 'Как это работает',
+    reply: 'Отвечаем в Telegram за 15 минут',
+    card: {
+      aria: 'Образец подарочного сертификата',
+      label: 'Сертификат',
+      kind: 'Подарочный сертификат',
+      h: 'Первое погружение',
+      prog: 'SDI Scuba Discovery · с инструктором',
+      to: 'Для',
+      name: 'Анны Смирновой',
+      f1: ['Программа', 'Пробное · с инструктором'],
+      f2: ['Действует до', '10.10.2027'],
+      sign: 'Инструктор',
+      seal: 'Печать DECOBROS',
+    },
+    formatsKicker: 'Что можно подарить',
+    formatsH: 'Три формата.',
+    formats: [
+      [
+        'Чтобы попробовать',
+        'Пробное погружение',
+        'Около двух часов с инструктором в бассейне или открытой воде. Опыт не нужен.',
+      ],
+      [
+        'Чтобы начать по-настоящему',
+        'Курс Open Water',
+        'Международный сертификат дайвера: теория, бассейн, открытая вода. До 18 метров.',
+      ],
+      [
+        'Любая сумма',
+        'Сертификат на сумму',
+        'Можно потратить на любой курс, экспедицию или обслуживание снаряжения в мастерской.',
+      ],
+    ],
+    price: 'от ··· ₽',
+    formatsFine:
+      'Цены ориентировочные. Информация на сайте не является публичной офертой; точные условия согласуются при заказе.',
+    stepsKicker: 'Как это работает',
+    stepsH: 'Три шага до подарка.',
+    steps: [
+      ['Напишите нам', 'В Telegram, ВКонтакте или по телефону. Скажите, кому и какой формат.'],
+      ['Оплатите', 'Способ оплаты согласуем — пришлём реквизиты или ждём в клубе.'],
+      [
+        'Получите сертификат',
+        'PDF в тот же день или печатный в конверте в клубе. Имя и пожелание впишем.',
+      ],
+    ],
+    occKicker: 'Поводы',
+    occH: 'Когда его дарят.',
+    occ: [
+      ['Новый год', '31.12'],
+      ['23 февраля', '23.02'],
+      ['8 марта', '08.03'],
+      ['День рождения', 'любая дата'],
+    ],
+    faq: [
+      [
+        'Сколько действует сертификат?',
+        '12 месяцев с даты покупки. Дату погружения выбирает получатель.',
+      ],
+      [
+        'Что если получатель боится?',
+        'Пробное погружение начинается там, где можно встать. Инструктор рядом, остановиться можно в любой момент.',
+      ],
+      [
+        'Можно ли подарить ребёнку?',
+        'Да, с 10 лет по стандарту SDI — вместе с согласием родителей.',
+      ],
+      ['Можно ли вернуть или обменять?', 'Условия обмена и возврата обсудим при заказе.'],
+    ],
+  },
+  en: {
+    title: 'Scuba Diving Gift Certificate in Novosibirsk',
+    description:
+      'A gift certificate for a try dive, the Open Water course or any amount at DECOBROSCREW, Novosibirsk. A PDF the same day or a printed one in an envelope.',
+    home: 'Home',
+    kicker: 'Gift certificate',
+    h1: 'Give a first breath underwater.',
+    lead: 'For someone who has dreamed of it for years but never dared. A try dive or a course with an instructor — with a beautiful certificate to hand over.',
+    order: 'Order in Telegram',
+    orderAlt: 'Order',
+    how: 'How it works',
+    reply: 'We reply in Telegram within 15 minutes',
+    card: {
+      aria: 'Sample gift certificate',
+      label: 'Certificate',
+      kind: 'Gift certificate',
+      h: 'First dive',
+      prog: 'SDI Scuba Discovery · with an instructor',
+      to: 'For',
+      name: 'Anna Smirnova',
+      f1: ['Program', 'Try dive · with instructor'],
+      f2: ['Valid until', '10.10.2027'],
+      sign: 'Instructor',
+      seal: 'DECOBROS seal',
+    },
+    formatsKicker: 'What you can give',
+    formatsH: 'Three formats.',
+    formats: [
+      [
+        'To try it',
+        'Try dive',
+        'About two hours with an instructor in a pool or open water. No experience needed.',
+      ],
+      [
+        'To start for real',
+        'Open Water course',
+        'An international diver certification: theory, pool, open water. Up to 18 metres.',
+      ],
+      [
+        'Any amount',
+        'Value certificate',
+        'Can be spent on any course, expedition or gear service in the workshop.',
+      ],
+    ],
+    price: 'from ··· ₽',
+    formatsFine:
+      'Prices are indicative. Information on the site is not a public offer; exact terms are agreed when you order.',
+    stepsKicker: 'How it works',
+    stepsH: 'Three steps to the gift.',
+    steps: [
+      ['Write to us', 'In Telegram, VK or by phone. Tell us who it is for and which format.'],
+      ['Pay', 'We agree on the payment method — we send the details or see you at the club.'],
+      [
+        'Get the certificate',
+        'A PDF the same day or a printed one in an envelope at the club. We add the name and a message.',
+      ],
+    ],
+    occKicker: 'Occasions',
+    occH: 'When people give it.',
+    occ: [
+      ['New Year', '31.12'],
+      ['Defender of the Fatherland Day', '23.02'],
+      ['International Women’s Day', '08.03'],
+      ['Birthday', 'any date'],
+    ],
+    faq: [
+      [
+        'How long is the certificate valid?',
+        '12 months from the date of purchase. The recipient chooses the dive date.',
+      ],
+      [
+        'What if the recipient is nervous?',
+        'A try dive starts where you can stand. The instructor is beside you, and you can stop at any moment.',
+      ],
+      ['Can I give it to a child?', 'Yes, from age 10 under the SDI standard — with parental consent.'],
+      ['Can it be refunded or exchanged?', 'We will discuss exchange and refund terms when you order.'],
+    ],
+  },
+  zh: {
+    title: '新西伯利亚潜水礼品券',
+    description:
+      'DECOBROSCREW（新西伯利亚）体验潜水、开放水域课程或任意金额的礼品券。当天提供 PDF，或在俱乐部领取装在信封里的纸质版。',
+    home: '首页',
+    kicker: '礼品券',
+    h1: '送出第一次水下呼吸。',
+    lead: '送给梦想已久却一直没有迈出第一步的人。由教练陪同的体验潜水或课程——附上一张可以亲手送出的精美证书。',
+    order: '在 Telegram 订购',
+    orderAlt: '订购',
+    how: '流程',
+    reply: '在 Telegram 上 15 分钟内回复',
+    card: {
+      aria: '礼品券样张',
+      label: '证书',
+      kind: '礼品券',
+      h: '第一次潜水',
+      prog: 'SDI Scuba Discovery · 教练陪同',
+      to: '赠予',
+      name: '安娜·斯米尔诺娃',
+      f1: ['项目', '体验潜水 · 教练陪同'],
+      f2: ['有效期至', '10.10.2027'],
+      sign: '教练',
+      seal: 'DECOBROS 印章',
+    },
+    formatsKicker: '可以赠送什么',
+    formatsH: '三种形式。',
+    formats: [
+      ['想试一试', '体验潜水', '由教练陪同在泳池或开放水域约两小时。无需经验。'],
+      ['想真正开始', '开放水域课程', '国际潜水员认证：理论、泳池、开放水域。最深 18 米。'],
+      ['任意金额', '储值礼品券', '可用于任何课程、探险或工坊的装备保养。'],
+    ],
+    price: '··· ₽ 起',
+    formatsFine: '价格仅供参考。网站信息不构成公开要约；具体条件在订购时确认。',
+    stepsKicker: '流程',
+    stepsH: '三步送出礼物。',
+    steps: [
+      ['联系我们', '通过 Telegram、VK 或电话。告诉我们送给谁、选择哪种形式。'],
+      ['付款', '付款方式另行商定——我们发送付款信息，或在俱乐部当面支付。'],
+      ['领取礼品券', '当天提供 PDF，或在俱乐部领取装在信封里的纸质版。我们会写上姓名和祝福。'],
+    ],
+    occKicker: '场合',
+    occH: '适合赠送的时刻。',
+    occ: [
+      ['新年', '31.12'],
+      ['祖国保卫者日', '23.02'],
+      ['国际妇女节', '08.03'],
+      ['生日', '任意日期'],
+    ],
+    faq: [
+      ['礼品券有效期多久？', '自购买之日起 12 个月。潜水日期由收礼人选择。'],
+      ['如果收礼人害怕怎么办？', '体验潜水从能站立的地方开始。教练就在身边，随时可以停下。'],
+      ['可以送给孩子吗？', '可以，按照 SDI 标准 10 岁起——须家长同意。'],
+      ['可以退款或更换吗？', '更换和退款条件在订购时商定。'],
+    ],
+  },
+}[locale];
+const C = T.card;
+---
+
+<BaseLayout title={T.title} description={T.description}>
+  <section class="wrap plain-hero gift-hero">
+    <div>
+      <Crumbs items={[{ label: T.home, href: p('/') }, { label: T.kicker }]} />
+      <p class="kicker">{T.kicker}</p>
+      <h1>{T.h1}</h1>
+      <p class="lead">{T.lead}</p>
+      <div class="acts">
+        {telegram ? (
+          <a class="btn" href={telegram} target="_blank" rel="noopener noreferrer">
+            <Icon name="telegram" />
+            {T.order}
+          </a>
+        ) : (
+          <a class="btn" href={p('/contact')}>
+            {T.orderAlt}
+          </a>
+        )}
+        <a class="btn ghost" href="#gift-how">
+          {T.how}
+        </a>
+      </div>
+      <p class="reply">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="ph">{T.reply}</span>
+        <span aria-hidden="true">·</span>
+        <span class="mono">{tr(open.days)} {tr(open.time)}</span>
+      </p>
+    </div>
+
+    <div class="gc-desk">
+      <div class="gc-box">
+        <article class="gc" aria-label={C.aria}>
+          <div class="gc-flag" aria-hidden="true"></div>
+          <div class="gc-frame" aria-hidden="true"></div>
+          <div class="gc-ascent" aria-hidden="true">
+            {[30, 24, 18, 12, 7].map((w) => <i style={`width:${w}px`}></i>)}
+          </div>
+          <svg class="gc-twin" viewBox="0 0 20 60" aria-hidden="true">
+            <rect x="1" y="10" width="8" height="48" rx="4" fill="currentColor"></rect>
+            <rect x="11" y="10" width="8" height="48" rx="4" fill="currentColor"></rect>
+            <rect x="3" y="2" width="14" height="4" fill="currentColor"></rect>
+            <rect x="4" y="5" width="2" height="6" fill="currentColor"></rect>
+            <rect x="14" y="5" width="2" height="6" fill="currentColor"></rect>
+          </svg>
+          <div class="gc-sheen" aria-hidden="true"></div>
+          <div class="gc-in">
+            <div class="gc-top">
+              <div class="gc-lockup">
+                <img src={logo.src} width="120" height={Math.round((120 * mark.height) / mark.width)} alt="" />
+                <b class="gc-wm" aria-label="DECOBROS">DECOBR<span class="gc-o">O</span>S</b>
+                <span class="gc-tag">Decompression Brothers Crew</span>
+              </div>
+              <p class="gc-num"><small>{C.label}</small>№ 0127</p>
+            </div>
+            <div class="gc-mid">
+              <p class="gc-kind">{C.kind}</p>
+              <h2 class="gc-title">{C.h}</h2>
+              <p class="gc-prog">{C.prog}</p>
+              <p class="gc-to"><span>{C.to}</span><b>{C.name}</b></p>
+            </div>
+            <div class="gc-bot">
+              <div class="gc-f"><small>{C.f1[0]}</small><b>{C.f1[1]}</b></div>
+              <div class="gc-f"><small>{C.f2[0]}</small><b class="mono">{C.f2[1]}</b></div>
+              <div class="gc-f gc-sign">
+                <svg viewBox="0 0 160 34" aria-hidden="true">
+                  <path
+                    d="M4 26 C 18 6, 30 6, 34 20 S 52 30, 62 12 S 82 4, 90 22 S 120 28, 156 8"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"></path>
+                </svg>
+                <small>{C.sign}</small>
+              </div>
+              <div class="gc-seal">
+                <svg class="gc-seal-svg" viewBox="0 0 200 200" role="img" aria-label={C.seal}>
+                  <defs>
+                    <path id="seal-top" d="M30 100 a70 70 0 0 1 140 0"></path>
+                    <path id="seal-bot" d="M22 100 a78 78 0 0 0 156 0"></path>
+                  </defs>
+                  <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="3"
+                  ></circle>
+                  <circle cx="100" cy="100" r="62" fill="none" stroke="currentColor" stroke-width="1.5"
+                  ></circle>
+                  <circle cx="30" cy="100" r="3" fill="currentColor"></circle>
+                  <circle cx="170" cy="100" r="3" fill="currentColor"></circle>
+                  <text class="gc-st">
+                    <textPath href="#seal-top" startOffset="50%" text-anchor="middle">DECOBROS</textPath>
+                  </text>
+                  <text class="gc-sb">
+                    <textPath href="#seal-bot" startOffset="50%" text-anchor="middle">
+                      DECOMPRESSION BROTHERS CREW
+                    </textPath>
+                  </text>
+                  <image href={logo.src} x="52" y="68" width="96" height="56" preserveAspectRatio="xMidYMid meet"></image>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec flush" aria-labelledby="gift-formats-h">
+    <p class="kicker">{T.formatsKicker}</p>
+    <h2 class="h2" id="gift-formats-h">{T.formatsH}</h2>
+    <ul class="price-grid">
+      {T.formats.map(([k, b, d], i) => (
+        <li class:list={{ hl: i === 1 }}>
+          <span class="kicker">{k}</span>
+          <b>{b}</b>
+          <p>{d}</p>
+          <span class="price">
+            <span class="ph">{T.price}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+    <p class="fine">{T.formatsFine}</p>
+  </section>
+
+  <section class="wrap sec paper" id="gift-how" aria-labelledby="gift-how-h">
+    <p class="kicker">{T.stepsKicker}</p>
+    <h2 class="h2" id="gift-how-h">{T.stepsH}</h2>
+    <ol class="step-list three">
+      {T.steps.map(([b, d], i) => (
+        <li>
+          <b>{b}</b>
+          <p class:list={{ ph: i === 1 }}>{d}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="gift-occ-h">
+    <div class="two">
+      <div>
+        <p class="kicker">{T.occKicker}</p>
+        <h2 class="h2" id="gift-occ-h">{T.occH}</h2>
+      </div>
+      <ul class="occasions">
+        {T.occ.map(([b, d]) => (
+          <li>
+            <b>{b}</b>
+            <span class="mono">{d}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <Accordion class="acc-gap" items={T.faq.map(([q, a]) => ({ q, a }))} />
+  </section>
+</BaseLayout>
